@@ -42,7 +42,7 @@ namespace API.Data.Data
             {
                 levels.Add(new Level()
                 {
-                    Levels = levelName
+                    Name = levelName
                 });
             }
             return levels;
