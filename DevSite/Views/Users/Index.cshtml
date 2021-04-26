@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Core.Entities.LMSUser>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Avatar)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelitem => item.FullName)
+            </th>
+            <th>
+                @Html.DisplayFor(modelitem => item.UserName)
+            </th>
+            <th>
+                @Html.DisplayFor(modelitem => item.Email)
+            </th>
+            <th>
+                @Html.DisplayFor(modelitem => item.PhoneNumber)
+            </th>
+            <th>
+                @Html.DisplayFor(modelitem => item.Avatar)
+            </th>
+            <th>
+                @Html.DisplayFor(modelitem => item.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayFor(modelitem => item.Type)
+            </th>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
