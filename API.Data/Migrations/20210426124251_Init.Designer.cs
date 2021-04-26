@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(DbContextAPI))]
-    [Migration("20210426115132_init")]
-    partial class init
+    [Migration("20210426124251_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,8 +49,8 @@ namespace API.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Levels")
-                        .HasColumnType("int");
+                    b.Property<string>("Levels")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

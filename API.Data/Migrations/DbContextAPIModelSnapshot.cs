@@ -47,8 +47,8 @@ namespace API.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Levels")
-                        .HasColumnType("int");
+                    b.Property<string>("Levels")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

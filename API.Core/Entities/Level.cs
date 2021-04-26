@@ -8,6 +8,6 @@ namespace API.Core.Entities
     public class Level
     {
         public int Id { get; set; }
-        public int Levels { get; set; }
+        public string Levels { get; set; }
     }
 }
