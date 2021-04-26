@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Core.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,6 @@ namespace API.Controllers
     [ApiController]
     public class AuthorController : ControllerBase
     {
-        private readonly DbContextAPI db;
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
 
@@ -28,63 +28,59 @@ namespace API.Controllers
 
         // GET: api/Author
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
+        public async Task<ActionResult<IEnumerable<AuthorDto>>> GetAuthors()
         {
-            return await db.Authors.ToListAsync();
+            var authors = await uow.AuthorRepository.getAllAuthors();
+
+            return Ok(mapper.Map<IEnumerable<AuthorDto>>(authors));
         }
 
         // GET: api/Author/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetAuthor(int id)
+        public async Task<ActionResult<AuthorDto>> GetAuthor(int id)
         {
-            var author = await db.Authors.FindAsync(id);
+            var author = await uow.AuthorRepository.getAuthor(id);
 
             if (author == null)
             {
                 return NotFound();
             }
 
-            return author;
+            return Ok(mapper.Map<AuthorDto>(author));
         }
 
         // PUT: api/Author/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAuthor(int id, Author author)
+        public async Task<IActionResult> PutAuthor(int id, AuthorDto authorDto)
         {
+            var author = await uow.AuthorRepository.getAuthor(id);
             if (id != author.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(author).State = EntityState.Modified;
+            mapper.Map(authorDto, author);
 
-            try
+            if  (await uow.AuthorRepository.SaveAsync())
             {
-                await db.SaveChangesAsync();
+                return Ok(mapper.Map<Author>(author));
             }
-            catch (DbUpdateConcurrencyException)
+            else
             {
-                if (!AuthorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return StatusCode(500);
             }
 
-            return NoContent();
         }
 
         // POST: api/Author
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Author>> PostAuthor(Author author)
+        public async Task<ActionResult<Author>> PostAuthor(AuthorDto authorDto)
         {
-            db.Authors.Add(author);
-            await db.SaveChangesAsync();
+            var author = mapper.Map<Author>(authorDto);
+            uow.AuthorRepository.AddAsync(author);
+            await uow.CompleteAsync();
 
             return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
         }
@@ -93,21 +89,13 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
-            var author = await db.Authors.FindAsync(id);
-            if (author == null)
+            
+            if (!await uow.AuthorRepository.RemoveAsync(id))
             {
                 return NotFound();
             }
 
-            db.Authors.Remove(author);
-            await db.SaveChangesAsync();
-
             return NoContent();
-        }
-
-        private bool AuthorExists(int id)
-        {
-            return db.Authors.Any(e => e.Id == id);
         }
     }
 }
