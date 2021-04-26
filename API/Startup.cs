@@ -11,7 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Core.Repositories;
 using API.Data.Data;
+using API.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace API
@@ -36,6 +38,8 @@ namespace API
             });
 
             services.AddDbContext<DbContextAPI>(options => options.UseSqlServer(Configuration.GetConnectionString("DbContextAPI")));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddAutoMapper(typeof(MapperProfileAPI));
         }
