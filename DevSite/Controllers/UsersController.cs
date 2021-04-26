@@ -87,9 +87,9 @@ namespace DevSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("FirstName,LastName,UserName,Email,PhoneNumber,Avatar,DateOfBirth,Type")] LMSUser user)
+        public async Task<IActionResult> Edit(string email, [Bind("FirstName,LastName,UserName,Email,PhoneNumber,Avatar,DateOfBirth,Type")] LMSUser user)
         {
-            if (id != user.Id)
+            if (email != user.Email)
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace DevSite.Controllers
                 catch (DbUpdateConcurrencyException)
                 { 
                     
-                    if (user.Id == "")
+                    if (user.Email == "")
                     {
                         return NotFound();
                     }
