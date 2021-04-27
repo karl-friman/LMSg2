@@ -43,12 +43,12 @@ namespace API.Data.Repositories
 
         public async Task<IEnumerable<Literature>> getAllLiteratures(bool include)
         {
-            return include ? await db.Literature.Include(l => l.Authors).Include(l => l.Subjects).ToListAsync() : await db.Literature.ToListAsync();
+            return include ? await db.Literature.Include(l => l.Authors).Include(l => l.Subjects).Include(l => l.Level).ToListAsync() : await db.Literature.Include(l => l.Level).ToListAsync();
         }
 
         public async Task<Literature> getLiterature(int? Id, bool include)
         {
-            return include ? await db.Literature.Include(l => l.Authors).Include(l => l.Subjects).FirstOrDefaultAsync() : await db.Literature.FirstOrDefaultAsync(l => l.Id == Id);
+            return include ? await db.Literature.Include(l => l.Authors).Include(l => l.Subjects).Include(l => l.Level).FirstOrDefaultAsync() : await db.Literature.Include(l => l.Level).FirstOrDefaultAsync(l => l.Id == Id);
         }
     }
 }
