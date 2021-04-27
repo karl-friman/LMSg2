@@ -41,14 +41,14 @@ namespace API.Data.Repositories
             await db.AddAsync(added);
         }
 
-        public async Task<IEnumerable<Literature>> getAllLiteratures()
+        public async Task<IEnumerable<Literature>> getAllLiteratures(bool include)
         {
-            return await db.Literature.ToListAsync();
+            return include ? await db.Literature.Include(l => l.Authors).Include(l => l.Subjects).ToListAsync() : await db.Literature.ToListAsync();
         }
 
-        public async Task<Literature> getLiterature(int? Id)
+        public async Task<Literature> getLiterature(int? Id, bool include)
         {
-            return await db.Literature.FirstOrDefaultAsync(l => l.Id == Id);
+            return include ? await db.Literature.Include(l => l.Authors).Include(l => l.Subjects).FirstOrDefaultAsync() : await db.Literature.FirstOrDefaultAsync(l => l.Id == Id);
         }
     }
 }

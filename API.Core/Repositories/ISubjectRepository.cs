@@ -9,8 +9,8 @@ namespace API.Core.Repositories
 {
     public interface ISubjectRepository : BasicRepositoryFeatures
     {
-        Task<IEnumerable<Subject>> getAllSubjects();
-        Task<Subject> getSubjects(int? Id);
+        Task<IEnumerable<Subject>> getAllSubjects(bool include);
+        Task<Subject> getSubjects(int? Id, bool include);
 
     }
 }

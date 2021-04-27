@@ -10,6 +10,6 @@ namespace API.Core.Repositories
     public interface IAuthorRepository : BasicRepositoryFeatures
     {
         Task<IEnumerable<Author>> getAllAuthors(bool include);
-        Task<Author> getAuthor(int? Id);
+        Task<Author> getAuthor(int? Id, bool include);
     }
 }

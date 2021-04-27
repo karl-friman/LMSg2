@@ -11,6 +11,7 @@ using API.Core.Repositories;
 using API.Data.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using API.Core.Util;
 
 namespace API.Controllers
 {
@@ -30,18 +31,20 @@ namespace API.Controllers
 
         // GET: api/Literatures
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LiteratureDto>>> GetLiterature()
+        public async Task<ActionResult<IEnumerable<LiteratureDto>>> GetLiterature(bool include = false)
         {
-            var literatures = await uow.LiteratureRepository.getAllLiteratures();
+            var literatures = await uow.LiteratureRepository.getAllLiteratures(include);
 
-            return Ok(mapper.Map<IEnumerable<LiteratureDto>>(literatures));
+            var literatureDto = literatures.Select(l => CustomMapper.MapLiterature(l, include));
+
+            return Ok(literatureDto);
         }
 
         // GET: api/Literatures/5
         [HttpGet("{id}")]
         public async Task<ActionResult<LiteratureDto>> GetLiterature(int id)
         {
-            var literature = await uow.LiteratureRepository.getLiterature(id);
+            var literature = await uow.LiteratureRepository.getLiterature(id, false);
 
             if (literature == null)
             {
@@ -57,7 +60,7 @@ namespace API.Controllers
         public async Task<IActionResult> PutLiterature(int id, LiteratureDto literatureDto)
         {
 
-            var literature = await uow.LiteratureRepository.getLiterature(id);
+            var literature = await uow.LiteratureRepository.getLiterature(id, false);
             if (id != literature.Id)
             {
                 return BadRequest();
@@ -94,7 +97,7 @@ namespace API.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<LiteratureDto>> PatchAuthor(int id, JsonPatchDocument<LiteratureDto> jsonPatchDocument)
         {
-            var literature = await uow.LiteratureRepository.getLiterature(id);
+            var literature = await uow.LiteratureRepository.getLiterature(id, false);
 
             if (literature is null)
             {

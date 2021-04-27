@@ -11,6 +11,6 @@ namespace API.Core.Dto
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public ICollection<LiteratureDto> Literatures { get; set; }
+        public ICollection<string> Literatures { get; set; }
     }
 }

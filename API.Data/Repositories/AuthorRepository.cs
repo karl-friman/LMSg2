@@ -46,9 +46,9 @@ namespace API.Data.Repositories
             return include ? await db.Authors.Include(a => a.Literatures).ToListAsync() : await db.Authors.ToListAsync();
         }
 
-        public async Task<Author> getAuthor(int? Id)
+        public async Task<Author> getAuthor(int? Id, bool include)
         {
-            return await db.Authors.FirstOrDefaultAsync(a => a.Id == Id);
+            return include ? await db.Authors.Include(a => a.Literatures).FirstOrDefaultAsync(a => a.Id == Id) : await db.Authors.FirstOrDefaultAsync(a => a.Id == Id);
         }
     }
 }

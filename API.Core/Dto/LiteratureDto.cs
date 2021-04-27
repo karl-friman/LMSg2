@@ -13,9 +13,9 @@ namespace API.Core.Dto
         public DateTime PublishDate { get; set; }
         public string Description { get; set; }
 
-        public ICollection<AuthorDto> Authors { get; set; }
+        public ICollection<string> Authors { get; set; }
 
-        public ICollection<SubjectDto> Subjects { get; set; }
+        public ICollection<string> Subjects { get; set; }
 
         public string LevelName { get; set; }
 

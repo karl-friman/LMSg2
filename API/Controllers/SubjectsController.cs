@@ -11,6 +11,7 @@ using API.Core.Repositories;
 using API.Data.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using API.Core.Util;
 
 namespace API.Controllers
 {
@@ -30,18 +31,20 @@ namespace API.Controllers
 
         // GET: api/Subjects
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SubjectDto>>> GetSubject()
+        public async Task<ActionResult<IEnumerable<SubjectDto>>> GetSubject(bool include = false)
         {
-            var subjects = await uow.SubjectRepository.getAllSubjects();
+            var subjects = await uow.SubjectRepository.getAllSubjects(include);
 
-            return Ok(mapper.Map<IEnumerable<SubjectDto>>(subjects));
+            var subjectDto = subjects.Select(s => CustomMapper.MapSubject(s, include));
+
+            return Ok(subjectDto);
         }
 
         // GET: api/Subjects/5
         [HttpGet("{id}")]
         public async Task<ActionResult<SubjectDto>> GetSubject(int id)
         {
-            var subject = await uow.SubjectRepository.getSubjects(id);
+            var subject = await uow.SubjectRepository.getSubjects(id, false);
 
             if (subject == null)
             {
@@ -56,7 +59,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSubject(int id, SubjectDto subjectDto)
         {
-            var subject = await uow.SubjectRepository.getSubjects(id);
+            var subject = await uow.SubjectRepository.getSubjects(id, false);
             if (id != subject.Id)
             {
                 return BadRequest();
@@ -88,7 +91,7 @@ namespace API.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<SubjectDto>> PatchAuthor(int id, JsonPatchDocument<SubjectDto> jsonPatchDocument)
         {
-            var subject = await uow.SubjectRepository.getSubjects(id);
+            var subject = await uow.SubjectRepository.getSubjects(id, false);
 
             if (subject is null)
             {

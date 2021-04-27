@@ -11,6 +11,7 @@ using API.Core.Repositories;
 using API.Data.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using API.Core.Util;
 
 namespace API.Controllers
 {
@@ -33,14 +34,7 @@ namespace API.Controllers
         {
             var authors = await uow.AuthorRepository.getAllAuthors(include);
 
-            var authorsDto = authors.Select(a => new AuthorDto()
-            {
-                Id = a.Id,
-                FirstName = a.FirstName,
-                LastName = a.LastName,
-                DateOfBirth = a.DateOfBirth,
-                Literatures = include ? a.Literatures.Where(l => !string.IsNullOrEmpty(l.Title)).Select(l => l.Title).ToList() : null
-            });
+            var authorsDto = authors.Select(a => CustomMapper.MapAuthor(a, include));
 
             //var authorsDto = mapper.Map<IEnumerable<AuthorDto>>(authors);
 
@@ -49,16 +43,19 @@ namespace API.Controllers
 
         // GET: api/Author/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AuthorDto>> GetAuthor(int id)
+        public async Task<ActionResult<AuthorDto>> GetAuthor(int id, bool include = false)
         {
-            var author = await uow.AuthorRepository.getAuthor(id);
+            var author = await uow.AuthorRepository.getAuthor(id, include);
+
 
             if (author == null)
             {
                 return NotFound();
             }
 
-            return Ok(mapper.Map<AuthorDto>(author));
+            var authorDto = CustomMapper.MapAuthor(author, include);
+
+            return Ok(authorDto);
         }
 
         // PUT: api/Author/5
@@ -66,7 +63,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAuthor(int id, AuthorDto authorDto)
         {
-            var author = await uow.AuthorRepository.getAuthor(id);
+            var author = await uow.AuthorRepository.getAuthor(id, false);
             if (id != author.Id)
             {
                 return BadRequest();
@@ -86,7 +83,7 @@ namespace API.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<AuthorDto>> PatchAuthor(int id, JsonPatchDocument<AuthorDto> jsonPatchDocument)
         {
-            var author = await uow.AuthorRepository.getAuthor(id);
+            var author = await uow.AuthorRepository.getAuthor(id, false);
 
             if(author is null)
             {

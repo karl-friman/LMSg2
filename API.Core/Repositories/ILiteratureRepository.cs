@@ -9,7 +9,7 @@ namespace API.Core.Repositories
 {
     public interface ILiteratureRepository : BasicRepositoryFeatures
     {
-        Task<IEnumerable<Literature>> getAllLiteratures();
-        Task<Literature> getLiterature(int? Id);
+        Task<IEnumerable<Literature>> getAllLiteratures(bool include);
+        Task<Literature> getLiterature(int? Id, bool include);
     }
 }
