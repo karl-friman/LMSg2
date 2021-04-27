@@ -42,16 +42,16 @@ namespace API.Controllers
 
         // GET: api/Literatures/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<LiteratureDto>> GetLiterature(int id)
+        public async Task<ActionResult<LiteratureDto>> GetLiterature(int id, bool include = false)
         {
-            var literature = await uow.LiteratureRepository.getLiterature(id, false);
+            var literature = await uow.LiteratureRepository.getLiterature(id, include);
 
             if (literature == null)
             {
                 return NotFound();
             }
 
-            return Ok(mapper.Map<LiteratureDto>(literature));
+            return Ok(CustomMapper.MapLiterature(literature, include));
         }
 
         // PUT: api/Literatures/5

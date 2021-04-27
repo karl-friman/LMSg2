@@ -43,12 +43,12 @@ namespace API.Data.Repositories
 
         public async Task<IEnumerable<Author>> getAllAuthors(bool include)
         {
-            return include ? await db.Authors.Include(a => a.Literatures).ToListAsync() : await db.Authors.ToListAsync();
+            return include ? await db.Authors.Include(a => a.Literatures).ThenInclude(l => l.Level).ToListAsync() : await db.Authors.ToListAsync();
         }
 
         public async Task<Author> getAuthor(int? Id, bool include)
         {
-            return include ? await db.Authors.Include(a => a.Literatures).FirstOrDefaultAsync(a => a.Id == Id) : await db.Authors.FirstOrDefaultAsync(a => a.Id == Id);
+            return include ? await db.Authors.Include(a => a.Literatures).ThenInclude(l => l.Level).FirstOrDefaultAsync(a => a.Id == Id) : await db.Authors.FirstOrDefaultAsync(a => a.Id == Id);
         }
     }
 }

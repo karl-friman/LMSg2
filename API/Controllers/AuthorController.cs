@@ -36,8 +36,6 @@ namespace API.Controllers
 
             var authorsDto = authors.Select(a => CustomMapper.MapAuthor(a, include));
 
-            //var authorsDto = mapper.Map<IEnumerable<AuthorDto>>(authors);
-
             return Ok(authorsDto);
         }
 
@@ -53,9 +51,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            var authorDto = CustomMapper.MapAuthor(author, include);
-
-            return Ok(authorDto);
+            return Ok(CustomMapper.MapAuthor(author, include));
         }
 
         // PUT: api/Author/5

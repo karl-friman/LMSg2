@@ -42,16 +42,16 @@ namespace API.Controllers
 
         // GET: api/Subjects/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<SubjectDto>> GetSubject(int id)
+        public async Task<ActionResult<SubjectDto>> GetSubject(int id, bool include = false)
         {
-            var subject = await uow.SubjectRepository.getSubjects(id, false);
+            var subject = await uow.SubjectRepository.getSubjects(id, include);
 
             if (subject == null)
             {
                 return NotFound();
             }
 
-            return Ok(mapper.Map<SubjectDto>(subject));
+            return Ok(CustomMapper.MapSubject(subject, include));
         }
 
         // PUT: api/Subjects/5
