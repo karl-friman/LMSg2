@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Web.Data.Data;
 
+
 namespace Web.Data.Data
 {
     public class SeedData
@@ -128,9 +129,9 @@ namespace Web.Data.Data
                 }
                 await context.AddRangeAsync(documents);
 
-                //activityTypes.Add(new ActivityType() { Name = "Assignement"});
-                //activityTypes.Add(new ActivityType() { Name = "Lecture" });
-                //activityTypes.Add(new ActivityType() { Name = "E-Learning" });
+                activityTypes.Add(new ActivityType() { Name = "Assignement"});
+                activityTypes.Add(new ActivityType() { Name = "Lecture" });
+                activityTypes.Add(new ActivityType() { Name = "E-Learning" });
 
 
                 await context.AddRangeAsync(activityTypes);

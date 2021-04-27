@@ -20,9 +20,6 @@
                 Modules
             </th>
             <th>
-                Activities
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.SelectedCourse)
             </th>
             <th></th>
@@ -33,10 +30,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayNameFor(modelItem => item.Name) @Html.DisplayFor(modelItem => item.Name)
-                    @Html.DisplayNameFor(modelItem => item.Description) @Html.DisplayFor(modelItem => item.Description)
-                    @Html.DisplayNameFor(modelItem => item.StartDate) @Html.DisplayFor(modelItem => item.StartDate)
-                    @Html.DisplayNameFor(modelItem => item.EndDate) @Html.DisplayFor(modelItem => item.EndDate)
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.Name):</strong> @Html.DisplayFor(modelItem => item.Name)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.Description):</strong> @Html.DisplayFor(modelItem => item.Description)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.StartDate):</strong> @Html.DisplayFor(modelItem => item.StartDate)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.EndDate):</strong> @Html.DisplayFor(modelItem => item.EndDate)</div>
                 </td>
                 <td>
                     @if (item.Modules != null)
@@ -44,7 +41,7 @@
                         @if (item.Modules.Count > 0)
                         {
                             <div>
-                                Number of modules: 
+                                Number of modules:
                                 @Html.DisplayFor(modelItem => item.Modules.Count)
                                 @if (Model.SelectedCourse is not null)
                                 {
@@ -59,27 +56,41 @@
                                 {
                                     if (module != null)
                                     {
-                                        <strong>Modules</strong><br/>
+                                        <strong>Modules: </strong><br />
                                         <span>
                                             <a class="btn-outline-primary" asp-action="Details" asp-controller="Modules" asp-route-id="@module.Id">
                                                 @Html.DisplayFor(modelItem => module.Name)
                                             </a>
                                         </span>
-                                        <span>
-                                            @foreach (var activity in module.Activities)
-                                            {
-                                                if (activity != null)
-                                                {
-                                                    <strong>Activities</strong><br />
-                                                    <span>
-                                                        <a class="btn-outline-primary" asp-action="Details" asp-controller="Activities" asp-route-id="@activity.Id">
-                                                            @Html.DisplayFor(modelItem => activity.Name)
-                                                        </a>
-                                                    </span>
 
-                                                }
+                                        @if (module.Activities != null)
+                                        {
+                                            @if (module.Activities.Count > 0)
+                                            {
+                                                <div>
+                                                    <strong>
+                                                        Number of Activities:
+                                                    </strong>
+                                                    @module.Activities.Count()
+                                                    <br />
+                                                    Activities: <br />
+                                                    @foreach (var activity in module.Activities)
+                                                    {
+                                                        if (activity != null)
+                                                        {
+                                                            <div>
+                                                                <a class="btn-outline-primary" asp-action="Details" asp-controller="Activities" asp-route-id="@activity.Id">
+                                                                    @Html.DisplayFor(modelItem => activity.Name)
+                                                                </a>
+                                                            </div>
+                                                            
+
+                                                        }
+                                                    }
+                                                </div>
                                             }
-                                        </span>
+                                        }
+
                                         <br />
                                     }
                                 }
