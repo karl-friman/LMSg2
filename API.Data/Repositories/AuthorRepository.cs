@@ -41,9 +41,9 @@ namespace API.Data.Repositories
             await db.AddAsync(added);
         }
 
-        public async Task<IEnumerable<Author>> getAllAuthors()
+        public async Task<IEnumerable<Author>> getAllAuthors(bool include)
         {
-            return await db.Authors.ToListAsync();
+            return include ? await db.Authors.Include(a => a.Literatures).ToListAsync() : await db.Authors.ToListAsync();
         }
 
         public async Task<Author> getAuthor(int? Id)

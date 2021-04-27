@@ -28,11 +28,22 @@ namespace API.Controllers
 
         // GET: api/Author
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AuthorDto>>> GetAuthors()
+        public async Task<ActionResult<IEnumerable<AuthorDto>>> GetAuthors(bool include = false)
         {
-            var authors = await uow.AuthorRepository.getAllAuthors();
+            var authors = await uow.AuthorRepository.getAllAuthors(include);
 
-            return Ok(mapper.Map<IEnumerable<AuthorDto>>(authors));
+            var authorsDto = authors.Select(a => new AuthorDto()
+            {
+                Id = a.Id,
+                FirstName = a.FirstName,
+                LastName = a.LastName,
+                DateOfBirth = a.DateOfBirth,
+                Literatures = a.Literatures.Select(l => l.Title).ToList()
+            });
+
+            //var authorsDto = mapper.Map<IEnumerable<AuthorDto>>(authors);
+
+            return Ok(authorsDto);
         }
 
         // GET: api/Author/5

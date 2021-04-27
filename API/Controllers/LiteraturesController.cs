@@ -78,11 +78,16 @@ namespace API.Controllers
         public async Task<ActionResult<Literature>> PostLiterature(LiteratureDto literatureDto)
         {
 
-            var literature = mapper.Map<Author>(literatureDto);
+            var literature = mapper.Map<Literature>(literatureDto);
             await uow.AuthorRepository.AddAsync(literature);
-            await uow.CompleteAsync();
 
-            return CreatedAtAction("GetLiterature", new { id = literatureDto.Id }, literatureDto);
+            if (await uow.AuthorRepository.SaveAsync())
+            {
+                var model = mapper.Map<LiteratureDto>(literature);
+                return CreatedAtAction("GetLiterature", new { id = model.Id }, model);
+            }
+
+            return StatusCode(500);
         }
 
         // DELETE: api/Literatures/5

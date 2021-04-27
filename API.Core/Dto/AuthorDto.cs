@@ -13,6 +13,7 @@ namespace API.Core.Dto
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public ICollection<LiteratureDto> Literatures { get; set; }
+        public string FullName => $"{FirstName} {LastName}";
+        public ICollection<string> Literatures { get; set; }
     }
 }
