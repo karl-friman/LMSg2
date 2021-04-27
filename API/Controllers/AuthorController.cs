@@ -66,10 +66,8 @@ namespace API.Controllers
             {
                 return Ok(mapper.Map<Author>(author));
             }
-            else
-            {
-                return StatusCode(500);
-            }
+
+            return StatusCode(500);
 
         }
 
@@ -79,7 +77,7 @@ namespace API.Controllers
         public async Task<ActionResult<Author>> PostAuthor(AuthorDto authorDto)
         {
             var author = mapper.Map<Author>(authorDto);
-            uow.AuthorRepository.AddAsync(author);
+            await uow.AuthorRepository.AddAsync(author);
             await uow.CompleteAsync();
 
             return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
@@ -90,10 +88,7 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteAuthor(int id)
         {
             
-            if (!await uow.AuthorRepository.RemoveAsync(id))
-            {
-                return NotFound();
-            }
+            if (!await uow.AuthorRepository.RemoveAsync(id)) return NotFound();
 
             return NoContent();
         }
