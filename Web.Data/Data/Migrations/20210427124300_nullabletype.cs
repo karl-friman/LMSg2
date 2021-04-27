@@ -2,27 +2,27 @@
 
 namespace Web.Data.Migrations
 {
-    public partial class UserCourseNullable : Migration
+    public partial class nullabletype : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_Courses_CourseId",
-                table: "AspNetUsers");
+                name: "FK_Activities_ActivityTypes_ActivityTypeId",
+                table: "Activities");
 
             migrationBuilder.AlterColumn<int>(
-                name: "CourseId",
-                table: "AspNetUsers",
+                name: "ActivityTypeId",
+                table: "Activities",
                 type: "int",
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_Courses_CourseId",
-                table: "AspNetUsers",
-                column: "CourseId",
-                principalTable: "Courses",
+                name: "FK_Activities_ActivityTypes_ActivityTypeId",
+                table: "Activities",
+                column: "ActivityTypeId",
+                principalTable: "ActivityTypes",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -30,12 +30,12 @@ namespace Web.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_Courses_CourseId",
-                table: "AspNetUsers");
+                name: "FK_Activities_ActivityTypes_ActivityTypeId",
+                table: "Activities");
 
             migrationBuilder.AlterColumn<int>(
-                name: "CourseId",
-                table: "AspNetUsers",
+                name: "ActivityTypeId",
+                table: "Activities",
                 type: "int",
                 nullable: false,
                 defaultValue: 0,
@@ -44,10 +44,10 @@ namespace Web.Data.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_Courses_CourseId",
-                table: "AspNetUsers",
-                column: "CourseId",
-                principalTable: "Courses",
+                name: "FK_Activities_ActivityTypes_ActivityTypeId",
+                table: "Activities",
+                column: "ActivityTypeId",
+                principalTable: "ActivityTypes",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
