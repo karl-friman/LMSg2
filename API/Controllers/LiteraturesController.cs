@@ -10,6 +10,7 @@ using API.Core.Entities;
 using API.Core.Repositories;
 using API.Data.Data;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace API.Controllers
 {
@@ -88,6 +89,37 @@ namespace API.Controllers
             }
 
             return StatusCode(500);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<LiteratureDto>> PatchAuthor(int id, JsonPatchDocument<LiteratureDto> jsonPatchDocument)
+        {
+            var literature = await uow.LiteratureRepository.getLiterature(id);
+
+            if (literature is null)
+            {
+                return NotFound();
+            }
+
+            var model = mapper.Map<LiteratureDto>(literature);
+
+            jsonPatchDocument.ApplyTo(model, ModelState);
+
+            if (!TryValidateModel(model))
+            {
+                return BadRequest(ModelState);
+            }
+
+            mapper.Map(model, literature);
+
+            if (await uow.LiteratureRepository.SaveAsync())
+            {
+                return Ok(mapper.Map<LiteratureDto>(literature));
+            }
+            else
+            {
+                return StatusCode(500);
+            }
         }
 
         // DELETE: api/Literatures/5
