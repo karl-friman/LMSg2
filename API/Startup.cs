@@ -11,6 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Core.Repositories;
+using API.Data.Data;
+using API.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace API
 {
@@ -27,11 +31,18 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson()
+                .AddXmlDataContractSerializerFormatters();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+
+            services.AddDbContext<DbContextAPI>(options => options.UseSqlServer(Configuration.GetConnectionString("DbContextAPI")));
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddAutoMapper(typeof(MapperProfileAPI));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
