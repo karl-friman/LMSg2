@@ -80,7 +80,7 @@ namespace API.Controllers
             await uow.AuthorRepository.AddAsync(author);
             await uow.CompleteAsync();
 
-            return CreatedAtAction("GetAuthor", new { id = author.Id }, author);
+            return CreatedAtAction("GetAuthor", new { id = authorDto.Id }, authorDto);
         }
 
         // DELETE: api/Author/5

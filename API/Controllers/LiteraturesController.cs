@@ -82,7 +82,7 @@ namespace API.Controllers
             await uow.AuthorRepository.AddAsync(literature);
             await uow.CompleteAsync();
 
-            return CreatedAtAction("GetLiterature", new { id = literature.Id }, literature);
+            return CreatedAtAction("GetLiterature", new { id = literatureDto.Id }, literatureDto);
         }
 
         // DELETE: api/Literatures/5
