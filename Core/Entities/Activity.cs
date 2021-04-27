@@ -16,7 +16,7 @@ namespace Core.Entities
 
         //Foreign key
         public int ModuleId { get; set; }
-        public int ActivityTypeId { get; set; }
+        public int? ActivityTypeId { get; set; }
         //Navigation props 
         public Module Module { get; set; }
         public ActivityType ActivityType { get; set; }

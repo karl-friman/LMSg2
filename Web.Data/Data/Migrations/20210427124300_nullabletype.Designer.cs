@@ -10,8 +10,8 @@ using Web.Data.Data;
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210426132205_UserCourseNullable")]
-    partial class UserCourseNullable
+    [Migration("20210427124300_nullabletype")]
+    partial class nullabletype
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,7 @@ namespace Web.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ActivityTypeId")
+                    b.Property<int?>("ActivityTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -393,10 +393,8 @@ namespace Web.Data.Migrations
             modelBuilder.Entity("Core.Entities.Activity", b =>
                 {
                     b.HasOne("Core.Entities.ActivityType", "ActivityType")
-                        .WithMany("Activity")
-                        .HasForeignKey("ActivityTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("ActivityTypeId");
 
                     b.HasOne("Core.Entities.Module", "Module")
                         .WithMany("Activities")
@@ -504,11 +502,6 @@ namespace Web.Data.Migrations
             modelBuilder.Entity("Core.Entities.Activity", b =>
                 {
                     b.Navigation("Documents");
-                });
-
-            modelBuilder.Entity("Core.Entities.ActivityType", b =>
-                {
-                    b.Navigation("Activity");
                 });
 
             modelBuilder.Entity("Core.Entities.Course", b =>
