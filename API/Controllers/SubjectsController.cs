@@ -10,6 +10,7 @@ using API.Core.Entities;
 using API.Core.Repositories;
 using API.Data.Data;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace API.Controllers
 {
@@ -82,6 +83,37 @@ namespace API.Controllers
             await uow.CompleteAsync();
 
             return CreatedAtAction("GetSubject", new { id = subjectDto.Id }, subjectDto);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult<SubjectDto>> PatchAuthor(int id, JsonPatchDocument<SubjectDto> jsonPatchDocument)
+        {
+            var subject = await uow.SubjectRepository.getSubjects(id);
+
+            if (subject is null)
+            {
+                return NotFound();
+            }
+
+            var model = mapper.Map<SubjectDto>(subject);
+
+            jsonPatchDocument.ApplyTo(model, ModelState);
+
+            if (!TryValidateModel(model))
+            {
+                return BadRequest(ModelState);
+            }
+
+            mapper.Map(model, subject);
+
+            if (await uow.SubjectRepository.SaveAsync())
+            {
+                return Ok(mapper.Map<SubjectDto>(subject));
+            }
+            else
+            {
+                return StatusCode(500);
+            }
         }
 
         // DELETE: api/Subjects/5

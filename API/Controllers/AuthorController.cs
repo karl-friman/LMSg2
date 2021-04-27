@@ -39,7 +39,7 @@ namespace API.Controllers
                 FirstName = a.FirstName,
                 LastName = a.LastName,
                 DateOfBirth = a.DateOfBirth,
-                Literatures = a.Literatures.Select(l => l.Title).ToList()
+                Literatures = include ? a.Literatures.Where(l => !string.IsNullOrEmpty(l.Title)).Select(l => l.Title).ToList() : null
             });
 
             //var authorsDto = mapper.Map<IEnumerable<AuthorDto>>(authors);
