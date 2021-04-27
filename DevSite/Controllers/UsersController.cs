@@ -7,15 +7,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Web.Data.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace DevSite.Controllers
 {
     public class UsersController : Controller
     {
+        private readonly UserManager<LMSUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public UsersController(ApplicationDbContext context)
+        public UsersController(UserManager<LMSUser> userManager, ApplicationDbContext context)
         {
+            _userManager = userManager;
             _context = context;
         }
 
@@ -27,9 +33,9 @@ namespace DevSite.Controllers
         }
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(string? id)
+        public async Task<IActionResult> Details(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
@@ -55,7 +61,7 @@ namespace DevSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate")] LMSUser user)
+        public async Task<IActionResult> Create([Bind("Id,Email,UserType,PhoneNumber,FirstName,LastName,DateOfBirth,Avatar,CourseId,Course,Documents")] LMSUser user)
         {
             if (ModelState.IsValid)
             {
@@ -69,12 +75,15 @@ namespace DevSite.Controllers
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
+
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var user = await _context.Users.FindAsync(id);
+            //var x = await _context.Users.FirstOrDefaultAsync(e => e.Email.Equals(id));
+            var user = await _userManager.FindByIdAsync(id);
+
             if (user == null)
             {
                 return NotFound();
@@ -87,9 +96,9 @@ namespace DevSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string email, [Bind("FirstName,LastName,UserName,Email,PhoneNumber,Avatar,DateOfBirth,Type")] LMSUser user)
+        public async Task<IActionResult> Edit(string id, [Bind("ConcurrencyStamp,Id,Email,UserType,PhoneNumber,FirstName,LastName,DateOfBirth,Avatar,CourseId,Course,Documents")] LMSUser user)
         {
-            if (email != user.Email)
+            if (!id.Equals(user.Id))
             {
                 return NotFound();
             }
@@ -101,7 +110,7 @@ namespace DevSite.Controllers
                     _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 { 
                     
                     if (user.Email == "")
@@ -119,9 +128,9 @@ namespace DevSite.Controllers
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(string? id)
+        public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
@@ -139,11 +148,14 @@ namespace DevSite.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _context.Users.FindAsync(id);
+            //var user = await _context.Users.FirstOrDefaultAsync(id);
+            var user = await _userManager.FindByIdAsync(id);
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
+
+
             return RedirectToAction(nameof(Index));
         }
 

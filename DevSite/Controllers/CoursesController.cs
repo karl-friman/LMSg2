@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
+using Core.ViewModels;
 using Web.Data.Data;
 
 namespace DevSite.Controllers
@@ -20,10 +21,31 @@ namespace DevSite.Controllers
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
-            //var x = _context.Users.
-            return View(await _context.Courses.ToListAsync());
+            Course selectedCourse = null;
+
+            List<Course> courseList = await _context.Courses
+                                            .Include(m => m.Modules)
+                                            .ThenInclude(a => a.Activities)
+                                            .ToListAsync();
+
+            if (id is not null)
+            {
+                selectedCourse = await _context.Courses.FindAsync(id);
+            }
+            else
+            {
+                selectedCourse = null;
+            }
+
+            CourseViewModel IndexModel = new CourseViewModel
+            {
+                Courses = courseList,
+                SelectedCourse = selectedCourse
+            };
+
+            return View(IndexModel);
         }
 
         // GET: Courses/Details/5

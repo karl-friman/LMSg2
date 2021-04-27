@@ -16,9 +16,6 @@
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
@@ -31,7 +28,10 @@
                 @Html.DisplayNameFor(model => model.DateOfBirth)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                @Html.DisplayNameFor(model => model.UserType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course.Name)
             </th>
             <th></th>
         </tr>
@@ -41,9 +41,6 @@
         <tr>
             <th>
                 @Html.DisplayFor(modelitem => item.FullName)
-            </th>
-            <th>
-                @Html.DisplayFor(modelitem => item.UserName)
             </th>
             <th>
                 @Html.DisplayFor(modelitem => item.Email)
@@ -58,7 +55,10 @@
                 @Html.DisplayFor(modelitem => item.DateOfBirth)
             </th>
             <th>
-                @Html.DisplayFor(modelitem => item.Type)
+                @Html.DisplayFor(modelItem => item.UserType)
+            </th>
+            <th>
+                @Html.DisplayFor(modelItem => item.Course.Name)
             </th>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

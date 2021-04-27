@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Core.Entities.Course>
+﻿@using Core.ViewModels;
+@model CourseViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,41 +14,89 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Courses)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Modules
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                Activities
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => model.SelectedCourse)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Courses)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayNameFor(modelItem => item.Name) @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayNameFor(modelItem => item.Description) @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayNameFor(modelItem => item.StartDate) @Html.DisplayFor(modelItem => item.StartDate)
+                    @Html.DisplayNameFor(modelItem => item.EndDate) @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @if (item.Modules != null)
+                    {
+                        @if (item.Modules.Count > 0)
+                        {
+                            <div>
+                                Number of modules: 
+                                @Html.DisplayFor(modelItem => item.Modules.Count)
+                                @if (Model.SelectedCourse is not null)
+                                {
+                                    @if (Model.SelectedCourse == item)
+                                    {
+                                        <span>***selected***</span>
+                                    }
+                                }
+                            </div>
+                            <div>
+                                @foreach (var module in item.Modules)
+                                {
+                                    if (module != null)
+                                    {
+                                        <strong>Modules</strong><br/>
+                                        <span>
+                                            <a class="btn-outline-primary" asp-action="Details" asp-controller="Modules" asp-route-id="@module.Id">
+                                                @Html.DisplayFor(modelItem => module.Name)
+                                            </a>
+                                        </span>
+                                        <span>
+                                            @foreach (var activity in module.Activities)
+                                            {
+                                                if (activity != null)
+                                                {
+                                                    <strong>Activities</strong><br />
+                                                    <span>
+                                                        <a class="btn-outline-primary" asp-action="Details" asp-controller="Activities" asp-route-id="@activity.Id">
+                                                            @Html.DisplayFor(modelItem => activity.Name)
+                                                        </a>
+                                                    </span>
+
+                                                }
+                                            }
+                                        </span>
+                                        <br />
+                                    }
+                                }
+                            </div>
+                        }
+                    }
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
