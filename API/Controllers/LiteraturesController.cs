@@ -11,7 +11,6 @@ using API.Core.Repositories;
 using API.Data.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
-using API.Core.Util;
 
 namespace API.Controllers
 {
@@ -35,9 +34,9 @@ namespace API.Controllers
         {
             var literatures = await uow.LiteratureRepository.getAllLiteratures(include);
 
-            var literatureDto = literatures.Select(l => CustomMapper.MapLiterature(l, include));
+            var literatureDtos = mapper.Map<IEnumerable<LiteratureDto>>(literatures);
 
-            return Ok(literatureDto);
+            return Ok(literatureDtos);
         }
 
         // GET: api/Literatures/5
@@ -51,7 +50,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(CustomMapper.MapLiterature(literature, include));
+            return Ok(mapper.Map<LiteratureDto>(literature));
         }
 
         // PUT: api/Literatures/5
@@ -95,7 +94,7 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<LiteratureDto>> PatchAuthor(int id, JsonPatchDocument<LiteratureDto> jsonPatchDocument)
+        public async Task<ActionResult<LiteratureDto>> PatchLiterature(int id, JsonPatchDocument<LiteratureDto> jsonPatchDocument)
         {
             var literature = await uow.LiteratureRepository.getLiterature(id, false);
 
@@ -119,10 +118,8 @@ namespace API.Controllers
             {
                 return Ok(mapper.Map<LiteratureDto>(literature));
             }
-            else
-            {
-                return StatusCode(500);
-            }
+
+            return StatusCode(500);
         }
 
         // DELETE: api/Literatures/5

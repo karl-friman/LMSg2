@@ -11,7 +11,6 @@ using API.Core.Repositories;
 using API.Data.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
-using API.Core.Util;
 
 namespace API.Controllers
 {
@@ -21,6 +20,8 @@ namespace API.Controllers
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
+
+        
 
         public AuthorController(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -34,9 +35,9 @@ namespace API.Controllers
         {
             var authors = await uow.AuthorRepository.getAllAuthors(include);
 
-            var authorsDto = authors.Select(a => CustomMapper.MapAuthor(a, include));
+            var authorDtos = mapper.Map<IEnumerable<AuthorDto>>(authors);
 
-            return Ok(authorsDto);
+            return Ok(authorDtos);
         }
 
         // GET: api/Author/5
@@ -51,7 +52,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(CustomMapper.MapAuthor(author, include));
+            return Ok(mapper.Map<AuthorDto>(author));
         }
 
         // PUT: api/Author/5
@@ -101,10 +102,8 @@ namespace API.Controllers
             {
                 return Ok(mapper.Map<AuthorDto>(author));
             }
-            else
-            {
-                return StatusCode(500);
-            }
+
+            return StatusCode(500);
         }
 
         // POST: api/Author
