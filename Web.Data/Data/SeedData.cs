@@ -19,10 +19,10 @@ namespace Web.Data.Data
             using (var context = new ApplicationDbContext(services.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
 
-                //  if (await contex.AnyAsync()) return;
+                //if (await context.Courses.AnyAsync()) return;
 
-                //  var userManager = services.GetRequiredService<UserManager<LMSUser>>();
-                //   var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var userManager = services.GetRequiredService<UserManager<LMSUser>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
                 var fake = new Faker("sv");
 
@@ -32,7 +32,7 @@ namespace Web.Data.Data
                 var activities = new List<Activity>();
                 var activityTypes = new List<ActivityType>();
 
-                for (int i = 0; i < 20; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     var course = new Course()
                     {
@@ -46,139 +46,107 @@ namespace Web.Data.Data
                 }
 
                 await context.AddRangeAsync(courses);
-
-                foreach (Course course in courses)
-                {
-                    var module = new Module
+                    foreach (Course course in courses)
                     {
-                        Course = course,
-
-                        Name = fake.Company.CatchPhrase(),
-
-                        Description = fake.Hacker.Verb(),
-
-                        StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
-                        EndDate = DateTime.Now.AddMonths(4),
-
-                    };
-                    modules.Add(module);
-
-                }
-
-                await context.AddRangeAsync(modules);
-
-                foreach (Course course in courses)
-                {
-                    var document = new Document
-
+                    for (int i = 0; i < fake.Random.Int(2, 5); i++)
                     {
+                        var module = new Module
+                        {
+                            Course = course,
 
-                        Name = fake.Company.CatchPhrase(),
+                            Name = fake.Company.CatchPhrase(),
 
-                        Description = fake.Hacker.Verb(),
+                            Description = fake.Hacker.Verb(),
 
-                        TimeStamp = DateTime.Now,
-                        FilePath = fake.System.FilePath(),
-
-
-                    };
-                    documents.Add(document);
-
-                }
-
+                            StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
+                            EndDate = DateTime.Now.AddMonths(4),
+                        };
+                        modules.Add(module);
+                    }
+                 }
+                await context.AddRangeAsync(modules);          
+                foreach (Course course in courses)
+                    {
+                        for (int i = 0; i < fake.Random.Int(1, 10); i++)
+                        {
+                            var document = new Document
+                            {
+                                Name = fake.Company.CatchPhrase(),
+                                Description = fake.Hacker.Verb(),
+                                TimeStamp = DateTime.Now,
+                                FilePath = fake.System.FilePath(),
+                            };
+                            documents.Add(document);
+                        }
+                    }
                 await context.AddRangeAsync(documents);
 
-                ///
+                //fler aktiviteter ibland 2 ibland 8
+                foreach (Module module in modules)
+                {
+                    for (int i = 0; i < fake.Random.Int(1, 10); i++)
+                    {
+                        var activity = new Activity
+                        {
+                            Module = module,
+                            Name = fake.Company.CatchPhrase(),
+                            Description = fake.Hacker.Verb(),
+                            StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
+                            EndDate = DateTime.Now.AddMonths(4),
+                        };
+                        activities.Add(activity);
+                    }
+                }
+                   await context.AddRangeAsync(activities);
 
                 foreach (Module module in modules)
                 {
-                    var activity = new Activity
-
+                    for (int i = 0; i < fake.Random.Int(1, 10); i++)
                     {
+                        var document = new Document
 
-                        Module = module,
+                        {
+                            Name = fake.Company.CatchPhrase(),
 
-                        Name = fake.Company.CatchPhrase(),
+                            Description = fake.Hacker.Verb(),
 
-                        Description = fake.Hacker.Verb(),
-                        StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
-                        EndDate = DateTime.Now.AddMonths(4),
-
-
-                    };
-                    activities.Add(activity);
-                }
-
-
-                foreach (Module module in modules)
-                {
-                    var document = new Document
-
-                    {
-
-                        Name = fake.Company.CatchPhrase(),
-
-                        Description = fake.Hacker.Verb(),
-
-                        TimeStamp = DateTime.Now,
-                        FilePath = fake.System.FilePath(),
-
-
-                    };
-                    documents.Add(document);
+                            TimeStamp = DateTime.Now,
+                            FilePath = fake.System.FilePath(),
+                        };
+                        documents.Add(document);
+                    }
                 }
                 await context.AddRangeAsync(documents);
-
-                activityTypes.Add(new ActivityType() { Name = "Assignement"});
-                activityTypes.Add(new ActivityType() { Name = "Lecture" });
-                activityTypes.Add(new ActivityType() { Name = "E-Learning" });
-
-
-                await context.AddRangeAsync(activityTypes);
 
                 foreach (Activity activity in activities)
                 {
-                    var document = new Document
-
+                    for (int i = 0; i < fake.Random.Int(1, 10); i++)
                     {
+                        var document = new Document
 
-                        Name = fake.Company.CatchPhrase(),
+                        {
+                            Name = fake.Company.CatchPhrase(),
 
-                        Description = fake.Hacker.Verb(),
+                            Description = fake.Hacker.Verb(),
 
-                        TimeStamp = DateTime.Now,
-                        FilePath = fake.System.FilePath(),
+                            TimeStamp = DateTime.Now,
+                            FilePath = fake.System.FilePath(),
+                        };
 
-
-                    };
-                    documents.Add(document);
+                        documents.Add(document);
+                    }
                 }
                 await context.AddRangeAsync(documents);
 
-
-                //////??????
-
-                //foreach (ActivityType activityType in activityTypes)
-                //{
-                //    var activity = new Activity
-                //    {
-                //        ActivityType = activityType,
-                //        Name = fake.Company.CatchPhrase(),
-                //        Description = fake.Hacker.Verb(),
-                //        StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
-                //        EndDate = DateTime.Now.AddMonths(4),
-                //    };
-                //    activities.Add(activity);
-                //}
-                //await context.AddRangeAsync(activities);
-
-
+                activityTypes.Add(new ActivityType() { Name = "Assignement" });
+                activityTypes.Add(new ActivityType() { Name = "Lecture" });
+                activityTypes.Add(new ActivityType() { Name = "E-Learning" });
 
                 for (int i = 0; i < 20; i++)
                 {
                     var activity = new Activity()
                     {
-                        //ActivityType = new ActivityType() { Name = "E-Learning" },
+                        ActivityType = fake.Random.ListItem(activityTypes),
                         Module = fake.Random.ListItem(modules),
                         Name = fake.Company.CatchPhrase(),
                         Description = fake.Hacker.Verb(),
@@ -191,96 +159,14 @@ namespace Web.Data.Data
                 await context.AddRangeAsync(activities);
 
 
-                await context.SaveChangesAsync();
+                //   await context.SaveChangesAsync();
+                //15-18 students for each course auto generated with bogus + bogus avatar
+                //7 admins auto generated with bogus + avatar 
+                //1 admin spawned with email: admin@admin.com and pw: admin
+                //fake.PickRandom<UserType>();
 
 
-
-
-
-
-
-
-
-
-                //foreach (Module module in modules)
-                //{
-                //    var activity = new Activity
-
-                //    {
-
-                //        Module = module,
-
-                //        Name = fake.Company.CatchPhrase(),
-
-                //        Description = fake.Hacker.Verb(),
-                //        StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
-                //        EndDate = DateTime.Now.AddMonths(4),
-
-
-                //    };
-                //    activities.Add(activity);
-                //}
-
-                //await context.AddRangeAsync(activities);
-
-
-
-
-
-                //foreach (Activity activity in activities)
-                //{
-                //    var document = new Document
-
-                //    {
-
-                //        Name = fake.Company.CatchPhrase(),
-
-                //        Description = fake.Hacker.Verb(),
-
-                //        TimeStamp = DateTime.Now,
-                //        FilePath = fake.System.FilePath(),
-
-
-                //    };
-                //    documents.Add(document);
-                //}
-                //await context.AddRangeAsync(documents);
-
-
-
-
-
-
-
-
-
-
-
-
-                //foreach (Module module in modules)
-                //{
-                //    var document = new Document
-
-                //    {
-
-                //        Name = fake.Company.CatchPhrase(),
-
-                //        Description = fake.Hacker.Verb(),
-
-                //        TimeStamp = DateTime.Now,
-                //        FilePath = fake.System.FilePath(),
-
-
-                //    };
-                //    documents.Add(document);
-                //}
-
-                //await context.AddRangeAsync(documents);
-
-
-
-
-                //var roleNames = new[] { "Admin", "Member" };
+                //var roleNames = new[] { "Admin", "Student" };
 
                 //foreach (var roleName in roleNames)
                 //{
@@ -292,34 +178,48 @@ namespace Web.Data.Data
                 //    if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
                 //}
 
-                //var adminEmail = "admin@lms.se";
-
-                //var foundAdmin = await userManager.FindByEmailAsync(adminEmail);
-
-                //if (foundAdmin != null) return;
-
-                //var admin = new LMSUser
+                //for (int i = 0; i < fake.Random.Int(7); i++)
                 //{
-                //    UserName = "Admin",
-                //    Email = adminEmail,
-                //};
 
-                //var addAdminResult = await userManager.CreateAsync(admin, adminPW);
+                //    var adminEmail = fake.Internet.Email();
 
-                //if (!addAdminResult.Succeeded) throw new Exception(string.Join("\n", addAdminResult.Errors));
+                //    var foundAdmin = await userManager.FindByEmailAsync(adminEmail);
 
-                //var adminUser = await userManager.FindByEmailAsync(adminEmail);
+                //    if (foundAdmin != null) return;
 
-                //foreach (var role in roleNames)
-                //{
-                //    if (await userManager.IsInRoleAsync(adminUser, role)) continue;
 
-                //    var addToRoleResult = await userManager.AddToRoleAsync(adminUser, role);
+                //    var admin = new LMSUser
+                //    {
 
-                //    if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
+                //        UserName = fake.Internet.UserName(),
+                //        Email = fake.Internet.Email(),
+                //        FirstName = fake.Name.FirstName(),
+                //        LastName = fake.Name.LastName(),
+                //        Avatar = fake.Internet.Avatar(),
+                //        PhoneNumber = fake.Phone.PhoneNumberFormat(),
+                       
+                //    };
+
+                   // var adminpw = "asdfasdf123!A";
+
+                   // var addAdminResult = await userManager.CreateAsync(admin, adminpw);
+
+                   // if (!addAdminResult.Succeeded) throw new Exception(string.Join("\n", addAdminResult.Errors));
+
+                    //var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
+                    //foreach (var role in roleNames)
+                    //{
+                    //    if (await userManager.IsInRoleAsync(adminUser, role)) continue;
+
+                    //    var addToRoleResult = await userManager.AddToRoleAsync(adminUser, role);
+
+                    //    if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
+                    //}
+
+
                 //}
-
-
+                await context.SaveChangesAsync();
             }
         }
     }

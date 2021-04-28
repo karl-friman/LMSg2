@@ -18,22 +18,17 @@ namespace DevSite
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-
             using (var scope = host.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
-                context.Database.EnsureDeleted();
+              //  context.Database.EnsureDeleted();
                 context.Database.Migrate();
-
-                //dotnet user-sercrets set "AdminPW" "LMS-Group2"
-               var config = services.GetRequiredService<IConfiguration>();
-
-             //  var adminPW = confiq["AdminPW"];
-
+                var config = services.GetRequiredService<IConfiguration>();
+                //dotnet user-secrets set "adminPW""LMS-Group2"
+                //var adminPW = config["adminPW"];
                 try
                 {
-                    //SeedData.InitAsync(services, adminPW).Wait();
                     SeedData.InitAsync(services).Wait();
                 }
                 catch (Exception ex)
@@ -44,10 +39,8 @@ namespace DevSite
                 }
             }
 
-
             host.Run();
         }
-
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
