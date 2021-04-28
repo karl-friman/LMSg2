@@ -12,6 +12,8 @@ namespace API.Core.ViewModel
         public string Title { get; set; }
         public DateTime PublishDate { get; set; }
         public string Description { get; set; }
+        public ICollection<string> Authors { get; set; }
+        public ICollection<string> Subjects { get; set; }
         public string LevelName { get; set; }
     }
 }

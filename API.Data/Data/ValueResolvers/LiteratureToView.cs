@@ -13,6 +13,7 @@ namespace API.Data.Data.ValueResolvers
     public class LiteratureToView : ITypeConverter<Literature, LiteratureViewModel>
     {
 
+
         public LiteratureViewModel Convert(Literature source, LiteratureViewModel destination, ResolutionContext context)
         {
             return new LiteratureViewModel()
@@ -21,7 +22,10 @@ namespace API.Data.Data.ValueResolvers
                 Title = source.Title,
                 PublishDate = source.PublishDate,
                 Description = source.Description,
-                LevelName = source.Level.Name
+                Authors = source.Authors.Select(a => $"{a.Id}, {a.FirstName} {a.LastName}").ToList(),
+                Subjects = source.Subjects.Select(s => $"{s.Id}, {s.Name}").ToList(),
+                // om level inte matchar något i databasen så blir det automatiskt beginner
+                LevelName = source.Level?.Name ?? "Beginner"
             };
         }
 

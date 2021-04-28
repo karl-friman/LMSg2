@@ -28,8 +28,7 @@ namespace API.Data.Data
             CreateMap<SubjectViewModel, Subject>().ConvertUsing<SubjectViewToNormal>();
 
 
-            CreateMap<AuthorDto, Author>();
-            CreateMap<Author, AuthorDto>();
+            CreateMap<Author, AuthorDto>().ReverseMap();
             CreateMap<Literature, LiteratureDto>().ReverseMap();
             CreateMap<Subject, SubjectDto>().ReverseMap();
 

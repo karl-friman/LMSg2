@@ -17,7 +17,8 @@ namespace API.Data.Data.ValueResolvers
             return new SubjectViewModel()
             {
                 Id = source.Id,
-                Name = source.Name
+                Name = source.Name,
+                Literatures = source.Literatures.Select(l => $"{l.Id}, {l.Title}").ToList()
             };
         }
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.Core.Repositories
 {
-    public interface BasicRepositoryFeatures
+    public interface IBasicRepositoryFeatures
     {
         Task<bool> RemoveAsync(int? Id);
         Task<bool> SaveAsync();

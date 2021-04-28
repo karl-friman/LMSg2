@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using API.Core.Entities;
 using API.Core.Repositories;
 using API.Data.Data;
+using API.Data.Util;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 
@@ -20,8 +21,6 @@ namespace API.Controllers
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
-
-        
 
         public AuthorController(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -60,7 +59,8 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAuthor(int id, AuthorDto authorDto)
         {
-            var author = await uow.AuthorRepository.getAuthor(id, false);
+            var author = await uow.AuthorRepository.getAuthor(id, true);
+
             if (id != author.Id)
             {
                 return BadRequest();
@@ -68,9 +68,57 @@ namespace API.Controllers
 
             mapper.Map(authorDto, author);
 
+            author.Literatures = authorDto.Literatures.Select(l =>
+            {
+                /**
+                 * kollar på alla användare och om någon av användarna matchar, view models användare så lägger den till i listan.
+                 */
+                ICollection<Author> newAuthor = uow.AuthorRepository.getAllAuthors(false).Result.Where(a => MapperUtil.IdExistInList(a.Id, l.Authors)).ToList();
+
+                /**
+                 * om egna author'n inte finns i listan så lägger vi till den
+                 */
+                if (newAuthor.All(a => a.Id != author.Id)) newAuthor.Add(author);
+
+
+                /**
+                 * kollar på alla subjects och om någon av subject matchar, view models subjects så lägger den till i listan.
+                 */
+                ICollection<Subject> subjects = uow.SubjectRepository.getAllSubjects(false).Result.Where(s => MapperUtil.IdExistInList(s.Id, l.Subjects)).ToList();
+
+
+                /**
+                 * loopar view modelns subjects
+                 * Om view modelns subject inte finns i listan av Subjects
+                 * så lägger vi till nya subjects utifrån view modelns subjects (den lägger till i databasen)
+                 */
+                foreach (var viewSubjects in l.Subjects)
+                {
+                    if (!subjects.Any(s => s.Name.Equals(viewSubjects)))
+                    {
+                        subjects.Add(new Subject()
+                        {
+                            Name = viewSubjects
+                        });
+                    }
+                }
+
+                // returnera en omvanlad literature från viewmodel
+                return new Literature()
+                {
+                    Id = l.Id,
+                    Title = l.Title,
+                    PublishDate = l.PublishDate,
+                    Description = l.Description,
+                    Level = uow.LevelRepository.getLevelByName(l.LevelName).Result,
+                    Authors = newAuthor,
+                    Subjects = subjects
+                };
+            }).ToList();
+
             if  (await uow.AuthorRepository.SaveAsync())
             {
-                return Ok(mapper.Map<Author>(author));
+                return Ok(mapper.Map<AuthorDto>(author));
             }
 
             return StatusCode(500);
@@ -127,5 +175,6 @@ namespace API.Controllers
 
             return NoContent();
         }
+
     }
 }

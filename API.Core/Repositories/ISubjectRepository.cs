@@ -7,7 +7,7 @@ using API.Core.Entities;
 
 namespace API.Core.Repositories
 {
-    public interface ISubjectRepository : BasicRepositoryFeatures
+    public interface ISubjectRepository : IBasicRepositoryFeatures
     {
         Task<IEnumerable<Subject>> getAllSubjects(bool include);
         Task<Subject> getSubjects(int? Id, bool include);

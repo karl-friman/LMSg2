@@ -15,5 +15,6 @@ namespace API.Core.Dto
         public DateTime DateOfBirth { get; set; }
         public string FullName => $"{FirstName} {LastName}";
         public ICollection<LiteratureViewModel> Literatures { get; set; }
+
     }
 }

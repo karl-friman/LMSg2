@@ -10,5 +10,7 @@ namespace API.Core.ViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public ICollection<string> Literatures { get; set; }
     }
 }

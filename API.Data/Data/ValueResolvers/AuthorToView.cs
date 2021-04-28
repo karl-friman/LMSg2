@@ -18,7 +18,8 @@ namespace API.Data.Data.ValueResolvers
                 Id = source.Id,
                 FirstName = source.FirstName,
                 LastName = source.LastName,
-                DateOfBirth = source.DateOfBirth
+                DateOfBirth = source.DateOfBirth,
+                Literatures = source.Literatures.Select(l => $"{l.Id}, {l.Title}").ToList()
             };
         }
     }
