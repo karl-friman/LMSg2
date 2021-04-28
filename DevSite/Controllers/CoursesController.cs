@@ -8,16 +8,18 @@ using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Core.ViewModels;
 using Web.Data.Data;
+using Core.Repositories;
 
 namespace DevSite.Controllers
 {
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public CoursesController(ApplicationDbContext context)
+        private readonly IUnitOfWork uow;
+        public CoursesController(ApplicationDbContext context, IUnitOfWork uow)
         {
             _context = context;
+            this.uow = uow;
         }
 
         // GET: Courses
@@ -25,11 +27,7 @@ namespace DevSite.Controllers
         {
             Course selectedCourse = null;
 
-            List<Course> courseList = await _context.Courses
-                                            .Include(d => d.Documents)
-                                            .Include(m => m.Modules)
-                                            .ThenInclude(a => a.Activities)
-                                            .ToListAsync();
+            var courseList = await uow.CourseRepository.GetAllCourses(includeAll: true);
 
             if (selected is not null)
             {

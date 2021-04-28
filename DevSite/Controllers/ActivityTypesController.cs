@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Web.Data.Data;
+using Core.Repositories;
 
 namespace DevSite.Controllers
 {
     public class ActivityTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork uow;
 
         public ActivityTypesController(ApplicationDbContext context)
         {

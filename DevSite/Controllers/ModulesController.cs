@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Web.Data.Data;
 using Core.ViewModels;
+using Core.Repositories;
 
 namespace DevSite.Controllers
 {
     public class ModulesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork uow;
 
-        public ModulesController(ApplicationDbContext context)
+        public ModulesController(ApplicationDbContext context, IUnitOfWork uow)
         {
             _context = context;
+            this.uow = uow;
         }
 
         // GET: Modules

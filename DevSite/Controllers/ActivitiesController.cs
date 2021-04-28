@@ -8,16 +8,19 @@ using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Web.Data.Data;
 using Core.ViewModels;
+using Core.Repositories;
 
 namespace DevSite.Controllers
 {
     public class ActivitiesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork uow;
 
-        public ActivitiesController(ApplicationDbContext context)
+        public ActivitiesController(ApplicationDbContext context, IUnitOfWork uow)
         {
             _context = context;
+            this.uow = uow;
         }
 
         // GET: Activities
