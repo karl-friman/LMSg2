@@ -1,10 +1,11 @@
-﻿@model IEnumerable<Core.Entities.Activity>
+﻿@using Core.ViewModels;
+@model ActivityViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Activities</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,53 +14,78 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Activities)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Documents
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Module)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ActivityType)
+                Module
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Module.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ActivityType.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var activity in Model.Activities)
+        {
+            string classContents = "btn btn-outline-primary";
+            <tr>
+                <td>
+                    <div>
+                        @if (Model.SelectedActivity is not null)
+                        {
+                            if (Model.SelectedActivity == activity)
+                            {
+                                <div id="selected"></div>
+                                classContents = "btn  btn-outline-warning";
+
+                            }
+                        }
+
+
+                        @Html.ActionLink(linkText: activity.Name, actionName: "Index", controllerName: "Activities",
+                                         protocol: null, hostname: null, fragment: null,
+                                         routeValues: new { selected = activity.Id },
+                                         htmlAttributes: new { @class = classContents })
+
+                    </div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => activity.Description):</strong> @Html.DisplayFor(modelItem => activity.Description)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => activity.StartDate):</strong> @Html.DisplayFor(modelItem => activity.StartDate)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => activity.EndDate):</strong> @Html.DisplayFor(modelItem => activity.EndDate)</div>
+                </td>
+                <td>
+                    @foreach (var document in activity.Documents)
+                    {
+                        <a class="btn btn-outline-primary" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
+                            <div>@document.Name</div>
+                        </a>
+                    }
+                </td>
+                <td>
+                    <div>
+
+                        @if (activity.Module != null)
+                        {
+                            <span>
+                                @Html.ActionLink(linkText: activity.Module.Name, actionName: "Index", controllerName: "Modules",
+                                                      protocol: null, hostname: null, fragment: null,
+                                                      routeValues: new { selected = activity.Module.Id },
+                                                      htmlAttributes: new { @class = "btn  btn-outline-primary" })
+                            </span>
+                        }
+
+                        <br />
+
+                    </div>
+
+
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@activity.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@activity.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@activity.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

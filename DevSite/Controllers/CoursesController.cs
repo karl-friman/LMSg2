@@ -21,31 +21,32 @@ namespace DevSite.Controllers
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? selected)
         {
             Course selectedCourse = null;
 
             List<Course> courseList = await _context.Courses
+                                            .Include(d => d.Documents)
                                             .Include(m => m.Modules)
                                             .ThenInclude(a => a.Activities)
                                             .ToListAsync();
 
-            if (id is not null)
+            if (selected is not null)
             {
-                selectedCourse = await _context.Courses.FindAsync(id);
+                selectedCourse = await _context.Courses.FindAsync(selected);
             }
             else
             {
                 selectedCourse = null;
             }
 
-            CourseViewModel IndexModel = new CourseViewModel
+            CourseViewModel courseIndexModel = new CourseViewModel
             {
                 Courses = courseList,
                 SelectedCourse = selectedCourse
             };
 
-            return View(IndexModel);
+            return View(courseIndexModel);
         }
 
         // GET: Courses/Details/5

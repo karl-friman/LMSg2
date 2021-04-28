@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Web.Data.Data;
+using Core.ViewModels;
 
 namespace DevSite.Controllers
 {
@@ -20,10 +21,32 @@ namespace DevSite.Controllers
         }
 
         // GET: Activities
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? selected)
         {
-            var applicationDbContext = _context.Activities.Include(a => a.ActivityType).Include(a => a.Module);
-            return View(await applicationDbContext.ToListAsync());
+            Activity selectedActivity = null;
+
+            List<Activity> activityList = await _context.Activities
+                                            .Include(at => at.ActivityType)
+                                            .Include(m => m.Module)
+                                            .Include(d => d.Documents)
+                                            .ToListAsync();
+
+            if (selected is not null)
+            {
+                selectedActivity = await _context.Activities.FindAsync(selected);
+            }
+            else
+            {
+                selectedActivity = null;
+            }
+
+            ActivityViewModel activityIndexModel = new ActivityViewModel
+            {
+                Activities = activityList,
+                SelectedActivity = selectedActivity
+            };
+
+            return View(activityIndexModel);
         }
 
         // GET: Activities/Details/5
