@@ -34,6 +34,7 @@ namespace DevSite
             //services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<LMSUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
         }
