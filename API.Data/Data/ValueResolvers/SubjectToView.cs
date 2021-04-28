@@ -18,7 +18,7 @@ namespace API.Data.Data.ValueResolvers
             {
                 Id = source.Id,
                 Name = source.Name,
-                Literatures = source.Literatures.Select(l => $"{l.Id}, {l.Title}").ToList()
+                Literatures = source.Literatures?.Select(l => $"{l.Id}, {l.Title}").ToList() ?? new List<string>()
             };
         }
     }

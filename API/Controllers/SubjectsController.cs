@@ -58,8 +58,14 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSubject(int id, SubjectDto subjectDto)
         {
-            var subject = await uow.SubjectRepository.getSubjects(id, false);
-            if (id != subject.Id)
+            var subjects = await uow.SubjectRepository.getAllSubjects(false);
+            if (subjects.Any(n => n.Name.Equals(subjectDto.Name)))
+            {
+                return BadRequest("Subject name already exist!");
+            }
+
+            var subject = subjects.FirstOrDefault(s => s.Id == id);
+            if (subject is null)
             {
                 return BadRequest();
             }
@@ -80,6 +86,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<SubjectDto>> PostSubject(SubjectDto subjectDto)
         {
+            var subjects = await uow.SubjectRepository.getAllSubjects(false);
+            if (subjects.Any(n => n.Name.Equals(subjectDto.Name)))
+            {
+                return BadRequest("Subject name already exist!");
+            }
+
             var subject = mapper.Map<Subject>(subjectDto);
             await uow.SubjectRepository.AddAsync(subject);
             await uow.CompleteAsync();
@@ -90,6 +102,12 @@ namespace API.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<SubjectDto>> PatchSubject(int id, JsonPatchDocument<SubjectDto> jsonPatchDocument)
         {
+            var patchValue = jsonPatchDocument.Operations.Select(patch => patch.value.ToString()).FirstOrDefault();
+            if (string.IsNullOrEmpty(patchValue))
+            {
+                return BadRequest("Value is null");
+            }
+
             var subject = await uow.SubjectRepository.getSubjects(id, false);
 
             if (subject is null)
@@ -98,6 +116,12 @@ namespace API.Controllers
             }
 
             var model = mapper.Map<SubjectDto>(subject);
+
+            var subjects = await uow.SubjectRepository.getAllSubjects(false);
+            if (subjects.Any(n => n.Name.Equals(patchValue)))
+            {
+                return BadRequest("Subject name already exist!");
+            }
 
             jsonPatchDocument.ApplyTo(model, ModelState);
 

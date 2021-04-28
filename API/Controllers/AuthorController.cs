@@ -68,12 +68,18 @@ namespace API.Controllers
 
             mapper.Map(authorDto, author);
 
+            //Todo fix
+            //if (uow.LevelRepository.getAllLevels().Result.Any(level => level.Name.Equals(l.LevelName)))
+            //{
+
+            //}
+
             author.Literatures = authorDto.Literatures.Select(l =>
             {
                 /**
                  * kollar på alla användare och om någon av användarna matchar, view models användare så lägger den till i listan.
                  */
-                ICollection<Author> newAuthor = uow.AuthorRepository.getAllAuthors(false).Result.Where(a => MapperUtil.IdExistInList(a.Id, l.Authors)).ToList();
+                ICollection<Author> newAuthor = uow.AuthorRepository.getAllAuthors(false).Result.Where(a => MapperUtil<string>.IdExistInList(a.Id, l.Authors)).ToList();
 
                 /**
                  * om egna author'n inte finns i listan så lägger vi till den
@@ -84,7 +90,7 @@ namespace API.Controllers
                 /**
                  * kollar på alla subjects och om någon av subject matchar, view models subjects så lägger den till i listan.
                  */
-                ICollection<Subject> subjects = uow.SubjectRepository.getAllSubjects(false).Result.Where(s => MapperUtil.IdExistInList(s.Id, l.Subjects)).ToList();
+                ICollection<Subject> subjects = uow.SubjectRepository.getAllSubjects(false).Result.Where(s => MapperUtil<string>.IdExistInList(s.Id, l.Subjects)).ToList();
 
 
                 /**
@@ -110,7 +116,7 @@ namespace API.Controllers
                     Title = l.Title,
                     PublishDate = l.PublishDate,
                     Description = l.Description,
-                    Level = uow.LevelRepository.getLevelByName(l.LevelName).Result,
+                    Level = uow.LevelRepository.getLevelByName(l.LevelName).Result ?? uow.LevelRepository.getLevelByName("Beginner").Result,
                     Authors = newAuthor,
                     Subjects = subjects
                 };

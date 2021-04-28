@@ -48,7 +48,7 @@ namespace API.Data.Repositories
 
         public async Task<Subject> getSubjects(int? Id, bool include)
         {
-            return include ? await db.Subject.Include(s => s.Literatures).ThenInclude(l => l.Level).FirstOrDefaultAsync() : await db.Subject.FirstOrDefaultAsync(s => s.Id == Id);
+            return include ? await db.Subject.Include(s => s.Literatures).ThenInclude(l => l.Level).FirstOrDefaultAsync(s => s.Id == Id) : await db.Subject.FirstOrDefaultAsync(s => s.Id == Id);
         }
     }
 }

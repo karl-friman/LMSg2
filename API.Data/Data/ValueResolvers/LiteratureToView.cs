@@ -22,8 +22,8 @@ namespace API.Data.Data.ValueResolvers
                 Title = source.Title,
                 PublishDate = source.PublishDate,
                 Description = source.Description,
-                Authors = source.Authors.Select(a => $"{a.Id}, {a.FirstName} {a.LastName}").ToList(),
-                Subjects = source.Subjects.Select(s => $"{s.Id}, {s.Name}").ToList(),
+                Authors = source.Authors?.Select(a => $"{a.Id}, {a.FirstName} {a.LastName}").ToList() ?? new List<string>(),
+                Subjects = source.Subjects?.Select(s => $"{s.Id}, {s.Name}").ToList() ?? new List<string>(),
                 // om level inte matchar något i databasen så blir det automatiskt beginner
                 LevelName = source.Level?.Name ?? "Beginner"
             };

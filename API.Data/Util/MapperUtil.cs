@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using API.Core.Entities;
 
 namespace API.Data.Util
 {
-    public class MapperUtil
+    public class MapperUtil<T>
     {
+
         public static bool IdExistInList(int checkFor, ICollection<string> listCollection)
         {
             foreach (var listItem in listCollection)
