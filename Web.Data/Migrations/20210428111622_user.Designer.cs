@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Data.Data;
 
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210428111622_user")]
+    partial class user
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -391,7 +393,7 @@ namespace Web.Data.Migrations
             modelBuilder.Entity("Core.Entities.Activity", b =>
                 {
                     b.HasOne("Core.Entities.ActivityType", "ActivityType")
-                        .WithMany()
+                        .WithMany("Activity")
                         .HasForeignKey("ActivityTypeId");
 
                     b.HasOne("Core.Entities.Module", "Module")
@@ -500,6 +502,11 @@ namespace Web.Data.Migrations
             modelBuilder.Entity("Core.Entities.Activity", b =>
                 {
                     b.Navigation("Documents");
+                });
+
+            modelBuilder.Entity("Core.Entities.ActivityType", b =>
+                {
+                    b.Navigation("Activity");
                 });
 
             modelBuilder.Entity("Core.Entities.Course", b =>

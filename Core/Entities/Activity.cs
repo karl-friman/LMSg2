@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace Core.Entities
         //Navigation props 
         public Module Module { get; set; }
         public ActivityType ActivityType { get; set; }
+        [Display(Name = "Documents")]
         public ICollection<Document> Documents { get; set; }
     }
 }

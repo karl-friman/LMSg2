@@ -89,12 +89,14 @@
                     {
                         @foreach (var document in module.Documents)
                         {
-                            <a class="btn btn-outline-primary" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
-                                <div>@document.Name</div>
-                            </a>
+                            <div>
+                                <a class="btn btn-outline-primary" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
+                                    @document.Name
+                                </a>
+                            </div>
                         }
                     }
-                </td>
+                    </td>
                 <td>
                     @if (module.Course is not null)
                     {

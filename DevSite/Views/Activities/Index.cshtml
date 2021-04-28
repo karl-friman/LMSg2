@@ -54,13 +54,18 @@
                     <div><strong>@Html.DisplayNameFor(modelItem => activity.EndDate):</strong> @Html.DisplayFor(modelItem => activity.EndDate)</div>
                 </td>
                 <td>
-                    @foreach (var document in activity.Documents)
+                    @if (activity.Documents != null)
                     {
-                        <a class="btn btn-outline-primary" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
-                            <div>@document.Name</div>
-                        </a>
+                        @foreach (var document in activity.Documents)
+                        {
+                            <div>
+                                <a class="btn btn-outline-primary" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
+                                    @document.Name
+                                </a>
+                            </div>
+                        }
                     }
-                </td>
+                    </td>
                 <td>
                     <div>
 

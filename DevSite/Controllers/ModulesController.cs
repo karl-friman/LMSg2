@@ -28,6 +28,7 @@ namespace DevSite.Controllers
             List<Module> moduleList = await _context.Modules
                                             .Include(a => a.Activities)
                                             .Include(c => c.Course)
+                                            .Include(d => d.Documents)
                                             .ToListAsync();
 
             if (selected is not null)

@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Data.Data;
 
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210427124300_nullabletype")]
-    partial class nullabletype
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,12 +202,12 @@ namespace Web.Data.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -393,7 +391,7 @@ namespace Web.Data.Migrations
             modelBuilder.Entity("Core.Entities.Activity", b =>
                 {
                     b.HasOne("Core.Entities.ActivityType", "ActivityType")
-                        .WithMany()
+                        .WithMany("Activity")
                         .HasForeignKey("ActivityTypeId");
 
                     b.HasOne("Core.Entities.Module", "Module")
@@ -502,6 +500,11 @@ namespace Web.Data.Migrations
             modelBuilder.Entity("Core.Entities.Activity", b =>
                 {
                     b.Navigation("Documents");
+                });
+
+            modelBuilder.Entity("Core.Entities.ActivityType", b =>
+                {
+                    b.Navigation("Activity");
                 });
 
             modelBuilder.Entity("Core.Entities.Course", b =>
