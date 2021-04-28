@@ -62,16 +62,16 @@ namespace Web.Data.Data
                     Email = "admin@admin.com",
                     FirstName = "Main System",
                     LastName = "Administrator",
-                    Avatar = "https://pbs.twimg.com/media/EUDSegdWsAE1YMJ.jpg",
                     PhoneNumber = fake.Phone.PhoneNumberFormat(),
                     PasswordHash = "asdfasdf123!A",
                     UserType = UserType.Admin
                 };
                 users.Add(admin);
-
                 await context.AddRangeAsync(users);
+                //Save to Db
+                await context.SaveChangesAsync();
 
-                var documents = documentsCreator(users: users, fake: fake, activities: activities, courses: courses, modules: modules);
+                var documents = documentsCreator(lmsusers: users, fake: fake, activities: activities, courses: courses, modules: modules);
                 await context.AddRangeAsync(documents);
 
                 //Save to Db
@@ -85,6 +85,22 @@ namespace Web.Data.Data
             List<LMSUser> users = new List<LMSUser>();
             foreach (Course course in courses)
             {
+                for (int i = 0; i < amountOfAdmins; i++)
+                {
+                    Random random = new Random();
+                    int rand = random.Next(0, 40) - 68;
+                    var user = new LMSUser
+                    {
+                        Email = fake.Internet.Email(),
+                        FirstName = fake.Name.FirstName(),
+                        LastName = fake.Name.LastName(),
+                        Avatar = fake.Internet.Avatar(),
+                        PhoneNumber = fake.Phone.PhoneNumber(),
+                        UserType = UserType.Admin,
+                        DateOfBirth = DateTime.Now.AddYears(rand)
+                    };
+                    users.Add(user);
+                }
                 for (int i = 0; i < amountOfStudents; i++)
                 {
                     Random random = new Random();
@@ -102,22 +118,6 @@ namespace Web.Data.Data
                     };
                     users.Add(user);
                 }
-                for (int i = 0; i < amountOfAdmins; i++)
-                {
-                    Random random = new Random();
-                    int rand = random.Next(0, 40) - 68;
-                    var user = new LMSUser
-                    {
-                        Email = fake.Internet.Email(),
-                        FirstName = fake.Name.FirstName(),
-                        LastName = fake.Name.LastName(),
-                        Avatar = fake.Internet.Avatar(),
-                        PhoneNumber = fake.Phone.PhoneNumber(),
-                        UserType = UserType.Admin,
-                        DateOfBirth = DateTime.Now.AddYears(rand)
-                    };
-                    users.Add(user);
-                }
             }
             return users;
         }
@@ -131,11 +131,10 @@ namespace Web.Data.Data
                 {
                     var activity = new Activity
                     {
-                        //Id = i,
                         ActivityType = fake.Random.ListItem(activityTypes),
                         Module = module,
                         Name = fake.Company.CatchPhrase(),
-                        Description = fake.Hacker.Verb(),
+                        Description = fake.Lorem.Paragraphs(1),
                         StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
                         EndDate = DateTime.Now.AddMonths(4),
                     };
@@ -145,7 +144,7 @@ namespace Web.Data.Data
             return activities;
         }
 
-        private static List<Document> documentsCreator(Faker fake, List<LMSUser> users, List<Activity> activities, List<Course> courses, List<Module> modules)
+        private static List<Document> documentsCreator(List<LMSUser> lmsusers,Faker fake, List<Activity> activities, List<Course> courses, List<Module> modules)
         {
             List<Document> documents = new List<Document>();
 
@@ -156,10 +155,11 @@ namespace Web.Data.Data
                     var document = new Document
                     {
                         Name = fake.Company.CatchPhrase(),
-                        Description = fake.Hacker.Verb(),
+                        Description = fake.Lorem.Paragraphs(1),
                         TimeStamp = DateTime.Now,
                         FilePath = fake.System.FilePath(),
-                        CourseId = course.Id                       
+                        CourseId = course.Id,     
+                        LMSUser = fake.Random.ListItem(lmsusers)
                     };
                     documents.Add(document);
                 }
@@ -172,10 +172,11 @@ namespace Web.Data.Data
                     var document = new Document
                     {
                         Name = fake.Company.CatchPhrase(),
-                        Description = fake.Hacker.Verb(),
+                        Description = fake.Lorem.Paragraphs(1),
                         TimeStamp = DateTime.Now,
                         FilePath = fake.System.FilePath(),
-                        ModuleId = module.Id
+                        ModuleId = module.Id,
+                        LMSUser = fake.Random.ListItem(lmsusers)
                     };
                     documents.Add(document);
                 }
@@ -188,10 +189,11 @@ namespace Web.Data.Data
                     var document = new Document
                     {
                         Name = fake.Company.CatchPhrase(),
-                        Description = fake.Hacker.Verb(),
+                        Description = fake.Lorem.Paragraphs(1),
                         TimeStamp = DateTime.Now,
                         FilePath = fake.System.FilePath(),
-                        ActivityId = activity.Id
+                        ActivityId = activity.Id,
+                        LMSUser = fake.Random.ListItem(lmsusers)
                     };
                     documents.Add(document);
                 }
@@ -219,7 +221,7 @@ namespace Web.Data.Data
                     {
                         Course = course,
                         Name = fake.Company.CatchPhrase(),
-                        Description = fake.Hacker.Verb(),
+                        Description = fake.Lorem.Paragraphs(1),
                         StartDate = startDate,
                         EndDate = moduleEndDate,
                     };
@@ -239,7 +241,7 @@ namespace Web.Data.Data
                 var course = new Course()
                 {
                     Name = fake.Company.CatchPhrase(),
-                    Description = fake.Hacker.Verb(),
+                    Description = fake.Lorem.Paragraphs(1),
                     StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
                     EndDate = courseEndDate,
                 };

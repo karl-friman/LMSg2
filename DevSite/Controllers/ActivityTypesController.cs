@@ -24,7 +24,7 @@ namespace DevSite.Controllers
         // GET: ActivityTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ActivityTypes.ToListAsync());
+            return View(await _context.ActivityTypes.OrderBy(x => x.Name).ToListAsync());
         }
 
         // GET: ActivityTypes/Details/5

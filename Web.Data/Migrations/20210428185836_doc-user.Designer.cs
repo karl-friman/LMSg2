@@ -10,8 +10,8 @@ using Web.Data.Data;
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210428111622_user")]
-    partial class user
+    [Migration("20210428185836_doc-user")]
+    partial class docuser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,6 +113,12 @@ namespace Web.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LMSUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LMSUserId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("ModuleId")
                         .HasColumnType("int");
 
@@ -122,21 +128,15 @@ namespace Web.Data.Migrations
                     b.Property<DateTime>("TimeStamp")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ActivityId");
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("ModuleId");
+                    b.HasIndex("LMSUserId1");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("ModuleId");
 
                     b.ToTable("Documents");
                 });
@@ -417,15 +417,13 @@ namespace Web.Data.Migrations
                         .WithMany("Documents")
                         .HasForeignKey("CourseId");
 
+                    b.HasOne("Core.Entities.LMSUser", null)
+                        .WithMany("Documents")
+                        .HasForeignKey("LMSUserId1");
+
                     b.HasOne("Core.Entities.Module", null)
                         .WithMany("Documents")
                         .HasForeignKey("ModuleId");
-
-                    b.HasOne("Core.Entities.LMSUser", "User")
-                        .WithMany("Documents")
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Core.Entities.LMSUser", b =>

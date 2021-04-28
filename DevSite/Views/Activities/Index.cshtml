@@ -13,7 +13,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th width="300">
                 @Html.DisplayNameFor(model => model.Activities)
             </th>
             <th>
@@ -30,7 +30,7 @@
         {
             string classContents = "btn btn-outline-primary";
             <tr>
-                <td>
+                <td width="300">
                     <div>
                         @if (Model.SelectedActivity is not null)
                         {
@@ -59,7 +59,7 @@
                         @foreach (var document in activity.Documents)
                         {
                             <div>
-                                <a class="btn btn-outline-primary" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
+                                <a class="btn btn-outline-success" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
                                     @document.Name
                                 </a>
                             </div>

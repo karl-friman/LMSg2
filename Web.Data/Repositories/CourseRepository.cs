@@ -25,6 +25,7 @@ namespace Web.Data.Repositories
                                 .Include(d => d.Documents)
                                 .Include(m => m.Modules)
                                 .ThenInclude(a => a.Activities)
+                                .OrderBy(x => x.Name)
                                 .ToListAsync();
                 return courseList;
 
@@ -35,9 +36,23 @@ namespace Web.Data.Repositories
                 return courseList;
             }
         }
-        public List<Course> GetAllCourses()
+        public async Task<Course> GetCourse(int? id, bool includeAll)
         {
-            throw new NotImplementedException();
+            if (includeAll)
+            {
+
+                return await db.Courses
+                             .Include(d => d.Documents)
+                             .Include(m => m.Modules)
+                             .ThenInclude(a => a.Activities)
+                             .FirstOrDefaultAsync(m => m.Id == id);
+            }
+            else
+            {
+                return await db.Courses
+                            .FirstOrDefaultAsync(m => m.Id == id);
+            }
+
         }
     }
 }

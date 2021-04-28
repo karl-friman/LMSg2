@@ -32,6 +32,7 @@ namespace DevSite.Controllers
                                             .Include(at => at.ActivityType)
                                             .Include(m => m.Module)
                                             .Include(d => d.Documents)
+                                            .OrderBy(x => x.Name)
                                             .ToListAsync();
 
             if (selected is not null)

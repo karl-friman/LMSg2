@@ -32,6 +32,7 @@ namespace DevSite.Controllers
                                             .Include(a => a.Activities)
                                             .Include(c => c.Course)
                                             .Include(d => d.Documents)
+                                            .OrderBy(x => x.Name)
                                             .ToListAsync();
 
             if (selected is not null)

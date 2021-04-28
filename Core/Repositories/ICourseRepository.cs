@@ -10,7 +10,7 @@ namespace Core.Repositories
     public interface ICourseRepository
     {
         Task<List<Course>> GetAllCourses(bool includeAll); 
-        //Task<Course> GetCourse(int? Id, bool includeModules);
+        Task<Course> GetCourse(int? Id, bool includeAll);
         //Task<bool> SaveAsync();
         //Task AddAsync<T>(T added);
         //bool Any(int? Id);

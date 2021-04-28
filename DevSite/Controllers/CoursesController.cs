@@ -55,8 +55,9 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var course = await uow.CourseRepository.GetCourse(id, includeAll: true);
+
+
             if (course == null)
             {
                 return NotFound();

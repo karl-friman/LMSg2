@@ -9,8 +9,6 @@ namespace Core.Entities
 {
     public class LMSUser : IdentityUser
     {
-        //public int Id { get; set; }
-
         public UserType UserType { get; set; }
 
         public string FirstName { get; set; }
@@ -18,8 +16,6 @@ namespace Core.Entities
         public string LastName { get; set; }
 
         public DateTime DateOfBirth { get; set; }
-
-        //public string Email { get; set; }
 
         public string Avatar { get; set; }
 

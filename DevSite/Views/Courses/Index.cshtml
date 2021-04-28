@@ -13,7 +13,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th width="300">
                 @Html.DisplayNameFor(model => model.Courses)
             </th>
             <th>
@@ -30,7 +30,7 @@
         {
             string classContents = "btn btn-outline-primary";
             <tr>
-                <td>
+                <td width="300">
                     <div>
                         @if (Model.SelectedCourse is not null)
                         {
@@ -56,52 +56,44 @@
                 <td>
                     @if (course.Modules != null)
                     {
-                        @if (course.Modules.Count > 0)
-                        {
-                            <div>
-                                Number of <strong>modules</strong>:@Html.DisplayFor(modelItem => course.Modules.Count)
-                            </div>
-                            <div>
-                                @foreach (var module in course.Modules)
+                        <div>
+                            @foreach (var module in course.Modules)
+                            {
+                                if (module != null)
                                 {
-                                    if (module != null)
-                                    {
-                                        <span>
-                                            @Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
-                                                             protocol: null, hostname: null, fragment: null,
-                                                             routeValues: new { selected = module.Id },
-                                                             htmlAttributes: new { @class = "btn  btn-outline-primary" })
-                                        </span>
+                                    <div>
+                                        @Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
+                                                         protocol: null, hostname: null, fragment: null,
+                                                         routeValues: new { selected = module.Id },
+                                                         htmlAttributes: new { @class = "btn  btn-outline-primary" })
+                                    </div>
 
-                                        @if (module.Activities != null)
+                                }
+                                @if (module.Activities != null)
+                                {
+
+                                    <div>
+                                        Activities in this module:<strong>@module.Activities.Count()</strong>
+                                    </div>
+                                    <div>
+                                        @foreach (var activity in module.Activities)
                                         {
-                                            @if (module.Activities.Count > 0)
+                                            if (activity != null)
                                             {
                                                 <div>
-                                                    Number of <strong>Activities</strong>: @module.Activities.Count()
-                                                </div>
-                                                <div>
-                                                    @foreach (var activity in module.Activities)
-                                                    {
-                                                        if (activity != null)
-                                                        {
-                                                            <div>
-                                                                @Html.ActionLink(linkText: activity.Name, actionName: "Index", controllerName: "Activities",
-                                                                                 protocol: null, hostname: null, fragment: null,
-                                                                                 routeValues: new { selected = activity.Id },
-                                                                                 htmlAttributes: new { @class = "btn btn-outline-info" })
-                                                            </div>
-                                                        }
-                                                    }
+                                                    @Html.ActionLink(linkText: activity.Name, actionName: "Index", controllerName: "Activities",
+                                                                     protocol: null, hostname: null, fragment: null,
+                                                                     routeValues: new { selected = activity.Id },
+                                                                     htmlAttributes: new { @class = "btn btn-outline-info" })
                                                 </div>
                                             }
                                         }
-
-                                        <br />
-                                    }
+                                    </div>
                                 }
-                            </div>
-                        }
+                                <br /><br />
+                            }
+                        </div>
+
                     }
                 </td>
                 <td>
@@ -110,13 +102,13 @@
                         @foreach (var document in course.Documents)
                         {
                             <div>
-                                <a class="btn btn-outline-primary" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
+                                <a class="btn btn-outline-success" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
                                     @document.Name
                                 </a>
                             </div>
                         }
                     }
-                    </td>
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@course.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@course.Id">Details</a> |

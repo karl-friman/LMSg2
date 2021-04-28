@@ -22,7 +22,7 @@ namespace DevSite.Controllers
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Documents.ToListAsync());
+            return View(await _context.Documents.Include(lms=>lms.LMSUser).OrderBy(x => x.Name).ToListAsync());
         }
 
         // GET: Documents/Details/5

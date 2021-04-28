@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Web.Data.Migrations;
 using LMSUser = Core.Entities.LMSUser;
 
 namespace Web.Data.Data

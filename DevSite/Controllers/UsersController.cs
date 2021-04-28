@@ -29,7 +29,34 @@ namespace DevSite.Controllers
         public async Task<IActionResult> Index()
         {
             //var x = _context.Users.
-            return View(await _context.Users.ToListAsync());
+            return View(await _context.Users
+                              .Include(c=>c.Course)
+                               .OrderBy(x => x.Email)
+                              .ToListAsync());
+
+            //LMSUser selectedUser = null;
+
+            //List<LMSUser> userList = await _context.Users
+            //                                .Include(c => c.Course)
+            //                                .ToListAsync();
+
+            //if (selected is not null)
+            //{
+            //    selectedUser = await _context.Users.FindAsync(selected);
+            //}
+            //else
+            //{
+            //    selectedUser = null;
+            //}
+
+            //LMSUserViewModel moduleIndexModel = new LMSUserViewModel
+            //{
+            //    LMSUsers = userList,
+            //    SelectedUser = selectedUser
+            //};
+
+
+            //return View(moduleIndexModel);
         }
 
         // GET: Users/Details/5
