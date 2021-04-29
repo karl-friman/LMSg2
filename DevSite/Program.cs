@@ -26,10 +26,10 @@ namespace DevSite
                 context.Database.Migrate();
                 var config = services.GetRequiredService<IConfiguration>();
                 //dotnet user-secrets set "adminPW""LMS-Group2"
-                //var adminPW = config["adminPW"];
+                var adminPW = config["adminPW"];
                 try
                 {
-                    SeedData.InitAsync(services).Wait();
+                    SeedData.InitAsync(services, adminPW).Wait();
                 }
                 catch (Exception ex)
                 {

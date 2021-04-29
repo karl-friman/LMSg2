@@ -13,7 +13,7 @@ namespace Web.Data.Data
 {
     public class SeedData
     {
-        public static async Task InitAsync(IServiceProvider services)
+        public static async Task InitAsync(IServiceProvider services,string adminPW)
         {
             using (var context = new ApplicationDbContext(services.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
@@ -48,36 +48,74 @@ namespace Web.Data.Data
                 await context.SaveChangesAsync();
 
 
-                //await context.SaveChangesAsync();
-                //15-18 students for each course auto generated with bogus + bogus avatar
-                //7 admins auto generated with bogus + avatar 
-                //1 admin spawned with email: admin@admin.com and pw: admin
-                //fake.PickRandom<UserType>();
-
                 //Create Users
                 var users = usersCreator(amountOfStudents: 50, amountOfAdmins: 6, fake, courses);
 
-                var admin = new LMSUser
-                {
-                    Email = "admin@admin.com",
-                    FirstName = "Main System",
-                    LastName = "Administrator",
-                    PhoneNumber = fake.Phone.PhoneNumberFormat(),
-                    PasswordHash = "asdfasdf123!A",
-                    UserType = UserType.Admin
-                };
-                users.Add(admin);
                 await context.AddRangeAsync(users);
-                //Save to Db
-                await context.SaveChangesAsync();
 
-                var documents = documentsCreator(lmsusers: users, fake: fake, activities: activities, courses: courses, modules: modules);
+                LMSUser admin = adminCreator(fake);
+     
+                var roleNames = new[] { nameof(UserType.Admin), nameof(UserType.Student) };
+
+                foreach (var roleName in roleNames)
+                {
+                    if (await roleManager.RoleExistsAsync(roleName)) continue;
+
+                    var role = new IdentityRole { Name = roleName };
+                    var result = await roleManager.CreateAsync(role);
+
+                    if (!result.Succeeded) throw new Exception(string.Join("\n", result.Errors));
+                }
+
+                var adminEmail = admin.Email;
+
+                var foundAdmin = await userManager.FindByEmailAsync(adminEmail);
+
+                if (foundAdmin != null) return;
+
+                //adminCreator(fake);
+
+
+                var addAdminResult = await userManager.CreateAsync(admin, adminPW);
+                if (!addAdminResult.Succeeded) throw new Exception(string.Join("\n", addAdminResult.Errors));
+
+                var adminUser = await userManager.FindByNameAsync(admin.UserName);
+
+
+                foreach (var role in roleNames)
+                {
+                    if (await userManager.IsInRoleAsync(adminUser, role)) continue;
+
+                    var addToRoleResult = await userManager.AddToRoleAsync(adminUser, role);
+
+                    if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
+                }
+
+                //  await context.AddRangeAsync(users);
+                var documents = documentsCreator(users: users, fake: fake, activities: activities, courses: courses, modules: modules);
                 await context.AddRangeAsync(documents);
 
                 //Save to Db
                 await context.SaveChangesAsync();
 
             }
+        }
+
+        private static LMSUser adminCreator(Faker fake)
+        {
+            var admin = new LMSUser
+            {
+                UserName = "admin@admin.com",
+               Email = "admin@admin.com",
+                FirstName = "MainSystem",
+                LastName = "Administrator",
+                Avatar = "https://pbs.twimg.com/media/EUDSegdWsAE1YMJ.jpg",
+                PhoneNumber = fake.Phone.PhoneNumberFormat(),
+                //  PasswordHash = "asdfasdf123!A",
+                UserType = UserType.Admin
+            };
+           // users.Add(admin);
+            return admin;
         }
 
         private static List<LMSUser> usersCreator(int amountOfStudents, int amountOfAdmins, Faker fake, List<Course> courses)
