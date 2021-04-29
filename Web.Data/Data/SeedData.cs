@@ -48,20 +48,13 @@ namespace Web.Data.Data
                 await context.SaveChangesAsync();
 
 
-                //await context.SaveChangesAsync();
-                //15-18 students for each course auto generated with bogus + bogus avatar
-                //7 admins auto generated with bogus + avatar 
-                //1 admin spawned with email: admin@admin.com and pw: admin
-                //fake.PickRandom<UserType>();
-
                 //Create Users
                 var users = usersCreator(amountOfStudents: 50, amountOfAdmins: 6, fake, courses);
-                LMSUser admin = adminCreator(fake);
-                //users.Add(admin);
 
                 await context.AddRangeAsync(users);
-                //await context.SaveChangesAsync();
 
+                LMSUser admin = adminCreator(fake);
+     
                 var roleNames = new[] { nameof(UserType.Admin), nameof(UserType.Student) };
 
                 foreach (var roleName in roleNames)
@@ -113,7 +106,7 @@ namespace Web.Data.Data
             var admin = new LMSUser
             {
                 UserName = "admin@admin.com",
-                Email = "admin@admin.com",
+               Email = "admin@admin.com",
                 FirstName = "MainSystem",
                 LastName = "Administrator",
                 Avatar = "https://pbs.twimg.com/media/EUDSegdWsAE1YMJ.jpg",
