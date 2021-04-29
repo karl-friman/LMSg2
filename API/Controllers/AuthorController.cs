@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using API.Core.Entities;
 using API.Core.Repositories;
+using API.Core.ViewModel;
 using API.Data.Data;
 using API.Data.Util;
 using AutoMapper;
@@ -68,59 +69,15 @@ namespace API.Controllers
 
             mapper.Map(authorDto, author);
 
-            //Todo fix
-            //if (uow.LevelRepository.getAllLevels().Result.Any(level => level.Name.Equals(l.LevelName)))
-            //{
+            List<LiteratureViewModel> literatureDtos = authorDto.Literatures.ToList();
 
-            //}
-
-            author.Literatures = authorDto.Literatures.Select(l =>
+            if (uow.LevelRepository.getAllLevels().Result.Any(level => !literatureDtos.Any(l => level.Name.Equals(l.LevelName))))
             {
-                /**
-                 * kollar på alla användare och om någon av användarna matchar, view models användare så lägger den till i listan.
-                 */
-                ICollection<Author> newAuthor = uow.AuthorRepository.getAllAuthors(false).Result.Where(a => MapperUtil<string>.IdExistInList(a.Id, l.Authors)).ToList();
-
-                /**
-                 * om egna author'n inte finns i listan så lägger vi till den
-                 */
-                if (newAuthor.All(a => a.Id != author.Id)) newAuthor.Add(author);
+                return BadRequest("Literature Has to use a valid Level Name, Available: Beginner, Intermediate, Advanced");
+            }
 
 
-                /**
-                 * kollar på alla subjects och om någon av subject matchar, view models subjects så lägger den till i listan.
-                 */
-                ICollection<Subject> subjects = uow.SubjectRepository.getAllSubjects(false).Result.Where(s => MapperUtil<string>.IdExistInList(s.Id, l.Subjects)).ToList();
-
-
-                /**
-                 * loopar view modelns subjects
-                 * Om view modelns subject inte finns i listan av Subjects
-                 * så lägger vi till nya subjects utifrån view modelns subjects (den lägger till i databasen)
-                 */
-                foreach (var viewSubjects in l.Subjects)
-                {
-                    if (!subjects.Any(s => s.Name.Equals(viewSubjects)))
-                    {
-                        subjects.Add(new Subject()
-                        {
-                            Name = viewSubjects
-                        });
-                    }
-                }
-
-                // returnera en omvanlad literature från viewmodel
-                return new Literature()
-                {
-                    Id = l.Id,
-                    Title = l.Title,
-                    PublishDate = l.PublishDate,
-                    Description = l.Description,
-                    Level = uow.LevelRepository.getLevelByName(l.LevelName).Result ?? uow.LevelRepository.getLevelByName("Beginner").Result,
-                    Authors = newAuthor,
-                    Subjects = subjects
-                };
-            }).ToList();
+            author.Literatures = literatureDtos.Select(l => Literature(l, author)).ToList();
 
             if  (await uow.AuthorRepository.SaveAsync())
             {
@@ -134,6 +91,14 @@ namespace API.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult<AuthorDto>> PatchAuthor(int id, JsonPatchDocument<AuthorDto> jsonPatchDocument)
         {
+            var patchValue = jsonPatchDocument.Operations.Select(patch => patch.value.ToString()).FirstOrDefault();
+            var pathString = jsonPatchDocument.Operations.Select(patch => patch.path.ToString()).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(patchValue)) return BadRequest("Value is null");
+            if (string.IsNullOrEmpty(pathString)) return BadRequest("Path is null");
+            if (pathString.ToLower().Contains("literatures")) return BadRequest("Can't modify literatures from author");
+
+
             var author = await uow.AuthorRepository.getAuthor(id, false);
 
             if(author is null)
@@ -180,6 +145,58 @@ namespace API.Controllers
             if (!await uow.AuthorRepository.RemoveAsync(id)) return NotFound();
 
             return NoContent();
+        }
+
+
+        private Literature Literature(LiteratureViewModel l, Author author)
+        {
+            /**
+                 * kollar på alla användare och om någon av användarna matchar, view models användare så lägger den till i listan.
+                 */
+            ICollection<Author> newAuthor = uow.AuthorRepository.getAllAuthors(false).Result
+                .Where(a => MapperUtil<string>.IdExistInList(a.Id, l.Authors)).ToList();
+
+            /**
+                 * om egna author'n inte finns i listan så lägger vi till den
+                 */
+            if (newAuthor.All(a => a.Id != author.Id)) newAuthor.Add(author);
+
+
+            /**
+                 * kollar på alla subjects och om någon av subject matchar, view models subjects så lägger den till i listan.
+                 */
+            ICollection<Subject> subjects = uow.SubjectRepository.getAllSubjects(false).Result
+                .Where(s => MapperUtil<string>.IdExistInList(s.Id, l.Subjects)).ToList();
+
+
+            /**
+                 * loopar view modelns subjects
+                 * Om view modelns subject inte finns i listan av Subjects
+                 * så lägger vi till nya subjects utifrån view modelns subjects (den lägger till i databasen)
+                 */
+            foreach (var viewSubjects in l.Subjects)
+            {
+                if (!subjects.Any(s => s.Name.Equals(viewSubjects)))
+                {
+                    subjects.Add(new Subject()
+                    {
+                        Name = viewSubjects
+                    });
+                }
+            }
+
+            // returnera en omvanlad literature från viewmodel
+            return new Literature()
+            {
+                Id = l.Id,
+                Title = l.Title,
+                PublishDate = l.PublishDate,
+                Description = l.Description,
+                Level = uow.LevelRepository.getLevelByName(l.LevelName).Result ??
+                        uow.LevelRepository.getLevelByName("Beginner").Result,
+                Authors = newAuthor,
+                Subjects = subjects
+            };
         }
 
     }

@@ -73,12 +73,21 @@ namespace API.Controllers
             mapper.Map(literatureDto, literature);
 
 
+            /**
+             * Converterar subjects listan till en Integer lista
+             * filtrera listan så bara id'n som finns läggs till
+             */
             literature.Authors = uow.AuthorRepository
                 .getAllAuthors(false)
                 .Result
                 .Where(a => literatureDto.Authors.Select(l => l.Id).Any(l => l == a.Id))
                 .ToList();
 
+
+            /**
+             * om literature authors inte har nån av authors i literatureDto
+             * lägg till authorn på literature author collection
+             */
             foreach (var literatureDtoAuthor in literatureDto.Authors)
             {
                 if (literature.Authors.All(s => s.Id != literatureDtoAuthor.Id))
@@ -94,6 +103,10 @@ namespace API.Controllers
             }
 
 
+            /**
+             * Converterar subjects listan till en Integer lista
+             * filtrera listan så bara id'n som finns läggs till
+             */
             literature.Subjects = uow.SubjectRepository
                 .getAllSubjects(false)
                 .Result
@@ -101,6 +114,9 @@ namespace API.Controllers
                 .ToList();
 
 
+            /**
+             * om literature subjects inte har view subjects så lägger den till dem
+             */
             foreach (var viewSubjects in literatureDto.Subjects)
             {
                 if (!literature.Subjects.Any(s => s.Name.Equals(viewSubjects.Name)))
@@ -155,10 +171,13 @@ namespace API.Controllers
         public async Task<ActionResult<LiteratureDto>> PatchLiterature(int id, JsonPatchDocument<LiteratureDto> jsonPatchDocument)
         {
             var patchValue = jsonPatchDocument.Operations.Select(patch => patch.value.ToString()).FirstOrDefault();
-            if (string.IsNullOrEmpty(patchValue))
-            {
-                return BadRequest("Value is null");
-            }
+            var pathString = jsonPatchDocument.Operations.Select(patch => patch.path.ToString()).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(patchValue)) return BadRequest("Value is null");
+            if (string.IsNullOrEmpty(pathString)) return BadRequest("Path is null");
+            if (pathString.ToLower().Contains("subjects") || pathString.ToLower().Contains("author")) return BadRequest("Can't modify Author/Subjects from literature");
+
+
 
             var literature = await uow.LiteratureRepository.getLiterature(id, false);
 

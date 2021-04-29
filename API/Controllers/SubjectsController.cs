@@ -103,10 +103,11 @@ namespace API.Controllers
         public async Task<ActionResult<SubjectDto>> PatchSubject(int id, JsonPatchDocument<SubjectDto> jsonPatchDocument)
         {
             var patchValue = jsonPatchDocument.Operations.Select(patch => patch.value.ToString()).FirstOrDefault();
-            if (string.IsNullOrEmpty(patchValue))
-            {
-                return BadRequest("Value is null");
-            }
+            var pathString = jsonPatchDocument.Operations.Select(patch => patch.path.ToString()).FirstOrDefault();
+            if (string.IsNullOrEmpty(patchValue)) return BadRequest("Value is null");
+
+            if (string.IsNullOrEmpty(pathString)) return BadRequest("Path is null");
+            if (pathString.ToLower().Contains("literatures")) return BadRequest("Can't modify literatures from Subject");
 
             var subject = await uow.SubjectRepository.getSubjects(id, false);
 

@@ -94,6 +94,7 @@ namespace API.Data.Data
             List<Literature> literatureList = new List<Literature>();
             for (int i = 0; i < amount; i++)
             {
+                // Shuffla om listorna för att ge literaturen random authors/subjects
                 authors.Shuffle();
                 subjects.Shuffle();
 
