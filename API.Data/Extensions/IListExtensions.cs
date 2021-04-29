@@ -7,6 +7,10 @@ namespace API.Data.Extensions
 {
     public static class IListExtensions
     {
+
+        /**
+         * Shufflar listan som man använder metoden på i en helt random ordning.
+         */
         public static void Shuffle<T>(this IList<T> ts)
         {
             var count = ts.Count;

@@ -11,7 +11,6 @@ using API.Core.Repositories;
 using API.Data.Data;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
-using API.Core.Util;
 
 namespace API.Controllers
 {
@@ -35,9 +34,9 @@ namespace API.Controllers
         {
             var subjects = await uow.SubjectRepository.getAllSubjects(include);
 
-            var subjectDto = subjects.Select(s => CustomMapper.MapSubject(s, include));
+            var subjectDtos = mapper.Map<IEnumerable<SubjectDto>>(subjects);
 
-            return Ok(subjectDto);
+            return Ok(subjectDtos);
         }
 
         // GET: api/Subjects/5
@@ -51,7 +50,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(CustomMapper.MapSubject(subject, include));
+            return Ok(mapper.Map<SubjectDto>(subject));
         }
 
         // PUT: api/Subjects/5
@@ -59,8 +58,14 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSubject(int id, SubjectDto subjectDto)
         {
-            var subject = await uow.SubjectRepository.getSubjects(id, false);
-            if (id != subject.Id)
+            var subjects = await uow.SubjectRepository.getAllSubjects(false);
+            if (subjects.Any(n => n.Name.Equals(subjectDto.Name)))
+            {
+                return BadRequest("Subject name already exist!");
+            }
+
+            var subject = subjects.FirstOrDefault(s => s.Id == id);
+            if (subject is null)
             {
                 return BadRequest();
             }
@@ -81,6 +86,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<SubjectDto>> PostSubject(SubjectDto subjectDto)
         {
+            var subjects = await uow.SubjectRepository.getAllSubjects(false);
+            if (subjects.Any(n => n.Name.Equals(subjectDto.Name)))
+            {
+                return BadRequest("Subject name already exist!");
+            }
+
             var subject = mapper.Map<Subject>(subjectDto);
             await uow.SubjectRepository.AddAsync(subject);
             await uow.CompleteAsync();
@@ -89,8 +100,15 @@ namespace API.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<SubjectDto>> PatchAuthor(int id, JsonPatchDocument<SubjectDto> jsonPatchDocument)
+        public async Task<ActionResult<SubjectDto>> PatchSubject(int id, JsonPatchDocument<SubjectDto> jsonPatchDocument)
         {
+            var patchValue = jsonPatchDocument.Operations.Select(patch => patch.value.ToString()).FirstOrDefault();
+            var pathString = jsonPatchDocument.Operations.Select(patch => patch.path.ToString()).FirstOrDefault();
+            if (string.IsNullOrEmpty(patchValue)) return BadRequest("Value is null");
+
+            if (string.IsNullOrEmpty(pathString)) return BadRequest("Path is null");
+            if (pathString.ToLower().Contains("literatures")) return BadRequest("Can't modify literatures from Subject");
+
             var subject = await uow.SubjectRepository.getSubjects(id, false);
 
             if (subject is null)
@@ -99,6 +117,12 @@ namespace API.Controllers
             }
 
             var model = mapper.Map<SubjectDto>(subject);
+
+            var subjects = await uow.SubjectRepository.getAllSubjects(false);
+            if (subjects.Any(n => n.Name.Equals(patchValue)))
+            {
+                return BadRequest("Subject name already exist!");
+            }
 
             jsonPatchDocument.ApplyTo(model, ModelState);
 

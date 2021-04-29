@@ -24,7 +24,7 @@ namespace API.Data.Data
                 {
                     await db.AddRangeAsync(getLevels());
                     await db.AddRangeAsync(getAuthors(10));
-                    await db.AddRangeAsync(getsSubjects(10));
+                    await db.AddRangeAsync(getSubjects(10));
                     await db.SaveChangesAsync();
 
                     await db.AddRangeAsync(GenerateLiterature(db, 10));
@@ -34,7 +34,7 @@ namespace API.Data.Data
             }
         }
 
-        private static string[] levelNames = { "Nybörjare", "Medel", "Avancerad" };
+        private static string[] levelNames = { "Beginner", "Intermediate", "Advanced" };
         private static List<Level> getLevels()
         {
             List<Level> levels = new List<Level>();
@@ -50,7 +50,7 @@ namespace API.Data.Data
 
         private static List<Author> getAuthors(int amount)
         {
-            Faker faker = new Faker("sv");
+            Faker faker = new Faker();
 
             List<Author> authors = new List<Author>();
             for (int i = 0; i < amount; i++)
@@ -67,9 +67,9 @@ namespace API.Data.Data
             return authors;
         }
 
-        private static List<Subject> getsSubjects(int amount)
+        private static List<Subject> getSubjects(int amount)
         {
-            Faker faker = new Faker("sv");
+            Faker faker = new Faker();
             List<Subject> subjects = new List<Subject>();
             for (int i = 0; i < amount; i++)
             {
@@ -84,7 +84,7 @@ namespace API.Data.Data
 
         private static List<Literature> GenerateLiterature(DbContextAPI db, int amount)
         {
-            Faker faker = new Faker("sv");
+            Faker faker = new Faker();
 
 
             List<Author> authors = db.Authors.ToList();
@@ -94,6 +94,7 @@ namespace API.Data.Data
             List<Literature> literatureList = new List<Literature>();
             for (int i = 0; i < amount; i++)
             {
+                // Shuffla om listorna för att ge literaturen random authors/subjects
                 authors.Shuffle();
                 subjects.Shuffle();
 

@@ -48,7 +48,7 @@ namespace API.Data.Repositories
 
         public async Task<Literature> getLiterature(int? Id, bool include)
         {
-            return include ? await db.Literature.Include(l => l.Authors).Include(l => l.Subjects).Include(l => l.Level).FirstOrDefaultAsync() : await db.Literature.Include(l => l.Level).FirstOrDefaultAsync(l => l.Id == Id);
+            return include ? await db.Literature.Include(l => l.Authors).Include(l => l.Subjects).Include(l => l.Level).FirstOrDefaultAsync(l => l.Id == Id) : await db.Literature.Include(l => l.Level).FirstOrDefaultAsync(l => l.Id == Id);
         }
     }
 }

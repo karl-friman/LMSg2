@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using API.Core.Repositories;
 using API.Data.Data;
 using API.Data.Repositories;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace API
@@ -42,7 +43,7 @@ namespace API
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddAutoMapper(typeof(MapperProfileAPI));
+            services.AddAutoMapper(typeof(MapperProfileAPI), typeof(IServiceProvider));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

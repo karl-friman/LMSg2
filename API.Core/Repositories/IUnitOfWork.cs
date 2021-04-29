@@ -12,6 +12,8 @@ namespace API.Core.Repositories
         ILiteratureRepository LiteratureRepository { get; }
         ISubjectRepository SubjectRepository { get; }
 
+        ILevelRepository LevelRepository { get; }
+
         Task CompleteAsync();
 
     }

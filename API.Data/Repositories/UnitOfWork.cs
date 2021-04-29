@@ -18,11 +18,14 @@ namespace API.Data.Repositories
             AuthorRepository = new AuthorRepository(db);
             LiteratureRepository = new LiteratureRepository(db);
             SubjectRepository = new SubjectRepository(db);
+            LevelRepository = new LevelRepository(db);
         }
 
         public IAuthorRepository AuthorRepository { get; }
         public ILiteratureRepository LiteratureRepository { get; }
         public ISubjectRepository SubjectRepository { get; }
+        public ILevelRepository LevelRepository { get; }
+
         public Task CompleteAsync()
         {
             return db.SaveChangesAsync();

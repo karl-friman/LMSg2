@@ -7,7 +7,7 @@ using API.Core.Entities;
 
 namespace API.Core.Repositories
 {
-    public interface ILiteratureRepository : BasicRepositoryFeatures
+    public interface ILiteratureRepository : IBasicRepositoryFeatures
     {
         Task<IEnumerable<Literature>> getAllLiteratures(bool include);
         Task<Literature> getLiterature(int? Id, bool include);

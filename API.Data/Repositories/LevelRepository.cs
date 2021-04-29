@@ -10,24 +10,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data.Repositories
 {
-    public class SubjectRepository : ISubjectRepository
+    public class LevelRepository : ILevelRepository
     {
         private readonly DbContextAPI db;
 
-        public SubjectRepository(DbContextAPI db)
+        public LevelRepository(DbContextAPI db)
         {
             this.db = db;
         }
 
         public async Task<bool> RemoveAsync(int? Id)
         {
-            Subject subject = await db.Subject.FindAsync(Id);
-            if (subject == null)
+            Level level = await db.Levels.FindAsync(Id);
+            if (level == null)
             {
                 return false;
             }
 
-            db.Subject.Remove(subject);
+            db.Levels.Remove(level);
             return await SaveAsync();
         }
 
@@ -41,14 +41,19 @@ namespace API.Data.Repositories
             await db.AddAsync(added);
         }
 
-        public async Task<IEnumerable<Subject>> getAllSubjects(bool include)
+        public async Task<IEnumerable<Level>> getAllLevels()
         {
-            return include ? await db.Subject.Include(s => s.Literatures).ThenInclude(l => l.Level).ToListAsync() : await db.Subject.ToListAsync();
+            return await db.Levels.ToListAsync();
         }
 
-        public async Task<Subject> getSubjects(int? Id, bool include)
+        public async Task<Level> getLevel(int? Id)
         {
-            return include ? await db.Subject.Include(s => s.Literatures).ThenInclude(l => l.Level).FirstOrDefaultAsync(s => s.Id == Id) : await db.Subject.FirstOrDefaultAsync(s => s.Id == Id);
+            return await db.Levels.FirstOrDefaultAsync(l => l.Id == Id);
+        }
+
+        public async Task<Level> getLevelByName(string name)
+        {
+            return await db.Levels.FirstOrDefaultAsync(l => l.Name.Equals(name));
         }
     }
 }
