@@ -44,7 +44,7 @@
                 @Html.DisplayFor(modelItem => item.TimeStamp)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FilePath)
+                <a href="@Html.DisplayFor(modelItem => item.FilePath)">@Html.DisplayFor(modelItem => item.FilePath)</a>
             </td>
             @{
                 string classContents = "";

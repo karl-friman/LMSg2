@@ -157,7 +157,7 @@ namespace Web.Data.Data
                         Name = fake.Company.CatchPhrase(),
                         Description = fake.Lorem.Paragraphs(1),
                         TimeStamp = DateTime.Now,
-                        FilePath = fake.System.FilePath(),
+                        FilePath = "/docs/lorem.txt",//fake.System.FilePath(),
                         CourseId = course.Id,     
                         LMSUser = fake.Random.ListItem(lmsusers)
                     };
