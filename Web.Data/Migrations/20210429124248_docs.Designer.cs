@@ -10,8 +10,8 @@ using Web.Data.Data;
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210428185836_doc-user")]
-    partial class docuser
+    [Migration("20210429124248_docs")]
+    partial class docs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -417,13 +417,15 @@ namespace Web.Data.Migrations
                         .WithMany("Documents")
                         .HasForeignKey("CourseId");
 
-                    b.HasOne("Core.Entities.LMSUser", null)
+                    b.HasOne("Core.Entities.LMSUser", "LMSUser")
                         .WithMany("Documents")
                         .HasForeignKey("LMSUserId1");
 
                     b.HasOne("Core.Entities.Module", null)
                         .WithMany("Documents")
                         .HasForeignKey("ModuleId");
+
+                    b.Navigation("LMSUser");
                 });
 
             modelBuilder.Entity("Core.Entities.LMSUser", b =>

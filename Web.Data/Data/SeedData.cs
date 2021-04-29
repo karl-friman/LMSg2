@@ -92,7 +92,7 @@ namespace Web.Data.Data
                 }
 
                 //  await context.AddRangeAsync(users);
-                var documents = documentsCreator(users: users, fake: fake, activities: activities, courses: courses, modules: modules);
+                var documents = documentsCreator(lmsusers: users, fake: fake, activities: activities, courses: courses, modules: modules);
                 await context.AddRangeAsync(documents);
 
                 //Save to Db

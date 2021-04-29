@@ -415,13 +415,15 @@ namespace Web.Data.Migrations
                         .WithMany("Documents")
                         .HasForeignKey("CourseId");
 
-                    b.HasOne("Core.Entities.LMSUser", null)
+                    b.HasOne("Core.Entities.LMSUser", "LMSUser")
                         .WithMany("Documents")
                         .HasForeignKey("LMSUserId1");
 
                     b.HasOne("Core.Entities.Module", null)
                         .WithMany("Documents")
                         .HasForeignKey("ModuleId");
+
+                    b.Navigation("LMSUser");
                 });
 
             modelBuilder.Entity("Core.Entities.LMSUser", b =>
