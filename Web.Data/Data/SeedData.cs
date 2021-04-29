@@ -54,7 +54,8 @@ namespace Web.Data.Data
                 await context.AddRangeAsync(users);
 
                 LMSUser admin = adminCreator(fake);
-     
+                LMSUser student = studentCreator(fake);
+
                 var roleNames = new[] { nameof(UserType.Admin), nameof(UserType.Student) };
 
                 foreach (var roleName in roleNames)
@@ -117,7 +118,22 @@ namespace Web.Data.Data
            // users.Add(admin);
             return admin;
         }
-
+        private static LMSUser studentCreator(Faker fake)
+        {
+            var admin = new LMSUser
+            {
+                UserName = "student@student.com",
+                Email = "student@student.com",
+                FirstName = "MainSystem",
+                LastName = "Administrator",
+                Avatar = "https://pbs.twimg.com/media/EUDSegdWsAE1YMJ.jpg",
+                PhoneNumber = fake.Phone.PhoneNumberFormat(),
+                //  PasswordHash = "asdfasdf123!A",
+                UserType = UserType.Student
+            };
+            // users.Add(admin);
+            return admin;
+        }
         private static List<LMSUser> usersCreator(int amountOfStudents, int amountOfAdmins, Faker fake, List<Course> courses)
         {
             List<LMSUser> users = new List<LMSUser>();
