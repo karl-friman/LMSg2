@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Web.Data.Data;
+using Core.ViewModels;
+using Core.Repositories;
 
 namespace DevSite.Controllers
 {
     public class DocumentsController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public DocumentsController(ApplicationDbContext context)
+        private readonly IUnitOfWork uow;
+        public DocumentsController(IUnitOfWork uow)
         {
-            _context = context;
+            this.uow = uow;
         }
 
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Documents.Include(lms=>lms.LMSUser).OrderBy(x => x.Name).ToListAsync());
+            return View(await uow.DocumentRepository.GetAll(includeAll: true));
         }
 
         // GET: Documents/Details/5
@@ -33,8 +34,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var document = await _context.Documents
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var document = await uow.DocumentRepository.GetOne(id, includeAll: true);
             if (document == null)
             {
                 return NotFound();
@@ -58,8 +58,8 @@ namespace DevSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(document);
-                await _context.SaveChangesAsync();
+                await uow.DocumentRepository.AddAsync(document);
+                await uow.DocumentRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(document);
@@ -73,7 +73,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var document = await _context.Documents.FindAsync(id);
+            var document = await uow.DocumentRepository.GetOne(id, false);
             if (document == null)
             {
                 return NotFound();
@@ -97,8 +97,8 @@ namespace DevSite.Controllers
             {
                 try
                 {
-                    _context.Update(document);
-                    await _context.SaveChangesAsync();
+                    uow.DocumentRepository.Update(document);
+                    await uow.DocumentRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,8 +124,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var document = await _context.Documents
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var document = await uow.DocumentRepository.GetOne(id, includeAll: false);
             if (document == null)
             {
                 return NotFound();
@@ -139,15 +138,15 @@ namespace DevSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var document = await _context.Documents.FindAsync(id);
-            _context.Documents.Remove(document);
-            await _context.SaveChangesAsync();
+            var document = await uow.DocumentRepository.GetOne(id, includeAll: false);
+            uow.DocumentRepository.Remove(document);
+            await uow.DocumentRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DocumentExists(int id)
         {
-            return _context.Documents.Any(e => e.Id == id);
+            return uow.DocumentRepository.Any(id);
         }
     }
 }

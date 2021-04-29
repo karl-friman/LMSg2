@@ -14,12 +14,12 @@ namespace DevSite.Controllers
 {
     public class ActivitiesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork uow;
 
-        public ActivitiesController(ApplicationDbContext context, IUnitOfWork uow)
+        public ActivitiesController(IUnitOfWork uow)
         {
-            _context = context;
+            //_context = context;
             this.uow = uow;
         }
 
@@ -28,16 +28,11 @@ namespace DevSite.Controllers
         {
             Activity selectedActivity = null;
 
-            List<Activity> activityList = await _context.Activities
-                                            .Include(at => at.ActivityType)
-                                            .Include(m => m.Module)
-                                            .Include(d => d.Documents)
-                                            .OrderBy(x => x.Name)
-                                            .ToListAsync();
+            List<Activity> activityList = await uow.ActivityRepository.GetAll(includeAll: true);
 
             if (selected is not null)
             {
-                selectedActivity = await _context.Activities.FindAsync(selected);
+                selectedActivity = await uow.ActivityRepository.GetOne(Id: selected, includeAll: false);
             }
             else
             {
@@ -61,10 +56,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activities
-                .Include(a => a.ActivityType)
-                .Include(a => a.Module)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var activity = await uow.ActivityRepository.GetOne(id, includeAll: true);
             if (activity == null)
             {
                 return NotFound();
@@ -76,8 +68,8 @@ namespace DevSite.Controllers
         // GET: Activities/Create
         public IActionResult Create()
         {
-            ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id");
-            ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id");
+            //ViewData["ActivityTypeId"] = new SelectList(uow.ActivityTypes.GetAll(false), "Id", "Id");
+            //ViewData["ModuleId"] = new SelectList(uow.ModuleRepository.GetAll(false), "Id", "Id");
             return View();
         }
 
@@ -90,12 +82,12 @@ namespace DevSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(activity);
-                await _context.SaveChangesAsync();
+                await uow.ActivityRepository.AddAsync(activity);
+                await uow.ActivityRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
-            ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
+            //ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
+            //ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
             return View(activity);
         }
 
@@ -107,13 +99,13 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activities.FindAsync(id);
+            var activity = await uow.ActivityRepository.GetOne(id, false);
             if (activity == null)
             {
                 return NotFound();
             }
-            ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
-            ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
+            //ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
+            //ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
             return View(activity);
         }
 
@@ -133,8 +125,8 @@ namespace DevSite.Controllers
             {
                 try
                 {
-                    _context.Update(activity);
-                    await _context.SaveChangesAsync();
+                    uow.ActivityRepository.Update(activity);
+                    await uow.ActivityRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -149,8 +141,8 @@ namespace DevSite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
-            ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
+            //ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
+            //ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
             return View(activity);
         }
 
@@ -162,10 +154,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activities
-                .Include(a => a.ActivityType)
-                .Include(a => a.Module)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var activity = await uow.ActivityRepository.GetOne(id, includeAll: false);
             if (activity == null)
             {
                 return NotFound();
@@ -179,15 +168,15 @@ namespace DevSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var activity = await _context.Activities.FindAsync(id);
-            _context.Activities.Remove(activity);
-            await _context.SaveChangesAsync();
+            var activity = await uow.ActivityRepository.GetOne(id, includeAll: false);
+            uow.ActivityRepository.Remove(activity);
+            await uow.ActivityRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ActivityExists(int id)
         {
-            return _context.Activities.Any(e => e.Id == id);
+            return uow.ActivityRepository.Any(id);
         }
     }
 }

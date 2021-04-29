@@ -37,35 +37,46 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <th>
-                @Html.DisplayFor(modelitem => item.FullName)
-            </th>
-            <th>
-                @Html.DisplayFor(modelitem => item.Email)
-            </th>
-            <th>
-                @Html.DisplayFor(modelitem => item.PhoneNumber)
-            </th>
-            <th>
-                <img src="@Html.DisplayFor(modelitem => item.Avatar)" />
-            </th>
-            <th>
-                @Html.DisplayFor(modelitem => item.DateOfBirth)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.UserType)
-            </th>
-            <th>
-                @Html.DisplayFor(modelItem => item.Course.Name)
-            </th>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>
+                    @Html.DisplayFor(modelitem => item.FullName)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelitem => item.Email)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelitem => item.PhoneNumber)
+                </th>
+                <th>
+                    <img src="@Html.DisplayFor(modelitem => item.Avatar)" />
+                </th>
+                <th>
+                    @Html.DisplayFor(modelitem => item.DateOfBirth)
+                </th>
+                <th>
+                    @Html.DisplayFor(modelItem => item.UserType)
+                </th>
+                <th>
+                    @{
+                        if (item.CourseId is not null)
+                        {
+                            var name = item.Course.Name;
+                            @Html.ActionLink(linkText: name, actionName: "Index", controllerName: "Courses",
+                                             protocol: null, hostname: null, fragment: null,
+                                             routeValues: new { selected = item.Course.Id },
+                                             htmlAttributes: new { @class = "btn btn-outline-primary" })
+                        }
+
+                    }
+                </th>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

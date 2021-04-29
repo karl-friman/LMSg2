@@ -10,14 +10,14 @@ using Web.Data.Data;
 
 namespace Web.Data.Repositories
 {
-    class CourseRepository : ICourseRepository
+    class CourseRepository : IAsyncRepository<Course>
     {
         private readonly ApplicationDbContext db;
         public CourseRepository(ApplicationDbContext db)
         {
             this.db = db;
         }
-        public async Task<List<Course>> GetAllCourses(bool includeAll)
+        public async Task<List<Course>> GetAll(bool includeAll)
         {
             if (includeAll)
             {
@@ -36,7 +36,7 @@ namespace Web.Data.Repositories
                 return courseList;
             }
         }
-        public async Task<Course> GetCourse(int? id, bool includeAll)
+        public async Task<Course> GetOne(int? id, bool includeAll)
         {
             if (includeAll)
             {
@@ -52,7 +52,36 @@ namespace Web.Data.Repositories
                 return await db.Courses
                             .FirstOrDefaultAsync(m => m.Id == id);
             }
+        }
+        public async Task<bool> SaveAsync()
+        {
+            return (await db.SaveChangesAsync()) >= 0;
+        }
+        public async Task AddAsync(Course course)
+        {
+            await db.AddAsync(course);
+        }
+        public void Update(Course course)
+        {
+            db.Update(course);
+        }
+        public void Remove(Course course)
+        {
+            db.Remove(course);
+        }
+        public bool Any(int? Id)
+        {
+            return db.Courses.Any(m => m.Id == Id);
+        }
 
+        public Task<Course> GetOne(string Id, bool includeAll)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Any(string Id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

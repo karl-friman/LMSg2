@@ -11,28 +11,26 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
+using Core.Repositories;
 
 namespace DevSite.Controllers
 {
     public class UsersController : Controller
     {
         private readonly UserManager<LMSUser> _userManager;
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork uow;
 
-        public UsersController(UserManager<LMSUser> userManager, ApplicationDbContext context)
+        public UsersController(UserManager<LMSUser> userManager, IUnitOfWork uow)
         {
             _userManager = userManager;
-            _context = context;
+            this.uow = uow;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
             //var x = _context.Users.
-            return View(await _context.Users
-                              .Include(c=>c.Course)
-                               .OrderBy(x => x.Email)
-                              .ToListAsync());
+            return View(await uow.LMSUserRepository.GetAll(includeAll: true));
 
             //LMSUser selectedUser = null;
 
@@ -67,8 +65,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var user = await uow.LMSUserRepository.GetOne(id,true);
             if (user == null)
             {
                 return NotFound();
@@ -92,8 +89,8 @@ namespace DevSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
-                await _context.SaveChangesAsync();
+                await uow.LMSUserRepository.AddAsync(user);
+                await uow.LMSUserRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(user);
@@ -134,8 +131,8 @@ namespace DevSite.Controllers
             {
                 try
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    uow.LMSUserRepository.Update(user);
+                    await uow.LMSUserRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException ex)
                 { 
@@ -162,8 +159,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var user = await uow.LMSUserRepository.GetOne(id, includeAll: false);
             if (user == null)
             {
                 return NotFound();
@@ -179,8 +175,8 @@ namespace DevSite.Controllers
         {
             //var user = await _context.Users.FirstOrDefaultAsync(id);
             var user = await _userManager.FindByIdAsync(id);
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            uow.LMSUserRepository.Remove(user);
+            await uow.LMSUserRepository.SaveAsync();
 
 
             return RedirectToAction(nameof(Index));
@@ -188,7 +184,7 @@ namespace DevSite.Controllers
 
         private bool UserExists(string id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return uow.LMSUserRepository.Any(id);
         }
     }
 }

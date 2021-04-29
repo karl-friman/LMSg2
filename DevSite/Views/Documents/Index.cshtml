@@ -31,7 +31,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model)
+{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -45,8 +46,25 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FilePath)
             </td>
+            @{
+                string classContents = "";
+                if (item.CourseId.HasValue)
+                {
+                    classContents = "text-success";
+                }
+                if (item.ModuleId.HasValue)
+                {
+                    classContents = "text-warning";
+                }
+                if (item.ActivityId.HasValue)
+                {
+                    classContents = "text-info";
+                }
+            }
             <td>
-                @Html.DisplayFor(modelItem => item.LMSUser.FullName)
+                <span class="@classContents">
+                    @Html.DisplayFor(modelItem => item.LMSUser.FullName)
+                </span>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

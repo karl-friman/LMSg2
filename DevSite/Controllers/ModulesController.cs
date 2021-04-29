@@ -14,12 +14,10 @@ namespace DevSite.Controllers
 {
     public class ModulesController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork uow;
 
-        public ModulesController(ApplicationDbContext context, IUnitOfWork uow)
+        public ModulesController(IUnitOfWork uow)
         {
-            _context = context;
             this.uow = uow;
         }
 
@@ -28,16 +26,11 @@ namespace DevSite.Controllers
         {
             Module selectedModule = null;
 
-            List<Module> moduleList = await _context.Modules
-                                            .Include(a => a.Activities)
-                                            .Include(c => c.Course)
-                                            .Include(d => d.Documents)
-                                            .OrderBy(x => x.Name)
-                                            .ToListAsync();
+            var moduleList = await uow.ModuleRepository.GetAll(includeAll: true);
 
             if (selected is not null)
             {
-                selectedModule = await _context.Modules.FindAsync(selected);
+                selectedModule = await uow.ModuleRepository.GetOne(Id: selected, includeAll: false);
             }
             else
             {
@@ -62,9 +55,9 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var @module = await _context.Modules
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@module == null)
+            var module = await uow.ModuleRepository.GetOne(id, includeAll: true);
+
+            if (module == null)
             {
                 return NotFound();
             }
@@ -75,7 +68,7 @@ namespace DevSite.Controllers
         // GET: Modules/Create
         public IActionResult Create()
         {
-            ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id");
+            //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id");
             return View();
         }
 
@@ -88,11 +81,11 @@ namespace DevSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@module);
-                await _context.SaveChangesAsync();
+                await uow.ModuleRepository.AddAsync(module);
+                await uow.ModuleRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
+            //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
             return View(@module);
         }
 
@@ -104,13 +97,13 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var @module = await _context.Modules.FindAsync(id);
-            if (@module == null)
+            var module = await uow.CourseRepository.GetOne(id, includeAll: true);
+            if (module == null)
             {
                 return NotFound();
             }
-            ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
-            return View(@module);
+            //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
+            return View(module);
         }
 
         // POST: Modules/Edit/5
@@ -120,7 +113,7 @@ namespace DevSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,CourseId")] Module @module)
         {
-            if (id != @module.Id)
+            if (id != module.Id)
             {
                 return NotFound();
             }
@@ -129,8 +122,8 @@ namespace DevSite.Controllers
             {
                 try
                 {
-                    _context.Update(@module);
-                    await _context.SaveChangesAsync();
+                    uow.ModuleRepository.Update(module);
+                    await uow.CourseRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -145,7 +138,7 @@ namespace DevSite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
+            //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
             return View(@module);
         }
 
@@ -157,14 +150,14 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var @module = await _context.Modules
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@module == null)
+            var module = await uow.ModuleRepository.GetOne(id, includeAll: false);
+                
+            if (module == null)
             {
                 return NotFound();
             }
 
-            return View(@module);
+            return View(module);
         }
 
         // POST: Modules/Delete/5
@@ -172,15 +165,15 @@ namespace DevSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @module = await _context.Modules.FindAsync(id);
-            _context.Modules.Remove(@module);
-            await _context.SaveChangesAsync();
+            var module = await uow.ModuleRepository.GetOne(id, includeAll: false);
+            uow.ModuleRepository.Remove(module);
+            await uow.ModuleRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ModuleExists(int id)
         {
-            return _context.Modules.Any(e => e.Id == id);
+            return uow.ModuleRepository.Any(id);
         }
     }
 }

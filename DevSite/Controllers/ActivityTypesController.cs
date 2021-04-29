@@ -13,18 +13,17 @@ namespace DevSite.Controllers
 {
     public class ActivityTypesController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork uow;
 
-        public ActivityTypesController(ApplicationDbContext context)
+        public ActivityTypesController(IUnitOfWork uow)
         {
-            _context = context;
+            this.uow = uow;
         }
 
         // GET: ActivityTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ActivityTypes.OrderBy(x => x.Name).ToListAsync());
+            return View(await uow.ActivityTypeRepository.GetAll(includeAll: false));
         }
 
         // GET: ActivityTypes/Details/5
@@ -35,8 +34,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var activityType = await _context.ActivityTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var activityType = await uow.ActivityTypeRepository.GetOne(id, false);
             if (activityType == null)
             {
                 return NotFound();
@@ -60,8 +58,8 @@ namespace DevSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(activityType);
-                await _context.SaveChangesAsync();
+                await uow.ActivityTypeRepository.AddAsync(activityType);
+                await uow.ActivityTypeRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(activityType);
@@ -75,7 +73,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var activityType = await _context.ActivityTypes.FindAsync(id);
+            var activityType = await uow.ActivityTypeRepository.GetOne(id,false);
             if (activityType == null)
             {
                 return NotFound();
@@ -99,8 +97,8 @@ namespace DevSite.Controllers
             {
                 try
                 {
-                    _context.Update(activityType);
-                    await _context.SaveChangesAsync();
+                    uow.ActivityTypeRepository.Update(activityType);
+                    await uow.ActivityTypeRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -126,8 +124,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var activityType = await _context.ActivityTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var activityType = await uow.ActivityTypeRepository.GetOne(id,false);
             if (activityType == null)
             {
                 return NotFound();
@@ -141,15 +138,16 @@ namespace DevSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var activityType = await _context.ActivityTypes.FindAsync(id);
-            _context.ActivityTypes.Remove(activityType);
-            await _context.SaveChangesAsync();
+            var activityType = await uow.ActivityTypeRepository.GetOne(id, false);
+            uow.ActivityTypeRepository.Remove(activityType);
+
+            await uow.ActivityTypeRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ActivityTypeExists(int id)
         {
-            return _context.ActivityTypes.Any(e => e.Id == id);
+            return uow.ActivityTypeRepository.Any(id);
         }
     }
 }

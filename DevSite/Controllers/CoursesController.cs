@@ -14,11 +14,11 @@ namespace DevSite.Controllers
 {
     public class CoursesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork uow;
-        public CoursesController(ApplicationDbContext context, IUnitOfWork uow)
+        public CoursesController(IUnitOfWork uow)//ApplicationDbContext context, IUnitOfWork uow)
         {
-            _context = context;
+            //_context = context;
             this.uow = uow;
         }
 
@@ -27,11 +27,11 @@ namespace DevSite.Controllers
         {
             Course selectedCourse = null;
 
-            var courseList = await uow.CourseRepository.GetAllCourses(includeAll: true);
+            var courseList = await uow.CourseRepository.GetAll(includeAll: true);
 
             if (selected is not null)
             {
-                selectedCourse = await _context.Courses.FindAsync(selected);
+                selectedCourse = await uow.CourseRepository.GetOne(Id: selected, includeAll: true);
             }
             else
             {
@@ -55,8 +55,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var course = await uow.CourseRepository.GetCourse(id, includeAll: true);
-
+            var course = await uow.CourseRepository.GetOne(id, includeAll: true);
 
             if (course == null)
             {
@@ -81,8 +80,8 @@ namespace DevSite.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(course);
-                await _context.SaveChangesAsync();
+                await uow.CourseRepository.AddAsync(course);
+                await uow.CourseRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(course);
@@ -96,7 +95,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses.FindAsync(id);
+            var course = await uow.CourseRepository.GetOne(id, includeAll: true);
             if (course == null)
             {
                 return NotFound();
@@ -120,8 +119,8 @@ namespace DevSite.Controllers
             {
                 try
                 {
-                    _context.Update(course);
-                    await _context.SaveChangesAsync();
+                    uow.CourseRepository.Update(course);
+                    await uow.CourseRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -147,8 +146,7 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var course = await uow.CourseRepository.GetOne(id, includeAll: false);
             if (course == null)
             {
                 return NotFound();
@@ -162,15 +160,15 @@ namespace DevSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var course = await _context.Courses.FindAsync(id);
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
+            var course = await uow.CourseRepository.GetOne(id, includeAll: false);
+            uow.CourseRepository.Remove(course);
+            await uow.CourseRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CourseExists(int id)
         {
-            return _context.Courses.Any(e => e.Id == id);
+            return uow.CourseRepository.Any(id);
         }
     }
 }
