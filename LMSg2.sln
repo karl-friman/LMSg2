@@ -3,17 +3,26 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{0B2A9185-803C-4AB8-93A3-2F6A7A65B1F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{0B2A9185-803C-4AB8-93A3-2F6A7A65B1F1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A95D5F1A-05D3-434C-903D-A0CDA18CF2FB} = {A95D5F1A-05D3-434C-903D-A0CDA18CF2FB}
+		{E2B665ED-C236-4E4D-8872-F0BB2A37DE34} = {E2B665ED-C236-4E4D-8872-F0BB2A37DE34}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{566BE30B-7B66-4270-B7B1-6B382FABACDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{566BE30B-7B66-4270-B7B1-6B382FABACDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{DDDBD475-F49D-40B3-8F9C-A7AC65475298}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{DDDBD475-F49D-40B3-8F9C-A7AC65475298}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevSite", "DevSite\DevSite.csproj", "{20626D7B-3308-45DD-97B6-ABC40D7E83BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevSite", "DevSite\DevSite.csproj", "{20626D7B-3308-45DD-97B6-ABC40D7E83BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Data", "API.Data\API.Data.csproj", "{A95D5F1A-05D3-434C-903D-A0CDA18CF2FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API.Data", "API.Data\API.Data.csproj", "{A95D5F1A-05D3-434C-903D-A0CDA18CF2FB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E2B665ED-C236-4E4D-8872-F0BB2A37DE34} = {E2B665ED-C236-4E4D-8872-F0BB2A37DE34}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Data", "Web.Data\Web.Data.csproj", "{E7B9D0AD-B7E5-42EA-BF8A-D407016BCF54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.Data", "Web.Data\Web.Data.csproj", "{E7B9D0AD-B7E5-42EA-BF8A-D407016BCF54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Core", "API.Core\API.Core.csproj", "{E2B665ED-C236-4E4D-8872-F0BB2A37DE34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +54,10 @@ Global
 		{E7B9D0AD-B7E5-42EA-BF8A-D407016BCF54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7B9D0AD-B7E5-42EA-BF8A-D407016BCF54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7B9D0AD-B7E5-42EA-BF8A-D407016BCF54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B665ED-C236-4E4D-8872-F0BB2A37DE34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B665ED-C236-4E4D-8872-F0BB2A37DE34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B665ED-C236-4E4D-8872-F0BB2A37DE34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B665ED-C236-4E4D-8872-F0BB2A37DE34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
