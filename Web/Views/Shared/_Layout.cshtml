@@ -1,206 +1,61 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using Core.Entities;
-@inject SignInManager<LMSUser> SignInManager
-@inject UserManager<LMSUser> UserManager
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Web</title>
-
-
-    <!-- CSS -->
-    @*<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500&display=swap">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />*@
-
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/startbootstrap-simple-sidebar@5.1.2/css/simple-sidebar.css" />
-    <style>
-        footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-   
-    <div class="d-flex" id="wrapper">
-        <!-- Sidebar -->
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <div style="background: #fff;" class="border-right d-flex flex-column justify-content-between" id="sidebar-wrapper">
-                <div>
-                    <div style="background: #109BF8; " class="col text-left logo pl-5">
-                        <a style="color: #fff;" asp-controller="Home" asp-action="Index">LMS</a>
-                    </div>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse w-100">
+    <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Web</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
-                            <li style="background: #003277;">
-                                @*<span style="width: 30px; height: 30px; padding: 10px; background: #f5f5f5; border-radius: 100%;">A</span>*@
-                                <a style=" color: #fff; " class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="Index">Courses</a>
                             </li>
-
-
-                            <li class="pl-5 mt-3">
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="Index">Home</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Modules" asp-action="Index">Modules</a>
                             </li>
-                            <li class="pl-5 mt-3">
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="Parking">My Course</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Activities" asp-action="Index">Activities</a>
                             </li>
-                            <li class="pl-5 mt-3">
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RetrieveParkedVehicle">MyClass</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Documents" asp-action="Index">Documents</a>
                             </li>
-                            <li class="pl-5 mt-3">
-                                <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Schedule</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ActivityTypes" asp-action="Index">Activity Types</a>
                             </li>
-                            <li class="pl-5 mt-3">
-                                <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Files</a>
-                            </li>
-                            <li class="pl-5 mt-3">
-                                <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Literature</a>
-                            </li>
-                            <li class="pl-5 mt-3">
-
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Assignments</a>
-                            </li>
-
                         </ul>
-
-
-
+                        <partial name="_LoginPartial" />
                     </div>
                 </div>
+            </nav>
+        </header>
+    <div class="container">
+        <main role="main" class="pb-3">
 
-                <form style="background: #109BF8; color: #fff;" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button style="color: #fff;" type="submit" class="nav-link btn ">Logout</button>
-                </form>
-            </div>
-        }
-
-        @*Sidebar Admin*@
-
-        @*else if (UserType.Admin.Equals("Admin") && SignInManager.IsSignedIn(User))
-        { 
-            <div style="background: #fff;" class="border-right d-flex flex-column justify-content-between" id="sidebar-wrapper">
-                <div>
-                    <div style="background: #109BF8; " class="col text-left logo">
-                        <a style="color: #fff;" asp-controller="Home" asp-action="Index">LMS</a>
-                    </div>
-                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse w-100">
-                        <ul class="navbar-nav flex-grow-1">
-                            <li style="background: #003277;">
-                                <a style=" color: #fff; " class="nav-link w-100" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-                            </li>
-
-
-                            <li class="pl-5 mt-3">
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="Index">Home</a>
-                            </li>
-                            <li class="pl-5 mt-3">
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="Parking">Students</a>
-                            </li>
-                            <li class="pl-5 mt-3">
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RetrieveParkedVehicle">Staff</a>
-                            </li>
-                            <li class="pl-5 mt-3">
-                                <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Literature</a>
-                            </li>
-
-                        </ul>
-
-
-
-                    </div>
-                </div>
-
-                <form style="background: #109BF8; color: #fff;" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button style="color: #fff;" type="submit" class="nav-link btn ">Logout</button>
-                </form>
-            </div>*@
-
-
-
-        <div style="background: #F7F9FB;" id="page-content-wrapper">
-            <div class="container-fluid">
-                @RenderBody()
-            </div>
-
-        </div>
+            @RenderBody()
+        </main>
 
     </div>
-        @*<nav class="sidebar active d-print-none w-25">
-                <div style="background: #109BF8; " class="col text-left logo">
-                    <a style="color: #fff;" asp-controller="Home" asp-action="Index"><img src="" />LMS</a>
-                </div>
-
-                <ul class="list-unstyled menu-elements">
-                    <li style="background: #003277;" >
-                        <a style="color: #fff;" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-                    </li>
-
-
-                    <li>
-                        <a style="color: #000;" asp-controller="Vehicles" asp-action="Index">Home</a>
-                    </li>
-                    <li>
-                        <a style="color: #000;" asp-controller="Vehicles" asp-action="Parking">Students</a>
-                    </li>
-                    <li>
-                        <a style="color: #000;" asp-controller="Vehicles" asp-action="RetrieveParkedVehicle">Staff</a>
-                    </li>
-                    <li>
-                        <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
-                        <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Literature</a>
-                    </li>
-                    <li class="nav-item">
-                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-                        </form>
-                    </li>
-                </ul>
-
-            </nav>*@
-
-    <!-- End sidebar -->
    
-    @*<div style="background: #f5f5f5" class="container">
-            <main role="main" class="pb-3">
 
-                @RenderBody()
-            </main>
-
-        </div>*@
-
-
-    <footer class="footer text-muted">
-        <div class="container text-center">
+    <footer class="border-top footer text-muted">
+        <div class="container">
             &copy; 2021 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <!-- Javascript -->
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
-    @*@await RenderSectionAsync("Scripts", required: false)
-
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/scripts.js"></script>
-
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>*@
-
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

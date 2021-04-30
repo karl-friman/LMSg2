@@ -16,8 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\API.Data\API.Data.csproj" />
-    <ProjectReference Include="..\API\API.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Web.Data\Web.Data.csproj" />
   </ItemGroup>

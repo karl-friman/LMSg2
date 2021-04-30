@@ -19,31 +19,30 @@ namespace Web
             // CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<ApplicationDbContext>();
-                context.Database.EnsureDeleted();
-                context.Database.Migrate();
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
+            //    var context = services.GetRequiredService<ApplicationDbContext>();
+            //    //context.Database.EnsureDeleted();
+            //    context.Database.Migrate();
 
-                //dotnet user-sercrets set "AdminPW" "LMS"
-                var confiq = services.GetRequiredService<IConfiguration>();
+            //    //dotnet user-sercrets set "AdminPW" "LMS"
+            //    var confiq = services.GetRequiredService<IConfiguration>();
 
-                var adminPW = confiq["AdminPW"];
-                var studentPW = confiq["StudentPW"];
+            // //   var adminPW = confiq["AdminPW"];
 
-                try
-                {
-                    SeedData.InitAsync(services, adminPW, studentPW)
-                        .Wait();
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex.Message, "Seed Fail");
-                    throw;
-                }
-            }
+            //    try
+            //    {
+            //        SeedData.InitAsync(services, adminPW)
+            //            .Wait();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var logger = services.GetRequiredService<ILogger<Program>>();
+            //        logger.LogError(ex.Message, "Seed Fail");
+            //        throw;
+            //    }
+            //}
 
 
             host.Run();
