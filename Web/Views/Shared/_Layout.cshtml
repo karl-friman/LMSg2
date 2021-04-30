@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Entities;
+@inject SignInManager<LMSUser> SignInManager
+@inject UserManager<LMSUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -36,23 +41,37 @@
                     </div>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse w-100">
                         <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="Index">Courses</a>
+                            <li style="background: #003277;">
+                                <a style=" color: #fff; " class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Modules" asp-action="Index">Modules</a>
+
+
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Activities" asp-action="Index">Activities</a>
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Courses" asp-action="Index">My Courses</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Documents" asp-action="Index">Documents</a>
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Classes" asp-action="Index">My Class</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="ActivityTypes" asp-action="Index">Activity Types</a>
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Schedule" asp-action="Index">Schedule</a>
                             </li>
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Documents" asp-action="Index">Files</a>
+                            </li>
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Literature" asp-action="Index">Literature</a>
+                            </li>
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Assignments" asp-action="Index">Assignments</a>
+                            </li>
+
                         </ul>
-                        <partial name="_LoginPartial" />
+
+
+
                     </div>
                 </div>
 
@@ -65,44 +84,44 @@
         @*Sidebar Admin*@
 
         @*else if (UserType.Admin.Equals("Admin") && SignInManager.IsSignedIn(User))
-            {
-                <div style="background: #fff;" class="border-right d-flex flex-column justify-content-between" id="sidebar-wrapper">
-                    <div>
-                        <div style="background: #109BF8; " class="col text-left logo">
-                            <a style="color: #fff;" asp-controller="Home" asp-action="Index">LMS</a>
-                        </div>
-                        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse w-100">
-                            <ul class="navbar-nav flex-grow-1">
-                                <li style="background: #003277;">
-                                    <a style=" color: #fff; " class="nav-link w-100" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-                                </li>
-
-
-                                <li class="pl-5 mt-3">
-                                    <a style="color: #000;" asp-controller="Vehicles" asp-action="Index">Home</a>
-                                </li>
-                                <li class="pl-5 mt-3">
-                                    <a style="color: #000;" asp-controller="Vehicles" asp-action="Parking">Students</a>
-                                </li>
-                                <li class="pl-5 mt-3">
-                                    <a style="color: #000;" asp-controller="Vehicles" asp-action="RetrieveParkedVehicle">Staff</a>
-                                </li>
-                                <li class="pl-5 mt-3">
-                                    <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
-                                    <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Literature</a>
-                                </li>
-
-                            </ul>
-
-
-
-                        </div>
+        {
+            <div style="background: #fff;" class="border-right d-flex flex-column justify-content-between" id="sidebar-wrapper">
+                <div>
+                    <div style="background: #109BF8; " class="col text-left logo">
+                        <a style="color: #fff;" asp-controller="Home" asp-action="Index">LMS</a>
                     </div>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse w-100">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li style="background: #003277;">
+                                <a style=" color: #fff; " class="nav-link w-100" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                            </li>
 
-                    <form style="background: #109BF8; color: #fff;" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button style="color: #fff;" type="submit" class="nav-link btn ">Logout</button>
-                    </form>
-                </div>*@
+
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Vehicles" asp-action="Index">Home</a>
+                            </li>
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Vehicles" asp-action="Parking">Students</a>
+                            </li>
+                            <li class="pl-5 mt-3">
+                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RetrieveParkedVehicle">Staff</a>
+                            </li>
+                            <li class="pl-5 mt-3">
+                                <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
+                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Literature</a>
+                            </li>
+
+                        </ul>
+
+
+
+                    </div>
+                </div>
+
+                <form style="background: #109BF8; color: #fff;" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button style="color: #fff;" type="submit" class="nav-link btn ">Logout</button>
+                </form>
+            </div>*@
 
 
 
@@ -148,23 +167,24 @@
         </nav>*@
 
     <!-- End sidebar -->
-    @*<div style="background: #f5f5f5" class="container">
-            <main role="main" class="pb-3">
+   @*<div style="background: #f5f5f5" class="container">
+                    <main role="main" class="pb-3">
 
-            @RenderBody()
-        </main>
+                    @RenderBody()
+                </main>
 
-    </div>
-   
+            </div>*@
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
+
+            <footer class="footer text-muted text-center">
+                <div class="container">
+                    &copy; 2021 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
+
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+            <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="~/js/site.js" asp-append-version="true"></script>
+            @await RenderSectionAsync("Scripts", required: false)
+        </body>
+        </html>
