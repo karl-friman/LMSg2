@@ -13,7 +13,7 @@ namespace Web.Data.Data
 {
     public class SeedData
     {
-        public static async Task InitAsync(IServiceProvider services,string adminPW)
+        public static async Task InitAsync(IServiceProvider services,string adminPW,string studentPW)
         {
             using (var context = new ApplicationDbContext(services.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
@@ -78,18 +78,29 @@ namespace Web.Data.Data
 
 
                 var addAdminResult = await userManager.CreateAsync(admin, adminPW);
+                var addStudentResult = await userManager.CreateAsync(student, studentPW);
                 if (!addAdminResult.Succeeded) throw new Exception(string.Join("\n", addAdminResult.Errors));
+                if (!addStudentResult.Succeeded) throw new Exception(string.Join("\n", addStudentResult.Errors));
 
                 var adminUser = await userManager.FindByNameAsync(admin.UserName);
+                var studentUser = await userManager.FindByNameAsync(student.UserName);
 
 
                 foreach (var role in roleNames)
                 {
-                    if (await userManager.IsInRoleAsync(adminUser, role)) continue;
+                    if (await userManager.IsInRoleAsync(adminUser, role)) //continue;
+                    {
+                        var addToRoleResult = await userManager.AddToRoleAsync(adminUser, role);
 
-                    var addToRoleResult = await userManager.AddToRoleAsync(adminUser, role);
+                        if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
+                    }
+                    else
+                    {
+                        var addToRoleResult = await userManager.AddToRoleAsync(studentUser, role);
 
-                    if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
+                        if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
+
+                    }
                 }
 
                 //  await context.AddRangeAsync(users);
