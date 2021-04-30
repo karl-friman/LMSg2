@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using Core.Entities;
-@inject SignInManager<LMSUser> SignInManager
-@inject UserManager<LMSUser> UserManager
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -40,42 +36,23 @@
                     </div>
                     <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse w-100">
                         <ul class="navbar-nav flex-grow-1">
-                            <li style="background: #003277;">
-                                @*<span style="width: 30px; height: 30px; padding: 10px; background: #f5f5f5; border-radius: 100%;">A</span>*@
-                                <a style=" color: #fff; " class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Courses" asp-action="Index">Courses</a>
                             </li>
-
-
-                            <li class="pl-5 mt-3">
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="Index">Home</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Modules" asp-action="Index">Modules</a>
                             </li>
-                            <li class="pl-5 mt-3">
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="Parking">My Course</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Activities" asp-action="Index">Activities</a>
                             </li>
-                            <li class="pl-5 mt-3">
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RetrieveParkedVehicle">MyClass</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Documents" asp-action="Index">Documents</a>
                             </li>
-                            <li class="pl-5 mt-3">
-                                <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Schedule</a>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ActivityTypes" asp-action="Index">Activity Types</a>
                             </li>
-                            <li class="pl-5 mt-3">
-                                <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Files</a>
-                            </li>
-                            <li class="pl-5 mt-3">
-                                <a href="C:\Users\susan\source\repos\LMSg2\Web\Views\Shared\_Layout.cshtml"></a>
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Literature</a>
-                            </li>
-                            <li class="pl-5 mt-3">
-
-                                <a style="color: #000;" asp-controller="Vehicles" asp-action="RegisterNewVehicle">Assignments</a>
-                            </li>
-
                         </ul>
-
-
-
+                        <partial name="_LoginPartial" />
                     </div>
                 </div>
 
@@ -174,32 +151,20 @@
     @*<div style="background: #f5f5f5" class="container">
             <main role="main" class="pb-3">
 
-                @RenderBody()
-            </main>
+            @RenderBody()
+        </main>
 
-        </div>*@
+    </div>
+   
 
-
-    <footer class="footer text-muted">
-        <div class="container text-center">
+    <footer class="border-top footer text-muted">
+        <div class="container">
             &copy; 2021 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <!-- Javascript -->
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
-    @*@await RenderSectionAsync("Scripts", required: false)
-
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/scripts.js"></script>
-
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>*@
-
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
