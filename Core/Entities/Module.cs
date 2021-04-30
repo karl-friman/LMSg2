@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace Core.Entities
         public DateTime EndDate { get; set; }
 
         //Foreign keys
+        [Display(Name = "Course")]
         public int CourseId { get; set; }
 
         //Navigation props 
