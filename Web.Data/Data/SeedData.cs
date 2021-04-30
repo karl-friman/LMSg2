@@ -56,7 +56,8 @@ namespace Web.Data.Data
                 LMSUser admin = adminCreator(fake);
                 LMSUser student = studentCreator(fake);
 
-                var roleNames = new[] { nameof(UserType.Admin), nameof(UserType.Student) };
+                //var roleNames = new[] { nameof(UserType.Admin), nameof(UserType.Student) };
+                var roleNames = new[] { "Admin", "Student" };
 
                 foreach (var roleName in roleNames)
                 {
