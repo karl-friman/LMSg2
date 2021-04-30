@@ -66,6 +66,8 @@ namespace Web
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                //endpoints.MapDefaultControllerRoute().RequireAuthorization();
+                endpoints.MapRazorPages();
             });
         }
     }
