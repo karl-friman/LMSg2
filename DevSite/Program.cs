@@ -27,9 +27,10 @@ namespace DevSite
                 var config = services.GetRequiredService<IConfiguration>();
                 //dotnet user-secrets set "adminPW""LMS-Group2"
                 var adminPW = config["adminPW"];
+                var studentPW = config["studentPW"];
                 try
                 {
-                    SeedData.InitAsync(services, adminPW).Wait();
+                    SeedData.InitAsync(services, adminPW, studentPW).Wait();
                 }
                 catch (Exception ex)
                 {
