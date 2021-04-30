@@ -9,6 +9,7 @@ using Core.Entities;
 using Web.Data.Data;
 using Core.ViewModels;
 using Core.Repositories;
+using Core.Utilities;
 
 namespace DevSite.Controllers
 {
@@ -37,9 +38,13 @@ namespace DevSite.Controllers
                 selectedModule = null;
             }
 
+            var selectListItems = new selectListItemCreator(uow);
+            
+
             ModuleViewModel moduleIndexModel = new ModuleViewModel
             {
                 Modules = moduleList,
+                CourseSelectList = await selectListItems.GetSelectListItems(),
                 SelectedModule = selectedModule
             };
 
@@ -62,13 +67,16 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(@module);
+            return View(module);
         }
 
         // GET: Modules/Create
-        public IActionResult Create()
+        public async Task<IActionResult> CreateAsync()
         {
-            //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id");
+            var selectListCreator = new selectListItemCreator(uow);
+            IEnumerable<SelectListItem> CourseSelectList = await selectListCreator.GetSelectListItems();
+            ViewData["CourseSelectList"] = CourseSelectList;
+            var courseList = await uow.ModuleRepository.GetAll(includeAll: false);
             return View();
         }
 
@@ -77,7 +85,7 @@ namespace DevSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,CourseId")] Module @module)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,CourseId")] Module module)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +94,7 @@ namespace DevSite.Controllers
                 return RedirectToAction(nameof(Index));
             }
             //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
-            return View(@module);
+            return View(module);
         }
 
         // GET: Modules/Edit/5
@@ -111,7 +119,7 @@ namespace DevSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,CourseId")] Module @module)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,StartDate,EndDate,CourseId")] Module module)
         {
             if (id != module.Id)
             {
@@ -127,7 +135,7 @@ namespace DevSite.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ModuleExists(@module.Id))
+                    if (!ModuleExists(module.Id))
                     {
                         return NotFound();
                     }
@@ -139,7 +147,7 @@ namespace DevSite.Controllers
                 return RedirectToAction(nameof(Index));
             }
             //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
-            return View(@module);
+            return View(module);
         }
 
         // GET: Modules/Delete/5

@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,5 +15,6 @@ namespace Core.ViewModels
 
         [Display(Name = "Selected Module")]
         public Module SelectedModule { get; set; }
+        public IEnumerable<SelectListItem> CourseSelectList { get; set; }
     }
 }
