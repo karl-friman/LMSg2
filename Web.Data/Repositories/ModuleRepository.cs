@@ -81,5 +81,11 @@ namespace Web.Data.Repositories
         {
             throw new NotImplementedException();
         }
+
+
+        public async Task<IEnumerable<Module>> GetAll()
+        {
+            return await db.Modules.ToListAsync();
+        }
     }
 }

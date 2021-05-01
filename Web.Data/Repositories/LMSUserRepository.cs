@@ -76,5 +76,11 @@ namespace Web.Data.Repositories
         {
             return db.Users.Any(m => m.Id == Id);
         }
+
+
+        public async Task<IEnumerable<LMSUser>> GetAll()
+        {
+            return await db.Users.ToListAsync();
+        }
     }
 }

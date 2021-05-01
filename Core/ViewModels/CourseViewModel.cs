@@ -10,9 +10,13 @@ namespace Core.ViewModels
 {
     public class CourseViewModel
     {
-        public List<Course> Courses { get; set; }
+        public string Name { get; set; }
+        [Display(Name = "Course Description")]
+        public string Description { get; set; }
+        [Display(Name = "Course Start Date")]
+        public DateTime StartDate { get; set; }
+        [Display(Name = "Course End Date")]
+        public DateTime EndDate { get; set; }
 
-        [Display(Name = "Selected Course")]
-        public Course SelectedCourse { get; set; }
     }
 }

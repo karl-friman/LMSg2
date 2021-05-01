@@ -9,6 +9,7 @@ using Core.Entities;
 using Core.ViewModels;
 using Web.Data.Data;
 using Core.Repositories;
+using AutoMapper;
 
 namespace DevSite.Controllers
 {
@@ -16,35 +17,21 @@ namespace DevSite.Controllers
     {
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork uow;
-        public CoursesController(IUnitOfWork uow)//ApplicationDbContext context, IUnitOfWork uow)
+        private readonly IMapper mapper;
+        public CoursesController(IUnitOfWork uow, IMapper mapper)//ApplicationDbContext context, IUnitOfWork uow)
         {
             //_context = context;
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index(int? selected)
+        public async Task<IActionResult> Index()
         {
-            Course selectedCourse = null;
-
-            var courseList = await uow.CourseRepository.GetAll(includeAll: true);
-
-            if (selected is not null)
-            {
-                selectedCourse = await uow.CourseRepository.GetOne(Id: selected, includeAll: true);
-            }
-            else
-            {
-                selectedCourse = null;
-            }
-
-            CourseViewModel courseIndexModel = new CourseViewModel
-            {
-                Courses = courseList,
-                SelectedCourse = selectedCourse
-            };
-
-            return View(courseIndexModel);
+            
+            var courses = await uow.CourseRepository.GetAll();
+            var view = mapper.Map<IEnumerable<CourseViewModel>>(courses);
+            return View(view);
         }
 
         // GET: Courses/Details/5

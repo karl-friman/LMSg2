@@ -83,5 +83,11 @@ namespace Web.Data.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<Course>> GetAll()
+        {
+            return await db.Courses.ToListAsync();
+        }
+
     }
 }

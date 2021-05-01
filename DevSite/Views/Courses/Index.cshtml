@@ -1,4 +1,4 @@
-﻿@using Core.ViewModels;
+﻿@*@using Core.ViewModels;
 @model CourseViewModel
 
 @{
@@ -14,19 +14,22 @@
     <thead>
         <tr>
             <th width="300">
-                @Html.DisplayNameFor(model => model.Courses)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
-                Modules
+            <th width="300">
+                @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
-                Documents
+            <th width="300">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th width="300">
+                @Html.DisplayNameFor(model => model.EndDate)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var course in Model.Courses)
+        @foreach (var item in Model)
         {
             string classContents = "btn btn-outline-primary";
             <tr>
@@ -117,4 +120,4 @@
             </tr>
         }
     </tbody>
-</table>
+</table>*@
