@@ -142,14 +142,12 @@
                     @Html.DisplayNameFor(model => model.Name)
                 </th>
                 <th width="300">
-                    @Html.DisplayNameFor(model => model.Description)
+                   Modules
                 </th>
                 <th width="300">
-                    @Html.DisplayNameFor(model => model.StartDate)
+                    Documents
                 </th>
-                <th width="300">
-                    @Html.DisplayNameFor(model => model.EndDate)
-                </th>
+ 
                 <th></th>
             </tr>
         </thead>
@@ -181,11 +179,11 @@
                         <div><strong>@Html.DisplayNameFor(modelItem => item.StartDate):</strong> @Html.DisplayFor(modelItem => item.StartDate)</div>
                         <div><strong>@Html.DisplayNameFor(modelItem => item.EndDate):</strong> @Html.DisplayFor(modelItem => item.EndDate)</div>
                     </td>
-                    @*<td>
-                        @if (course.Modules != null)
+                    <td>
+                        @if (item.Modules != null)
                         {
                             <div>
-                                @foreach (var module in course.Modules)
+                                @foreach (var module in item.Modules)
                                 {
                                     if (module != null)
                                     {
@@ -223,11 +221,11 @@
                             </div>
 
                         }
-                    </td>*@
-                    @*<td>
-                        @if (course.Documents != null)
+                    </td>
+                    <td>
+                        @if (item.Documents != null)
                         {
-                            @foreach (var document in course.Documents)
+                            @foreach (var document in item.Documents)
                             {
                                 <div>
                                     <a class="btn btn-outline-success" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
@@ -236,7 +234,7 @@
                                 </div>
                             }
                         }
-                    </td>*@
+                    </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Name">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.Name">Details</a> |

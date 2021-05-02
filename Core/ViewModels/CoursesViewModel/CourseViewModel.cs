@@ -19,5 +19,9 @@ namespace Core.ViewModels
         [Display(Name = "Course End Date")]
         public DateTime EndDate { get; set; }
 
+        public ICollection<Module> Modules { get; set; }
+        public ICollection<Activity> Activities { get; set; }
+        public ICollection<Document> Documents { get; set; }
+
     }
 }

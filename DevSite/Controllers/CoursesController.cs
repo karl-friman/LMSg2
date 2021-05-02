@@ -18,23 +18,54 @@ namespace DevSite.Controllers
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
-        private readonly ApplicationDbContext db;
-        public CoursesController(IUnitOfWork uow, IMapper mapper, ApplicationDbContext db)//ApplicationDbContext context, IUnitOfWork uow)
+      
+        public CoursesController(IUnitOfWork uow, IMapper mapper)
         {
             //_context = context;
             this.uow = uow;
             this.mapper = mapper;
-            this.db = db;
+         
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? selected)
         {
 
-            var courses = await uow.CourseRepository.GetAll(); ;
-          //  var model = mapper.ProjectTo<CourseViewModel>(db.Courses);
-          var model =  mapper.Map<IEnumerable<CourseViewModel>>(courses);
+          
+            Course selectedCourse = null;
+
+            var courseList = await uow.CourseRepository.GetAll(includeAll: true);
+
+            if (selected is not null)
+            {
+                selectedCourse = await uow.CourseRepository.GetOne(Id: selected, includeAll: true);
+            }
+            else
+            {
+                selectedCourse = null;
+            }
+
+            //CourseViewModel courseIndexModel = new CourseViewModel
+            //{
+            //    Courses = courseList,
+            //    SelectedCourse = selectedCourse
+            //};
+
+            //  return View(courseIndexModel);
+
+
+
+
+            var courses = await uow.CourseRepository.GetAll(includeAll: true); ;
+
+            var model = mapper.Map<IEnumerable<CourseViewModel>>(courses);
             return View(model);
+
+
+
+
+
+
         }
 
         // GET: Courses/Details/5
