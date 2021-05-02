@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.ViewModels.CoursesViewModel
+namespace Core.ViewModels.ModulesViewModel
 {
-    class CoursesDetailsViewModel
+    class ModuleDetailsViewModel
     {
     }
 }

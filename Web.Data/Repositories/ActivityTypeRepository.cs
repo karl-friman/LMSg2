@@ -23,6 +23,7 @@ namespace Web.Data.Repositories
             if (includeAll)
             {
                 List<ActivityType> activityTypeList = await db.ActivityTypes
+                                           // .Include(d => d.Activities)
                                             .OrderBy(x => x.Name)
                                             .ToListAsync();
                 return activityTypeList;

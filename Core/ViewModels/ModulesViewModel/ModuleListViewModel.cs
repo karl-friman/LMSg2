@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.ViewModels.CoursesViewModel
+namespace Core.ViewModels.ModulesViewModel
 {
-    class CoursesListViewModel
+    class ModuleListViewModel
     {
 
         public string Name { get; set; }

@@ -9,42 +9,54 @@ using Core.Entities;
 using Web.Data.Data;
 using Core.ViewModels;
 using Core.Repositories;
+using AutoMapper;
+using Core.ViewModels.ModulesViewModel;
 
 namespace DevSite.Controllers
 {
     public class ModulesController : Controller
     {
         private readonly IUnitOfWork uow;
+        private readonly IMapper mapper;
 
-        public ModulesController(IUnitOfWork uow)
+        public ModulesController(IUnitOfWork uow, IMapper mapper)
         {
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: Modules
         public async Task<IActionResult> Index(int? selected)
         {
-            Module selectedModule = null;
+            //Module selectedModule = null;
 
-            var moduleList = await uow.ModuleRepository.GetAll(includeAll: true);
+            //var moduleList = await uow.ModuleRepository.GetAll(includeAll: true);
 
-            if (selected is not null)
-            {
-                selectedModule = await uow.ModuleRepository.GetOne(Id: selected, includeAll: false);
-            }
-            else
-            {
-                selectedModule = null;
-            }
+            //if (selected is not null)
+            //{
+            //    selectedModule = await uow.ModuleRepository.GetOne(Id: selected, includeAll: false);
+            //}
+            //else
+            //{
+            //    selectedModule = null;
+            //}
 
-            ModuleViewModel moduleIndexModel = new ModuleViewModel
-            {
-                Modules = moduleList,
-                SelectedModule = selectedModule
-            };
+            //ModuleViewModel moduleIndexModel = new ModuleViewModel
+            //{
+            //    Modules = moduleList,
+            //    SelectedModule = selectedModule
+            //};
+            //return View(moduleIndexModel);
+
+            var modules = await uow.ModuleRepository.GetAll(includeAll: true); ;
+
+            var model = mapper.Map<IEnumerable<ModuleViewModel>>(modules);
+            return View(model);
 
 
-            return View(moduleIndexModel);
+
+
+
         }
 
         // GET: Modules/Details/5

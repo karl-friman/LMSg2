@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.ViewModels.CoursesViewModel
+namespace Core.ViewModels.ModulesViewModel
 {
-    public class CourseViewModel
+    public class ModuleViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -19,20 +19,16 @@ namespace Core.ViewModels.CoursesViewModel
         [Display(Name = "Course End Date")]
         public DateTime EndDate { get; set; }
 
-        public ICollection<Module> Modules { get; set; }
+        public Course Course { get; set; }
         public ICollection<Activity> Activities { get; set; }
         public ICollection<Document> Documents { get; set; }
 
-
-        //public int ModuleId { get; set; }
-     
-        //public int VehicleId { get; set; }
-
-        //public int DocumentId { get; set; }
         
-       
 
+        //public List<Module> Modules { get; set; }
 
+        //[Display(Name = "Selected Module")]
+        //public Module SelectedModule { get; set; }
 
     }
 }

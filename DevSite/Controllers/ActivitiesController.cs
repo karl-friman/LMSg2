@@ -9,6 +9,8 @@ using Core.Entities;
 using Web.Data.Data;
 using Core.ViewModels;
 using Core.Repositories;
+using AutoMapper;
+using Core.ViewModels.ActivitiesViewModel;
 
 namespace DevSite.Controllers
 {
@@ -16,36 +18,44 @@ namespace DevSite.Controllers
     {
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork uow;
+        private readonly IMapper mapper;
 
-        public ActivitiesController(IUnitOfWork uow)
+        public ActivitiesController(IUnitOfWork uow, IMapper mapper)
         {
             //_context = context;
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: Activities
         public async Task<IActionResult> Index(int? selected)
         {
-            Activity selectedActivity = null;
+            //Activity selectedActivity = null;
 
-            List<Activity> activityList = await uow.ActivityRepository.GetAll(includeAll: true);
+            //List<Activity> activityList = await uow.ActivityRepository.GetAll(includeAll: true);
 
-            if (selected is not null)
-            {
-                selectedActivity = await uow.ActivityRepository.GetOne(Id: selected, includeAll: false);
-            }
-            else
-            {
-                selectedActivity = null;
-            }
+            //if (selected is not null)
+            //{
+            //    selectedActivity = await uow.ActivityRepository.GetOne(Id: selected, includeAll: false);
+            //}
+            //else
+            //{
+            //    selectedActivity = null;
+            //}
 
-            ActivityViewModel activityIndexModel = new ActivityViewModel
-            {
-                Activities = activityList,
-                SelectedActivity = selectedActivity
-            };
+            //ActivityViewModel activityIndexModel = new ActivityViewModel
+            //{
+            //    Activities = activityList,
+            //    SelectedActivity = selectedActivity
+            //};
 
-            return View(activityIndexModel);
+            //return View(activityIndexModel);
+            var modules = await uow.ActivityRepository.GetAll(includeAll: true); ;
+            var model = mapper.Map<IEnumerable<ActivityViewModel>>(modules);
+            return View(model);
+
+
+
         }
 
         // GET: Activities/Details/5

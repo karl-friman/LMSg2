@@ -1,5 +1,5 @@
-﻿@using Core.ViewModels;
-@model ModuleViewModel
+﻿@using Core.ViewModels.ModulesViewModel
+@model IEnumerable<ModuleViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,7 +14,7 @@
     <thead>
         <tr>
             <th width="300">
-                @Html.DisplayNameFor(model => model.Modules)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
                 Activities
@@ -29,13 +29,13 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var module in Model.Modules)
+        @foreach (var item in Model)
         {
             string classContents = "btn btn-outline-primary";
             <tr>
                 <td width="300">
                     <div>
-                        @if (Model.SelectedModule is not null)
+                        @*@if (Model.SelectedModule is not null)
                         {
                             if (Model.SelectedModule == module)
                             {
@@ -43,32 +43,32 @@
                                 classContents = "btn  btn-outline-warning";
 
                             }
-                        }
+                        }*@
 
 
-                        @Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
+                        @Html.ActionLink(linkText: item.Name, actionName: "Index", controllerName: "Modules",
                                          protocol: null, hostname: null, fragment: null,
-                                         routeValues: new { selected = module.Id },
+                                         routeValues: new { selected = item.Id },
                                          htmlAttributes: new { @class = classContents })
 
 
                     </div>
 
-                    <div><strong>@Html.DisplayNameFor(modelItem => module.Description):</strong> @Html.DisplayFor(modelItem => module.Description)</div>
-                    <div><strong>@Html.DisplayNameFor(modelItem => module.StartDate):</strong> @Html.DisplayFor(modelItem => module.StartDate)</div>
-                    <div><strong>@Html.DisplayNameFor(modelItem => module.EndDate):</strong> @Html.DisplayFor(modelItem => module.EndDate)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.Description):</strong> @Html.DisplayFor(modelItem => item.Description)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.StartDate):</strong> @Html.DisplayFor(modelItem => item.StartDate)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.EndDate):</strong> @Html.DisplayFor(modelItem => item.EndDate)</div>
                 </td>
                 <td>
-                    @if (module.Activities != null)
+                    @if (item.Activities != null)
                     {
-                        @if (module.Activities.Count > 0)
+                        @if (item.Activities.Count > 0)
                         {
                             <div>
                                 Number of <strong>activities</strong>:
-                                @Html.DisplayFor(modelItem => module.Activities.Count)
+                                @Html.DisplayFor(modelItem => item.Activities.Count)
                             </div>
 
-                            @foreach (var activity in module.Activities)
+                            @foreach (var activity in item.Activities)
                             {
                                 if (activity != null)
                                 {
@@ -85,9 +85,9 @@
                     }
                 </td>
                 <td>
-                    @if (module.Documents != null)
+                    @if (item.Documents != null)
                     {
-                        @foreach (var document in module.Documents)
+                        @foreach (var document in item.Documents)
                         {
                             <div>
                                 <a class="btn btn-outline-success" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
@@ -98,20 +98,20 @@
                     }
                     </td>
                 <td>
-                    @if (module.Course is not null)
+                    @if (item.Course is not null)
                     {
-                        @Html.ActionLink(linkText: module.Course.Name, actionName: "Index", controllerName: "Courses",
+                        @Html.ActionLink(linkText: item.Course.Name, actionName: "Index", controllerName: "Courses",
                                          protocol: null, hostname: null, fragment: null,
-                                         routeValues: new { selected = module.Course.Id },
+                                         routeValues: new { selected = item.Course.Id },
                                          htmlAttributes: new { @class = "btn btn-outline-secondary" })
                     }
                 </td>
 
 
                 <td>
-                    <a asp-action="Edit" asp-route-id="@module.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@module.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@module.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

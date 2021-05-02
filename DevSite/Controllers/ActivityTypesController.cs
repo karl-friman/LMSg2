@@ -8,22 +8,29 @@ using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Web.Data.Data;
 using Core.Repositories;
+using AutoMapper;
+using Core.ViewModels.CoursesViewModel;
 
 namespace DevSite.Controllers
 {
     public class ActivityTypesController : Controller
     {
         private readonly IUnitOfWork uow;
+        //private readonly IMapper mapper;
 
-        public ActivityTypesController(IUnitOfWork uow)
+        public ActivityTypesController(IUnitOfWork uow) //IMapper mapper)
         {
             this.uow = uow;
+          //  this.mapper= mapper;
         }
 
         // GET: ActivityTypes
         public async Task<IActionResult> Index()
         {
-            return View(await uow.ActivityTypeRepository.GetAll(includeAll: false));
+            var activityTypes = await uow.ActivityTypeRepository.GetAll(includeAll:false); 
+           // var model = mapper.Map<IEnumerable<ActivityTypeViewModel>>(activityTypes);
+            return View(activityTypes);
+
         }
 
         // GET: ActivityTypes/Details/5

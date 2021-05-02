@@ -10,6 +10,7 @@ using Core.ViewModels;
 using Web.Data.Data;
 using Core.Repositories;
 using AutoMapper;
+using Core.ViewModels.CoursesViewModel;
 
 namespace DevSite.Controllers
 {
@@ -30,20 +31,19 @@ namespace DevSite.Controllers
         // GET: Courses
         public async Task<IActionResult> Index(int? selected)
         {
+ 
+            //Course selectedCourse = null;
 
-          
-            Course selectedCourse = null;
+            //var courseList = await uow.CourseRepository.GetAll(includeAll: true);
 
-            var courseList = await uow.CourseRepository.GetAll(includeAll: true);
-
-            if (selected is not null)
-            {
-                selectedCourse = await uow.CourseRepository.GetOne(Id: selected, includeAll: true);
-            }
-            else
-            {
-                selectedCourse = null;
-            }
+            //if (selected is not null)
+            //{
+            //    selectedCourse = await uow.CourseRepository.GetOne(Id: selected, includeAll: true);
+            //}
+            //else
+            //{
+            //    selectedCourse = null;
+            //}
 
             //CourseViewModel courseIndexModel = new CourseViewModel
             //{
@@ -52,8 +52,6 @@ namespace DevSite.Controllers
             //};
 
             //  return View(courseIndexModel);
-
-
 
 
             var courses = await uow.CourseRepository.GetAll(includeAll: true); ;

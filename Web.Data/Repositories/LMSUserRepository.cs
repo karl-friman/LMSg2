@@ -33,6 +33,7 @@ namespace Web.Data.Repositories
                 List<LMSUser> usersList = await db.Users.ToListAsync();
                 return usersList;
             }
+
         }
         public async Task<LMSUser> GetOne(int? id, bool includeAll)
         {

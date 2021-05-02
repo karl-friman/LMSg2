@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using Core.Entities;
 using Core.ViewModels;
+using Core.ViewModels.ActivitiesViewModel;
+using Core.ViewModels.CoursesViewModel;
+using Core.ViewModels.ModulesViewModel;
+using Core.ViewModels.LMSUsersViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +22,7 @@ namespace Web.Data.Data
             CreateMap<Course, CourseViewModel>().ReverseMap();
             CreateMap<Activity, ActivityViewModel>().ReverseMap();
             CreateMap<Module, ModuleViewModel>().ReverseMap();
+            CreateMap<ActivityType, ActivityTypeViewModel>().ReverseMap();
         }
 
     }

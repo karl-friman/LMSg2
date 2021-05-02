@@ -12,6 +12,6 @@ namespace Core.Entities
         public string Name { get; set; }
 
         //Navigation props 
-        public ICollection<Activity> Activity { get; set; }
+        public ICollection<Activity> Activities { get; set; }
     }
 }

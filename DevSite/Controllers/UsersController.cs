@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using Core.Repositories;
+using AutoMapper;
+using Core.ViewModels.LMSUsersViewModel;
 
 namespace DevSite.Controllers
 {
@@ -19,18 +21,20 @@ namespace DevSite.Controllers
     {
         private readonly UserManager<LMSUser> _userManager;
         private readonly IUnitOfWork uow;
+        private readonly IMapper mapper;
 
-        public UsersController(UserManager<LMSUser> userManager, IUnitOfWork uow)
+      public UsersController(UserManager<LMSUser> userManager, IUnitOfWork uow,IMapper mapper)
         {
             _userManager = userManager;
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
             //var x = _context.Users.
-            return View(await uow.LMSUserRepository.GetAll(includeAll: true));
+            //   return View(await uow.LMSUserRepository.GetAll(includeAll: true));
 
             //LMSUser selectedUser = null;
 
@@ -55,6 +59,22 @@ namespace DevSite.Controllers
 
 
             //return View(moduleIndexModel);
+
+
+
+
+
+            var users = await uow.LMSUserRepository.GetAll(includeAll: true); ;
+
+            var model = mapper.Map<IEnumerable<LMSUserViewModel>>(users);
+            return View(model);
+
+
+
+
+
+
+
         }
 
         // GET: Users/Details/5

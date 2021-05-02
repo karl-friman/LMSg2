@@ -1,5 +1,5 @@
-﻿@using Core.ViewModels;
-@model ActivityViewModel
+﻿@using Core.ViewModels.ActivitiesViewModel
+@model IEnumerable<ActivityViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -14,7 +14,7 @@
     <thead>
         <tr>
             <th width="300">
-                @Html.DisplayNameFor(model => model.Activities)
+                @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
                 Documents
@@ -26,13 +26,13 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var activity in Model.Activities)
+        @foreach (var item in Model)
         {
             string classContents = "btn btn-outline-primary";
             <tr>
                 <td width="300">
                     <div>
-                        @if (Model.SelectedActivity is not null)
+                        @*@if (Model.SelectedActivity is not null)
                         {
                             if (Model.SelectedActivity == activity)
                             {
@@ -40,23 +40,23 @@
                                 classContents = "btn  btn-outline-warning";
 
                             }
-                        }
+                        }*@
 
 
-                        @Html.ActionLink(linkText: activity.Name, actionName: "Index", controllerName: "Activities",
+                        @Html.ActionLink(linkText: item.Name, actionName: "Index", controllerName: "Activities",
                                          protocol: null, hostname: null, fragment: null,
-                                         routeValues: new { selected = activity.Id },
+                                         routeValues: new { selected = item.Id },
                                          htmlAttributes: new { @class = classContents })
 
                     </div>
-                    <div><strong>@Html.DisplayNameFor(modelItem => activity.Description):</strong> @Html.DisplayFor(modelItem => activity.Description)</div>
-                    <div><strong>@Html.DisplayNameFor(modelItem => activity.StartDate):</strong> @Html.DisplayFor(modelItem => activity.StartDate)</div>
-                    <div><strong>@Html.DisplayNameFor(modelItem => activity.EndDate):</strong> @Html.DisplayFor(modelItem => activity.EndDate)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.Description):</strong> @Html.DisplayFor(modelItem => item.Description)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.StartDate):</strong> @Html.DisplayFor(modelItem => item.StartDate)</div>
+                    <div><strong>@Html.DisplayNameFor(modelItem => item.EndDate):</strong> @Html.DisplayFor(modelItem => item.EndDate)</div>
                 </td>
                 <td>
-                    @if (activity.Documents != null)
+                    @if (item.Documents != null)
                     {
-                        @foreach (var document in activity.Documents)
+                        @foreach (var document in item.Documents)
                         {
                             <div>
                                 <a class="btn btn-outline-success" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
@@ -69,12 +69,12 @@
                 <td>
                     <div>
 
-                        @if (activity.Module != null)
+                        @if (item.Module != null)
                         {
                             <span>
-                                @Html.ActionLink(linkText: activity.Module.Name, actionName: "Index", controllerName: "Modules",
+                                @Html.ActionLink(linkText: item.Module.Name, actionName: "Index", controllerName: "Modules",
                                                       protocol: null, hostname: null, fragment: null,
-                                                      routeValues: new { selected = activity.Module.Id },
+                                                      routeValues: new { selected = item.Module.Id },
                                                       htmlAttributes: new { @class = "btn  btn-outline-primary" })
                             </span>
                         }
@@ -83,9 +83,9 @@
                     </div>
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@activity.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@activity.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@activity.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
