@@ -10,6 +10,7 @@ namespace Core.ViewModels
 {
     public class CourseViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         [Display(Name = "Course Description")]
         public string Description { get; set; }

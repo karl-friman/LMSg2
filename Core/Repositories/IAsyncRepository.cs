@@ -10,7 +10,8 @@ namespace Core.Repositories
     public interface IAsyncRepository<T>
     {
 
-        Task<IEnumerable<T>> GetAll();
+        //List<T> GetCourses();
+        Task<List<T>> GetAll();
         Task<List<T>> GetAll(bool includeAll);
         Task<T> GetOne(int? Id, bool includeAll);
         Task<T> GetOne(string Id, bool includeAll);

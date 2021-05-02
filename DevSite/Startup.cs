@@ -1,3 +1,4 @@
+using AutoMapper;
 using Core.Entities;
 using Core.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Data.Data;
 using Web.Data.Repositories;
+
+
 
 namespace DevSite
 {
@@ -34,12 +37,14 @@ namespace DevSite
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddAutoMapper(typeof(MapperProfile));
 
             services.AddDefaultIdentity<LMSUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

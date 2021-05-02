@@ -1,123 +1,248 @@
 ﻿@*@using Core.ViewModels;
-@model CourseViewModel
+    @model CourseViewModel
 
-@{
-    ViewData["Title"] = "Index";
-}
+    @{
+        ViewData["Title"] = "Index";
+    }
 
-<h1>Courses</h1>
+    <h1>Courses</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th width="300">
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th width="300">
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th width="300">
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th width="300">
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            string classContents = "btn btn-outline-primary";
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
             <tr>
-                <td width="300">
-                    <div>
-                        @if (Model.SelectedCourse is not null)
-                        {
-                            if (Model.SelectedCourse == course)
-                            {
-                                <div id="selected"></div>
-                                classContents = "btn  btn-outline-warning";
-
-                            }
-                        }
-
-
-                        @Html.ActionLink(linkText: course.Name, actionName: "Index", controllerName: "Courses",
-                                         protocol: null, hostname: null, fragment: null,
-                                         routeValues: new { selected = course.Id },
-                                         htmlAttributes: new { @class = classContents })
-
-                    </div>
-                    <div><strong>@Html.DisplayNameFor(modelItem => course.Description):</strong> @Html.DisplayFor(modelItem => course.Description)</div>
-                    <div><strong>@Html.DisplayNameFor(modelItem => course.StartDate):</strong> @Html.DisplayFor(modelItem => course.StartDate)</div>
-                    <div><strong>@Html.DisplayNameFor(modelItem => course.EndDate):</strong> @Html.DisplayFor(modelItem => course.EndDate)</div>
-                </td>
-                <td>
-                    @if (course.Modules != null)
-                    {
+                <th width="300">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th width="300">
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th width="300">
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th width="300">
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string classContents = "btn btn-outline-primary";
+                <tr>
+                    <td width="300">
                         <div>
-                            @foreach (var module in course.Modules)
+                            @if (Model.SelectedCourse is not null)
                             {
-                                if (module != null)
+                                if (Model.SelectedCourse == course)
                                 {
-                                    <div>
-                                        @Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
-                                                         protocol: null, hostname: null, fragment: null,
-                                                         routeValues: new { selected = module.Id },
-                                                         htmlAttributes: new { @class = "btn  btn-outline-primary" })
-                                    </div>
+                                    <div id="selected"></div>
+                                    classContents = "btn  btn-outline-warning";
 
                                 }
-                                @if (module.Activities != null)
-                                {
-
-                                    <div>
-                                        Activities in this module:<strong>@module.Activities.Count()</strong>
-                                    </div>
-                                    <div>
-                                        @foreach (var activity in module.Activities)
-                                        {
-                                            if (activity != null)
-                                            {
-                                                <div>
-                                                    @Html.ActionLink(linkText: activity.Name, actionName: "Index", controllerName: "Activities",
-                                                                     protocol: null, hostname: null, fragment: null,
-                                                                     routeValues: new { selected = activity.Id },
-                                                                     htmlAttributes: new { @class = "btn btn-outline-info" })
-                                                </div>
-                                            }
-                                        }
-                                    </div>
-                                }
-                                <br /><br />
                             }
-                        </div>
 
-                    }
-                </td>
-                <td>
-                    @if (course.Documents != null)
-                    {
-                        @foreach (var document in course.Documents)
+
+                            @Html.ActionLink(linkText: course.Name, actionName: "Index", controllerName: "Courses",
+                                             protocol: null, hostname: null, fragment: null,
+                                             routeValues: new { selected = course.Id },
+                                             htmlAttributes: new { @class = classContents })
+
+                        </div>
+                        <div><strong>@Html.DisplayNameFor(modelItem => course.Description):</strong> @Html.DisplayFor(modelItem => course.Description)</div>
+                        <div><strong>@Html.DisplayNameFor(modelItem => course.StartDate):</strong> @Html.DisplayFor(modelItem => course.StartDate)</div>
+                        <div><strong>@Html.DisplayNameFor(modelItem => course.EndDate):</strong> @Html.DisplayFor(modelItem => course.EndDate)</div>
+                    </td>
+                    <td>
+                        @if (course.Modules != null)
                         {
                             <div>
-                                <a class="btn btn-outline-success" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
-                                    @document.Name
-                                </a>
+                                @foreach (var module in course.Modules)
+                                {
+                                    if (module != null)
+                                    {
+                                        <div>
+                                            @Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
+                                                             protocol: null, hostname: null, fragment: null,
+                                                             routeValues: new { selected = module.Id },
+                                                             htmlAttributes: new { @class = "btn  btn-outline-primary" })
+                                        </div>
+
+                                    }
+                                    @if (module.Activities != null)
+                                    {
+
+                                        <div>
+                                            Activities in this module:<strong>@module.Activities.Count()</strong>
+                                        </div>
+                                        <div>
+                                            @foreach (var activity in module.Activities)
+                                            {
+                                                if (activity != null)
+                                                {
+                                                    <div>
+                                                        @Html.ActionLink(linkText: activity.Name, actionName: "Index", controllerName: "Activities",
+                                                                         protocol: null, hostname: null, fragment: null,
+                                                                         routeValues: new { selected = activity.Id },
+                                                                         htmlAttributes: new { @class = "btn btn-outline-info" })
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                    <br /><br />
+                                }
                             </div>
+
                         }
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@course.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@course.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@course.Id">Delete</a>
-                </td>
+                    </td>
+                    <td>
+                        @if (course.Documents != null)
+                        {
+                            @foreach (var document in course.Documents)
+                            {
+                                <div>
+                                    <a class="btn btn-outline-success" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
+                                        @document.Name
+                                    </a>
+                                </div>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@course.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@course.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@course.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>*@
+
+
+@using Core.ViewModels;
+    @model IEnumerable<CourseViewModel>
+
+    @{
+        ViewData["Title"] = "Index";
+    }
+
+    <h1>Courses</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="300">
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th width="300">
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th width="300">
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+                <th width="300">
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>*@
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string classContents = "btn btn-outline-primary";
+                <tr>
+                    <td width="300">
+                        <div>
+                            @*@if (Model.SelectedCourse is not null)
+                            {
+                                if (Model.SelectedCourse == course)
+                                {
+                                    <div id="selected"></div>
+                                    classContents = "btn  btn-outline-warning";
+
+                                }
+                            }*@
+
+
+                            @Html.ActionLink(linkText: item.Name, actionName: "Index", controllerName: "Courses",
+                                             protocol: null, hostname: null, fragment: null,
+                                             routeValues: new { selected = item.Id},
+                                             htmlAttributes: new { @class = classContents })
+
+                        </div>
+                        <div><strong>@Html.DisplayNameFor(modelItem => item.Description):</strong> @Html.DisplayFor(modelItem => item.Description)</div>
+                        <div><strong>@Html.DisplayNameFor(modelItem => item.StartDate):</strong> @Html.DisplayFor(modelItem => item.StartDate)</div>
+                        <div><strong>@Html.DisplayNameFor(modelItem => item.EndDate):</strong> @Html.DisplayFor(modelItem => item.EndDate)</div>
+                    </td>
+                    @*<td>
+                        @if (course.Modules != null)
+                        {
+                            <div>
+                                @foreach (var module in course.Modules)
+                                {
+                                    if (module != null)
+                                    {
+                                        <div>
+                                            @Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
+                                                             protocol: null, hostname: null, fragment: null,
+                                                             routeValues: new { selected = module.Id },
+                                                             htmlAttributes: new { @class = "btn  btn-outline-primary" })
+                                        </div>
+
+                                    }
+                                    @if (module.Activities != null)
+                                    {
+
+                                        <div>
+                                            Activities in this module:<strong>@module.Activities.Count()</strong>
+                                        </div>
+                                        <div>
+                                            @foreach (var activity in module.Activities)
+                                            {
+                                                if (activity != null)
+                                                {
+                                                    <div>
+                                                        @Html.ActionLink(linkText: activity.Name, actionName: "Index", controllerName: "Activities",
+                                                                         protocol: null, hostname: null, fragment: null,
+                                                                         routeValues: new { selected = activity.Id },
+                                                                         htmlAttributes: new { @class = "btn btn-outline-info" })
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                    <br /><br />
+                                }
+                            </div>
+
+                        }
+                    </td>*@
+                    @*<td>
+                        @if (course.Documents != null)
+                        {
+                            @foreach (var document in course.Documents)
+                            {
+                                <div>
+                                    <a class="btn btn-outline-success" asp-action="Details" asp-controller="Documents" asp-route-id="@document.Id">
+                                        @document.Name
+                                    </a>
+                                </div>
+                            }
+                        }
+                    </td>*@
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Name">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Name">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Name">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>

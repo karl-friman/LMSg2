@@ -78,9 +78,10 @@ namespace Web.Data.Repositories
         }
 
 
-        public async Task<IEnumerable<LMSUser>> GetAll()
+        public async Task<List<LMSUser>> GetAll()
         {
             return await db.Users.ToListAsync();
         }
+
     }
 }

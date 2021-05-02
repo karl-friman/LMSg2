@@ -83,9 +83,10 @@ namespace Web.Data.Repositories
         }
 
 
-        public async Task<IEnumerable<Module>> GetAll()
+        public async Task<List<Module>> GetAll()
         {
             return await db.Modules.ToListAsync();
         }
+
     }
 }

@@ -81,9 +81,12 @@ namespace Web.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Document>> GetAll()
+        public async Task<List<Document>> GetAll()
         {
             return await db.Documents.ToListAsync();
         }
+
+
+
     }
 }

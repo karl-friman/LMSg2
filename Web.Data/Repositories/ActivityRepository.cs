@@ -83,10 +83,11 @@ namespace Web.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Activity>> GetAll()
+        public async Task<List<Activity>> GetAll()
         {
             return await db.Activities.ToListAsync();
         }
+
 
     }
 }

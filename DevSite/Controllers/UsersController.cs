@@ -134,7 +134,7 @@ namespace DevSite.Controllers
                     uow.LMSUserRepository.Update(user);
                     await uow.LMSUserRepository.SaveAsync();
                 }
-                catch (DbUpdateConcurrencyException ex)
+                catch (DbUpdateConcurrencyException)
                 { 
                     
                     if (user.Email == "")

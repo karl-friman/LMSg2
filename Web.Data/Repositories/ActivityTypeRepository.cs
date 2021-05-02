@@ -79,11 +79,11 @@ namespace Web.Data.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ActivityType>> GetAll()
+        public async Task<List<ActivityType>> GetAll()
         {
             return await db.ActivityTypes.ToListAsync();
         }
 
-
+       
     }
 }
