@@ -15,15 +15,12 @@ namespace DevSite.Controllers
 {
     public class CoursesController : Controller
     {
-        //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
         public CoursesController(IUnitOfWork uow, IMapper mapper)
         {
-            //_context = context;
             this.uow = uow;
             this.mapper = mapper;
-
         }
 
         // GET: Courses
@@ -43,12 +40,12 @@ namespace DevSite.Controllers
             }
 
             var model = mapper.Map<IEnumerable<CourseViewModel>>(courseList);
-            var selectxxxx = mapper.Map<CourseViewModel>(selectedCourse);
+            var selectedMapped = mapper.Map<CourseViewModel>(selectedCourse);
 
             CourseListViewModel courseIndexModel = new CourseListViewModel
             {
                 Courses = model,
-                SelectedCourse = selectxxxx
+                SelectedCourse = selectedMapped
             };
 
             return View(courseIndexModel);
@@ -69,7 +66,10 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(course);
+            var model = mapper.Map<CourseViewModel>(course);
+            //var selectedMapped = mapper.Map<CourseViewModel>(selectedCourse);
+
+            return View(model);
         }
 
         // GET: Courses/Create
@@ -107,6 +107,8 @@ namespace DevSite.Controllers
             {
                 return NotFound();
             }
+
+          //  var model = mapper.Map<CourseViewModel>(course);
             return View(course);
         }
 
@@ -126,6 +128,7 @@ namespace DevSite.Controllers
             {
                 try
                 {
+                    
                     uow.CourseRepository.Update(course);
                     await uow.CourseRepository.SaveAsync();
                 }
@@ -141,7 +144,9 @@ namespace DevSite.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
+               
             }
+            var model = mapper.Map<CourseViewModel>(course);
             return View(course);
         }
 
@@ -158,8 +163,8 @@ namespace DevSite.Controllers
             {
                 return NotFound();
             }
-
-            return View(course);
+            var model = mapper.Map<CourseViewModel>(course);
+            return View(model);
         }
 
         // POST: Courses/Delete/5
@@ -168,6 +173,7 @@ namespace DevSite.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var course = await uow.CourseRepository.GetOne(id, includeAll: false);
+           // var model = mapper.Map<CourseViewModel>(course);
             uow.CourseRepository.Remove(course);
             await uow.CourseRepository.SaveAsync();
             return RedirectToAction(nameof(Index));

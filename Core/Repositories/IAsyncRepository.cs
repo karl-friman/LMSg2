@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,6 @@ namespace Core.Repositories
         bool Any(int? Id);
         bool Any(string Id);
         void Remove(T removed);
+       
     }
 }
