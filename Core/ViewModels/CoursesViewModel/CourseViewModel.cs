@@ -11,6 +11,7 @@ namespace Core.ViewModels.CoursesViewModel
     public class CourseViewModel
     {
         public int Id { get; set; }
+        [Display(Name = "Name")]
         public string Name { get; set; }
         [Display(Name = "Course Description")]
         public string Description { get; set; }
@@ -23,14 +24,14 @@ namespace Core.ViewModels.CoursesViewModel
         public ICollection<Activity> Activities { get; set; }
         public ICollection<Document> Documents { get; set; }
 
+        [Display(Name = "Modules")]
+        public int ModuleId { get; set; }
+        [Display(Name = "Activities")]
+        public int ActivityId { get; set; }
+        [Display(Name = "Documents")]
+        public int DocumentId { get; set; }
 
-        //public int ModuleId { get; set; }
-     
-        //public int VehicleId { get; set; }
 
-        //public int DocumentId { get; set; }
-        
-       
 
 
 

@@ -9,6 +9,7 @@ namespace Core.Entities
 {
     public class LMSUser : IdentityUser
     {
+      
         public UserType UserType { get; set; }
 
         public string FirstName { get; set; }

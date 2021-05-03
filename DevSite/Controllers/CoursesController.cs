@@ -12,6 +12,7 @@ using Core.Repositories;
 using AutoMapper;
 using Core.ViewModels.CoursesViewModel;
 
+
 namespace DevSite.Controllers
 {
     public class CoursesController : Controller
@@ -95,16 +96,40 @@ namespace DevSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate")] Course course)
+        //public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate")] Course course)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await uow.CourseRepository.AddAsync(course);
+        //        await uow.CourseRepository.SaveAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(course);
+        //}
+
+
+        public async Task<IActionResult> Create(CourseViewModel viewModel)
         {
+
+            if (CourseExists(viewModel.Id))
+            {
+                ModelState.AddModelError("Course Id", "Course already exists");
+            }
+            var course = await uow.CourseRepository.GetOne(viewModel.Id, includeAll: true);
             if (ModelState.IsValid)
             {
+
                 await uow.CourseRepository.AddAsync(course);
                 await uow.CourseRepository.SaveAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AddSuccess));
             }
-            return View(course);
+
+            return View(viewModel);
+
         }
+
+
+
 
         // GET: Courses/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -189,5 +214,14 @@ namespace DevSite.Controllers
         {
             return uow.CourseRepository.Any(id);
         }
+
+
+
+        public IActionResult AddSuccess()
+        {
+            return View();
+        }
+
+
     }
 }

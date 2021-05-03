@@ -1,4 +1,9 @@
-﻿@model Core.Entities.Course
+﻿@using Core.ViewModels.CoursesViewModel
+@model CourseViewModel
+@using DevSite.Services
+@inject IModuleSelectService moduleSelectService
+@inject IActivitySelectService activitySelectService
+@inject IDocumentSelectService documentSelectService
 
 @{
     ViewData["Title"] = "Create";
@@ -32,9 +37,37 @@
                 <input asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
+
+            <div class="form-group">
+                <label asp-for="Modules" class="control-label"></label>
+                <select class="form-control bg-dark text-white" asp-for="ModuleId" asp-items="@await moduleSelectService.GetModuleAsync()">
+                    <option selected="selected" value="">Please select a Module</option>
+
+                </select>
+                <span asp-validation-for="ModuleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Activities" class="control-label"></label>
+                <select asp-for="ActivityId" asp-items="@await activitySelectService.GetActivityAsync()" class="form-control bg-dark text-white">
+                    <option selected="selected" value="">Please select an Activity</option>
+                </select>
+
+                <span asp-validation-for="ActivityId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Documents" class="control-label"></label>
+                <select asp-for="DocumentId" asp-items="@await documentSelectService.GetDocumentAsync()" class="form-control bg-dark text-white">
+                    <option selected="selected" value="">Please select a Document</option>
+                </select>
+
+                <span asp-validation-for="DocumentId" class="text-danger"></span>
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
 </div>

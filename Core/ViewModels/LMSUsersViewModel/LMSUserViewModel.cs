@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core.ViewModels.LMSUsersViewModel
 {
-    public class LMSUserViewModel
+    public class LMSUserViewModel: IdentityUser
     {
 
         public UserType UserType { get; set; }
@@ -20,8 +21,10 @@ namespace Core.ViewModels.LMSUsersViewModel
         public string Avatar { get; set; }
 
         public string FullName => $"{FirstName} {LastName}";
+        public int? CourseId { get; set; }
+
         public Course Course { get; set; }
-        
+
 
     }
 }

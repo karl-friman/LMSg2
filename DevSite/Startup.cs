@@ -1,6 +1,7 @@
 using AutoMapper;
 using Core.Entities;
 using Core.Repositories;
+using DevSite.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -43,6 +44,9 @@ namespace DevSite
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddScoped<IActivitySelectService, ActivitySelectService>();
+            services.AddScoped<IModuleSelectService, ModuleSelectService>();
+            services.AddScoped<IDocumentSelectService, DocumentSelectService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
            
         }
