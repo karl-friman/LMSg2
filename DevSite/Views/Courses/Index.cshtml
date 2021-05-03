@@ -1,5 +1,6 @@
 ﻿@using Core.ViewModels;
-@model CourseViewModel
+@using Core.Utilities;
+@model CourseListViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,92 +14,113 @@
 
 @foreach (var course in Model.Courses)
 {
-<div id="course_@course.Id">
-    @{
-        string classContents = "btn btn-outline-primary";
-        string activeCourse = "false";
-    }
-    @if (Model.SelectedCourse is not null)
-    {
-        if (Model.SelectedCourse == course)
-        {
-            classContents = "btn btn-outline-warning";
-            activeCourse = "0";
+
+            var root = HtmlElement.Create(tag: "div", idContent: $"buildercourse_{course.Id}", classContent: "")
+              .AddChildFluent("h3", "hello")
+              .AddChildFluent("div", "world");
+            <span>@Html.Raw(root)</span>
+
+    <div id="course_@course.Id">
+        @{
+            // with factory method
+
+            @*var builder = HtmlElement.Create("ul");
+            builder.AddChildFluent("li", "hello")
+                   .AddChildFluent("li", "world");
+            <span>@Html.Raw(builder)</span>*@
+
+            // with implicit operator
+
+
+            string classContents = "btn btn-outline-primary";
+            string activeCourse = "false";
         }
-    }
-    <h3>
-        @Html.ActionLink(linkText: course.Name, actionName: "Index", controllerName: "Courses",
-              protocol: null, hostname: null, fragment: null,
-              routeValues: new { selected = course.Id },
-              htmlAttributes: new { @class = classContents })
-    </h3>
-    <div>
-        <p>
-            <div><strong>@Html.DisplayNameFor(modelItem => course.Description):</strong> @Html.DisplayFor(modelItem => course.Description)</div>
-            <div><strong>@Html.DisplayNameFor(modelItem => course.StartDate):</strong> @Html.DisplayFor(modelItem => course.StartDate)</div>
-            <div><strong>@Html.DisplayNameFor(modelItem => course.EndDate):</strong> @Html.DisplayFor(modelItem => course.EndDate)</div>
-        </p>
-
-        @if (course.Modules != null)
+        @*@if (Model.SelectedCourse is not null)
         {
-
-            foreach (var module in course.Modules)
+            if (Model.SelectedCourse == course)
             {
-                <div id="module_@module.Id">
-                    @if (module != null)
-                    {
-                        <h3>
-                            @Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
-                                               protocol: null, hostname: null, fragment: null,
-                                               routeValues: new { selected = module.Id },
-                                               htmlAttributes: new { @class = "btn  btn-outline-primary" })
-                        </h3>
-                        <div>
-                            <p>
-                                @if (module.Activities != null)
-                                {
+                classContents = "btn btn-outline-warning";
+                activeCourse = "0";
+            }
+        }*@
+        <h3>
+            @Html.ActionLink(linkText: course.Name, actionName: "Index", controllerName: "Courses",
+                  protocol: null, hostname: null, fragment: null,
+                  routeValues: new { selected = course.Id },
+                  htmlAttributes: new { @class = classContents })
+        </h3>
+        <div>
+            <p>
+                <div><strong>@Html.DisplayNameFor(modelItem => course.Description):</strong> @Html.DisplayFor(modelItem => course.Description)</div>
+                <div><strong>@Html.DisplayNameFor(modelItem => course.StartDate):</strong> @Html.DisplayFor(modelItem => course.StartDate)</div>
+                <div><strong>@Html.DisplayNameFor(modelItem => course.EndDate):</strong> @Html.DisplayFor(modelItem => course.EndDate)</div>
+            <p>
+                <a asp-action="Edit" asp-route-id="@course.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@course.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@course.Id">Delete</a>
+            </p>
+            </p>
 
-                                    <div>
-                                        Activities in this module:<strong>@module.Activities.Count()</strong>
-                                    </div>
-                                    <div>
-                                        @foreach (var activity in module.Activities)
-                                        {
-                                            if (activity != null)
+            @if (course.Modules != null)
+            {
+
+                foreach (var module in course.Modules)
+                {
+                    <div id="module_@module.Id">
+                        @if (module != null)
+                        {
+                            <h3>
+                                @Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
+                                                   protocol: null, hostname: null, fragment: null,
+                                                   routeValues: new { selected = module.Id },
+                                                   htmlAttributes: new { @class = "btn  btn-outline-primary" })
+                            </h3>
+                            <div>
+                                <p>
+                                    @if (module.Activities != null)
+                                    {
+
+                                        <div>
+                                            Activities in this module:<strong>@module.Activities.Count()</strong>
+                                        </div>
+                                        <div>
+                                            @foreach (var activity in module.Activities)
                                             {
-                                                <div>
-                                                    @Html.ActionLink(linkText: activity.Name, actionName: "Index", controllerName: "Activities",
-                                                                     protocol: null, hostname: null, fragment: null,
-                                                                     routeValues: new { selected = activity.Id },
-                                                                     htmlAttributes: new { @class = "btn btn-outline-info" })
-                                                </div>
+                                                if (activity != null)
+                                                {
+                                                    <div>
+                                                        @Html.ActionLink(linkText: activity.Name, actionName: "Index", controllerName: "Activities",
+                                                                         protocol: null, hostname: null, fragment: null,
+                                                                         routeValues: new { selected = activity.Id },
+                                                                         htmlAttributes: new { @class = "btn btn-outline-info" })
+                                                    </div>
+                                                }
                                             }
-                                        }
-                                    </div>
-                                }
-                            </p>
-                        </div>
-                    }
-                </div>
-                <script>
+                                        </div>
+                                    }
+                                </p>
+                            </div>
+                        }
+                    </div>
+                    <script>
                         $("#module_@module.Id").accordion({
                             collapsible: true,
                             heightStyle: "content",
                             active: false,
                         });
-                </script>
-            }
-            <script>
-                    $("#course_@course.Id").accordion({
+                    </script>
+                }
+                <script>
+                    $("#buildercourse_@course.Id").accordion({
                             collapsible: true,
                             heightStyle: "content",
                             active: @activeCourse,
                     });
-                    //jQuery("#course_@course.Id").accordion("option", { active: "#course_@course.Id" });
-            </script>
-        }
+                </script>
+            }
+
+        </div>
     </div>
-</div>
 }
 
 @*<table class="table">

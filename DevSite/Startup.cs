@@ -39,6 +39,7 @@ namespace DevSite
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddAutoMapper(typeof(MapperProfile));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 

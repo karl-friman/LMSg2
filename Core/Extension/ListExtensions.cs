@@ -34,6 +34,12 @@ namespace Core.Extension
                         Text = item.Name,
                         Value = item.Id.ToString(),
                     }).ToList();
+                case List<ActivityType> activityTypes:
+                    return activityTypes.Select(item => new SelectListItem
+                    {
+                        Text = item.Name,
+                        Value = item.Id.ToString(),
+                    }).ToList();
                 case List<Document> documents:
                     return documents.Select(item => new SelectListItem
                     {

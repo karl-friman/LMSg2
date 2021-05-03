@@ -38,7 +38,7 @@ namespace DevSite.Controllers
                 selectedModule = null;
             }
 
-            ModuleViewModel moduleIndexModel = new ModuleViewModel
+            ModuleListViewModel moduleIndexModel = new ModuleListViewModel
             {
                 Modules = moduleList,
                 SelectedModule = selectedModule
@@ -92,7 +92,7 @@ namespace DevSite.Controllers
         }
 
         // GET: Modules/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> EditAsync(int? id)
         {
             if (id == null)
             {

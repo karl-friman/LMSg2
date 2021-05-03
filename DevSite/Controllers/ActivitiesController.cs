@@ -9,6 +9,7 @@ using Core.Entities;
 using Web.Data.Data;
 using Core.ViewModels;
 using Core.Repositories;
+using Core.Extension;
 
 namespace DevSite.Controllers
 {
@@ -39,7 +40,7 @@ namespace DevSite.Controllers
                 selectedActivity = null;
             }
 
-            ActivityViewModel activityIndexModel = new ActivityViewModel
+            ActivityListViewModel activityIndexModel = new ActivityListViewModel
             {
                 Activities = activityList,
                 SelectedActivity = selectedActivity
@@ -66,10 +67,12 @@ namespace DevSite.Controllers
         }
 
         // GET: Activities/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            //ViewData["ActivityTypeId"] = new SelectList(uow.ActivityTypes.GetAll(false), "Id", "Id");
-            //ViewData["ModuleId"] = new SelectList(uow.ModuleRepository.GetAll(false), "Id", "Id");
+            var ModuleSelectList = await uow.ModuleRepository.GetSelectListItems();
+            ViewData["ModuleSelectList"] = ModuleSelectList;
+            var ActivityTypeSelectList = await uow.ActivityTypeRepository.GetSelectListItems();
+            ViewData["ActivityTypeSelectList"] = ActivityTypeSelectList;
             return View();
         }
 
@@ -86,6 +89,7 @@ namespace DevSite.Controllers
                 await uow.ActivityRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             //ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
             //ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
             return View(activity);
@@ -104,8 +108,10 @@ namespace DevSite.Controllers
             {
                 return NotFound();
             }
-            //ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
-            //ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
+            var ModuleSelectList = await uow.ModuleRepository.GetSelectListItems();
+            ViewData["ModuleSelectList"] = ModuleSelectList;
+            var ActivityTypeSelectList = await uow.ActivityTypeRepository.GetSelectListItems();
+            ViewData["ActivityTypeSelectList"] = ActivityTypeSelectList;
             return View(activity);
         }
 
