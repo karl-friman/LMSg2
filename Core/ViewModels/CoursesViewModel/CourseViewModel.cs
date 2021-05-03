@@ -20,16 +20,19 @@ namespace Core.ViewModels.CoursesViewModel
         [Display(Name = "Course End Date")]
         public DateTime EndDate { get; set; }
 
+        [Display(Name = "Students")]
+        public ICollection<LMSUser> Users { get; set; }
+        [Display(Name = "Modules")]
         public ICollection<Module> Modules { get; set; }
-        public ICollection<Activity> Activities { get; set; }
+        [Display(Name = "Documents")]
         public ICollection<Document> Documents { get; set; }
 
-        [Display(Name = "Modules")]
-        public int ModuleId { get; set; }
-        [Display(Name = "Activities")]
-        public int ActivityId { get; set; }
-        [Display(Name = "Documents")]
-        public int DocumentId { get; set; }
+        //[Display(Name = "Modules")]
+        //public int ModuleId { get; set; }
+        //[Display(Name = "Activities")]
+        //public int ActivityId { get; set; }
+        //[Display(Name = "Documents")]
+        //public int DocumentId { get; set; }
 
 
 

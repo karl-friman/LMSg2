@@ -32,39 +32,32 @@ namespace DevSite.Controllers
         // GET: Courses
         public async Task<IActionResult> Index(int? selected)
         {
- 
-            //Course selectedCourse = null;
 
-            //var courseList = await uow.CourseRepository.GetAll(includeAll: true);
+            Course selectedCourse = null;
 
-            //if (selected is not null)
-            //{
-            //    selectedCourse = await uow.CourseRepository.GetOne(Id: selected, includeAll: true);
-            //}
-            //else
-            //{
-            //    selectedCourse = null;
-            //}
+            var courseList = await uow.CourseRepository.GetAll(includeAll: true);
 
-            //CourseViewModel courseIndexModel = new CourseViewModel
-            //{
-            //    Courses = courseList,
-            //    SelectedCourse = selectedCourse
-            //};
+            if (selected is not null)
+            {
+                selectedCourse = await uow.CourseRepository.GetOne(Id: selected, includeAll: true);
+            }
+            else
+            {
+                selectedCourse = null;
+            }
 
-            //  return View(courseIndexModel);
+            CourseListVi courseIndexModel = new CourseListViewModel
+            {
+                Courses = courseList,
+                SelectedCourse = selectedCourse
+            };
 
+            var model = mapper.Map<courseList
+            return View(courseIndexModel);
 
-            var courses = await uow.CourseRepository.GetAll(includeAll: true); ;
-
-            var model = mapper.Map<IEnumerable<CourseViewModel>>(courses);
-            return View(model);
-
-
-
-
-
-
+            //var courses = await uow.CourseRepository.GetAll(includeAll: true); ;
+            //var model = mapper.Map<IEnumerable<CourseViewModel>>(courses);
+            //return View(model);
         }
 
         // GET: Courses/Details/5
@@ -108,7 +101,7 @@ namespace DevSite.Controllers
         //}
 
 
-        public async Task<IActionResult> Create(CourseViewModel viewModel)
+        public async Task<IActionResult> Create(CourseListViewModel viewModel)
         {
 
             if (CourseExists(viewModel.Id))

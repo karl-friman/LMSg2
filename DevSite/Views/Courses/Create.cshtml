@@ -46,14 +46,14 @@
                 </select>
                 <span asp-validation-for="ModuleId" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="Activities" class="control-label"></label>
                 <select asp-for="ActivityId" asp-items="@await activitySelectService.GetActivityAsync()" class="form-control bg-dark text-white">
                     <option selected="selected" value="">Please select an Activity</option>
                 </select>
 
                 <span asp-validation-for="ActivityId" class="text-danger"></span>
-            </div>
+            </div>*@
 
             <div class="form-group">
                 <label asp-for="Documents" class="control-label"></label>
