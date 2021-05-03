@@ -56,7 +56,14 @@ namespace Web.Data.Data
                 LMSUser admin = adminCreator(fake);
                 LMSUser student = studentCreator(fake);
 
+               
+
                 var roleNames = new[] { nameof(UserType.Admin), nameof(UserType.Student) };
+                //var roleNames = new[] { "Admin", "Student" };
+
+                //await userManager.AddToRoleAsync(admin, "Admin");
+                //await userManager.AddToRoleAsync(student, "Student");
+
 
                 foreach (var roleName in roleNames)
                 {
@@ -118,15 +125,17 @@ namespace Web.Data.Data
             var admin = new LMSUser
             {
                 UserName = "admin@admin.com",
-               Email = "admin@admin.com",
+                Email = "admin@admin.com",
                 FirstName = "MainSystem",
                 LastName = "Administrator",
                 Avatar = "https://pbs.twimg.com/media/EUDSegdWsAE1YMJ.jpg",
                 PhoneNumber = fake.Phone.PhoneNumberFormat(),
                 //  PasswordHash = "asdfasdf123!A",
-                UserType = UserType.Admin
+                UserType = UserType.Admin,
+                
             };
            // users.Add(admin);
+           
             return admin;
         }
         private static LMSUser studentCreator(Faker fake)
