@@ -17,19 +17,19 @@ namespace Core.Utilities
 
         }
 
-        public HtmlElement(string name, string text)
+        public HtmlElement(string tag, string idContent, string classContent, string innerContent)
         {
-            Tag = name;
-            IdContent = IdContent;
-            ClassContent = ClassContent;
-            Content = text;
+            Tag = tag;
+            IdContent = idContent;
+            ClassContent = classContent;
+            Content = innerContent;
         }
 
         private string ToStringImpl(int indent)
         {
             var sb = new StringBuilder();
             var i = new string(' ', indentSize * indent);
-            sb.Append($"{i}<{Tag}>\n");
+            sb.Append($"{i}<{Tag} id=\"{IdContent}\">\n");
             if (!string.IsNullOrWhiteSpace(Content))
             {
                 sb.Append(new string(' ', indentSize * (indent + 1)));

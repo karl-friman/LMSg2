@@ -13,13 +13,10 @@ namespace Web.Data.Data
     {
         public MapperProfile()
         {
-
             CreateMap<LMSUser, LMSUserViewModel>().ReverseMap();
             CreateMap<Course, CourseViewModel>().ReverseMap();
             CreateMap<Activity, ActivityViewModel>().ReverseMap();
             CreateMap<Module, ModuleViewModel>().ReverseMap();
-            //CreateMap<Course, CourseListViewModel>().ReverseMap();
-            //CreateMap<ActivityType, ActivityTypeViewModel>().ReverseMap();
         }
 
     }

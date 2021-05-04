@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Html;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 namespace Core.Utilities
@@ -19,19 +21,27 @@ namespace Core.Utilities
             root.ClassContent = classContent;
         }
 
-        // not fluent
-        public void AddChild(string childName, string childText)
+        //fluent
+        public HtmlBuilder AddChildFluent(string tagName, string idContent, string classContent, string innerContent)
         {
-            var e = new HtmlElement(childName, childText);
-            root.Elements.Add(e);
-        }
-
-        public HtmlBuilder AddChildFluent(string childName, string childText)
-        {
-            var e = new HtmlElement(childName, childText);
+            var e = new HtmlElement(tagName, idContent, classContent, innerContent);
             root.Elements.Add(e);
             return this;
         }
+
+        public HtmlBuilder AddChildFluent(string tagName, string idContent, string classContent, IHtmlContent innerContent)
+        {
+            var e = new HtmlElement(tagName, idContent, classContent, GetString(innerContent));
+            root.Elements.Add(e);
+            return this;
+        }
+
+        //public HtmlBuilder AddChildActionLink(IHtmlContent asdf)
+        //{
+        //    var e = new HtmlElement(IHtmlContent asdf.WriteTo());
+        //    root.Elements.Add(e);
+        //    return this;
+        //}
 
         public override string ToString() => root.ToString();
 
@@ -46,5 +56,13 @@ namespace Core.Utilities
         //{
         //    return builder.root;
         //}
+        public static string GetString(IHtmlContent content)
+        {
+            using (var writer = new System.IO.StringWriter())
+            {
+                content.WriteTo(writer, HtmlEncoder.Default);
+                return writer.ToString();
+            }
+        }
     }
 }
