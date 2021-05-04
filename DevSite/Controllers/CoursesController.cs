@@ -43,12 +43,12 @@ namespace DevSite.Controllers
             }
 
             var model = mapper.Map<IEnumerable<CourseViewModel>>(courseList);
-            var selectxxxx = mapper.Map<CourseViewModel>(selectedCourse);
+            var selectMapped = mapper.Map<CourseViewModel>(selectedCourse);
 
             CourseListViewModel courseIndexModel = new CourseListViewModel
             {
                 Courses = model,
-                SelectedCourse = selectxxxx
+                SelectedCourse = selectMapped
             };
 
             return View(courseIndexModel);
@@ -69,7 +69,8 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(course);
+            var model = mapper.Map<CourseViewModel>(course);
+            return View(model);
         }
 
         // GET: Courses/Create
