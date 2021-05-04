@@ -32,20 +32,21 @@
 
     <div class="d-flex" id="wrapper">
         <!-- Sidebar student -->
-        @if (User.IsInRole("Student") && SignInManager.IsSignedIn(User))
+        
+        @if (SignInManager.IsSignedIn(User))
         {
-            <partial name="_LoginStudentPartial" />
-           
-
+            //var x = User.IsInRole("Admin");
+            //var y = User.IsInRole("Student");
+            if (User.IsInRole("Admin"))
+            {
+                <partial name="_LoginAdminPartial" />
+            }
+            else
+            {
+                <partial name="_LoginStudentPartial" />
+            }
         }
 
-
-        else if (SignInManager.IsSignedIn(User))
-        {
-            <partial name="_LoginAdminPartial" />
-    
-
-        }
 
 
         <div style="background: #F7F9FB;" id="page-content-wrapper">

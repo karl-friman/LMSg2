@@ -27,10 +27,10 @@ namespace Web
                 context.Database.Migrate();
 
                 //dotnet user-sercrets set "AdminPW" "LMS"
-                var confiq = services.GetRequiredService<IConfiguration>();
+                var config = services.GetRequiredService<IConfiguration>();
 
-                  var adminPW = confiq["AdminPW"];
-                  var studentPW = confiq["StudentPW"];
+                  var adminPW = config["AdminPW"];
+                  var studentPW = config["StudentPW"];
 
                 try
                 {

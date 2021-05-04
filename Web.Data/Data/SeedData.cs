@@ -61,8 +61,6 @@ namespace Web.Data.Data
                 var roleNames = new[] { nameof(UserType.Admin), nameof(UserType.Student) };
                 //var roleNames = new[] { "Admin", "Student" };
 
-                //await userManager.AddToRoleAsync(admin, "Admin");
-                //await userManager.AddToRoleAsync(student, "Student");
 
 
                 foreach (var roleName in roleNames)
@@ -81,9 +79,6 @@ namespace Web.Data.Data
 
                 if (foundAdmin != null) return;
 
-                //adminCreator(fake);
-
-
                 var addAdminResult = await userManager.CreateAsync(admin, adminPW);
                 var addStudentResult = await userManager.CreateAsync(student, studentPW);
                 if (!addAdminResult.Succeeded) throw new Exception(string.Join("\n", addAdminResult.Errors));
@@ -92,25 +87,26 @@ namespace Web.Data.Data
                 var adminUser = await userManager.FindByNameAsync(admin.UserName);
                 var studentUser = await userManager.FindByNameAsync(student.UserName);
 
+                //foreach (var role in roleNames)
+                //{
+                //    if (await userManager.IsInRoleAsync(adminUser, role)) //continue;
+                //    {
+                //        var addToRoleResult = await userManager.AddToRoleAsync(adminUser, role);
 
-                foreach (var role in roleNames)
-                {
-                    if (await userManager.IsInRoleAsync(adminUser, role)) //continue;
-                    {
-                        var addToRoleResult = await userManager.AddToRoleAsync(adminUser, role);
+                //        if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
+                //    }
+                //    else
+                //    {
+                //        var addToRoleResult = await userManager.AddToRoleAsync(studentUser, role);
 
-                        if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
-                    }
-                    else
-                    {
-                        var addToRoleResult = await userManager.AddToRoleAsync(studentUser, role);
+                //        if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
 
-                        if (!addToRoleResult.Succeeded) throw new Exception(string.Join("\n", addToRoleResult.Errors));
+                //    }
+                //}
 
-                    }
-                }
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+                await userManager.AddToRoleAsync(studentUser, "Student");
 
-                //  await context.AddRangeAsync(users);
                 var documents = documentsCreator(lmsusers: users, fake: fake, activities: activities, courses: courses, modules: modules);
                 await context.AddRangeAsync(documents);
 
@@ -140,7 +136,7 @@ namespace Web.Data.Data
         }
         private static LMSUser studentCreator(Faker fake)
         {
-            var admin = new LMSUser
+            var student = new LMSUser
             {
                 UserName = "student@student.com",
                 Email = "student@student.com",
@@ -152,7 +148,7 @@ namespace Web.Data.Data
                 UserType = UserType.Student
             };
             // users.Add(admin);
-            return admin;
+            return student;
         }
         private static List<LMSUser> usersCreator(int amountOfStudents, int amountOfAdmins, Faker fake, List<Course> courses)
         {
@@ -201,6 +197,15 @@ namespace Web.Data.Data
             List<Activity> activities = new List<Activity>();
             foreach (Module module in modules)
             {
+                //Activities cannot finish after modules have finished.
+                var startDate = module.StartDate.AddMonths(fake.Random.Int(0, 5));
+                var monthsToAdd = fake.Random.Int(1, 5);
+                var moduleEndDate = module.StartDate.AddMonths(monthsToAdd);
+                if (moduleEndDate > module.EndDate)
+                {
+                    moduleEndDate = module.EndDate;
+                }
+
                 for (int i = 0; i < fake.Random.Int(1, 8); i++)
                 {
                     var activity = new Activity
@@ -209,11 +214,12 @@ namespace Web.Data.Data
                         Module = module,
                         Name = fake.Company.CatchPhrase(),
                         Description = fake.Lorem.Paragraphs(1),
-                        StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
-                        EndDate = DateTime.Now.AddMonths(4),
+                        StartDate = startDate,
+                        EndDate = moduleEndDate
                     };
                     activities.Add(activity);
                 }
+
             }
             return activities;
         }
