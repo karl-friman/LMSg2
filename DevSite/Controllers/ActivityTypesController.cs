@@ -8,22 +8,30 @@ using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Web.Data.Data;
 using Core.Repositories;
+using AutoMapper;
+using Core.ViewModels;
 
 namespace DevSite.Controllers
 {
     public class ActivityTypesController : Controller
     {
         private readonly IUnitOfWork uow;
+        private readonly IMapper mapper;
 
-        public ActivityTypesController(IUnitOfWork uow)
+
+        public ActivityTypesController(IUnitOfWork uow,IMapper mapper)
         {
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: ActivityTypes
         public async Task<IActionResult> Index()
         {
-            return View(await uow.ActivityTypeRepository.GetAll(includeAll: false));
+            // return View(await uow.ActivityTypeRepository.GetAll(includeAll: false));
+            var activitiesTypeList = await uow.ActivityTypeRepository.GetAll(includeAll: false);
+            var model = mapper.Map<IEnumerable<ActivityTypeViewModel>>(activitiesTypeList);
+            return View(model);
         }
 
         // GET: ActivityTypes/Details/5
@@ -40,7 +48,8 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(activityType);
+            var model = mapper.Map<ActivityTypeViewModel>(activityType);
+            return View(model);
         }
 
         // GET: ActivityTypes/Create
@@ -54,15 +63,21 @@ namespace DevSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] ActivityType activityType)
+        public async Task<IActionResult> Create(ActivityTypeViewModel activityTypeViewModel)
         {
+            if (ActivityTypeExists(activityTypeViewModel.Id))
+            {
+                ModelState.AddModelError("DocumentId", "Document already exists");
+            }
+
             if (ModelState.IsValid)
             {
-                await uow.ActivityTypeRepository.AddAsync(activityType);
+                var activittyType = mapper.Map<ActivityType>(activityTypeViewModel);
+                await uow.ActivityTypeRepository.AddAsync(activittyType);
                 await uow.ActivityTypeRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(activityType);
+            return View(activityTypeViewModel);
         }
 
         // GET: ActivityTypes/Edit/5
@@ -113,7 +128,8 @@ namespace DevSite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(activityType);
+            var model = mapper.Map<ActivityTypeViewModel>(activityType);
+            return View(model);
         }
 
         // GET: ActivityTypes/Delete/5
@@ -130,7 +146,8 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(activityType);
+            var model = mapper.Map<ActivityTypeViewModel>(activityType);
+            return View(model);
         }
 
         // POST: ActivityTypes/Delete/5

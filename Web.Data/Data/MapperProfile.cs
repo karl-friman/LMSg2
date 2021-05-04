@@ -17,6 +17,8 @@ namespace Web.Data.Data
             CreateMap<Course, CourseViewModel>().ReverseMap();
             CreateMap<Activity, ActivityViewModel>().ReverseMap();
             CreateMap<Module, ModuleViewModel>().ReverseMap();
+            CreateMap<Document, DocumentViewModel>().ReverseMap();
+            CreateMap<ActivityType, ActivityTypeViewModel>().ReverseMap();
         }
 
     }

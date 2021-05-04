@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Core.ViewModels
 {
-    public class LMSUserViewModel
+    public class LMSUserViewModel : IdentityUser
     {
         public UserType UserType { get; set; }
 
