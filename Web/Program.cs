@@ -23,18 +23,18 @@ namespace Web
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
-                //context.Database.EnsureDeleted();
+                context.Database.EnsureDeleted();
                 context.Database.Migrate();
 
                 //dotnet user-sercrets set "AdminPW" "LMS"
-                var confiq = services.GetRequiredService<IConfiguration>();
+                var config = services.GetRequiredService<IConfiguration>();
 
-                 var adminPW = confiq["AdminPW"];
+                  var adminPW = config["AdminPW"];
+                  var studentPW = config["StudentPW"];
 
                 try
                 {
-                    SeedData.InitAsync(services, adminPW)
-                        .Wait();
+                    SeedData.InitAsync(services, adminPW, studentPW).Wait();
                 }
                 catch (Exception ex)
                 {
