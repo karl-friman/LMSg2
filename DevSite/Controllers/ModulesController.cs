@@ -10,16 +10,19 @@ using Web.Data.Data;
 using Core.ViewModels;
 using Core.Repositories;
 using Core.Extension;
+using AutoMapper;
 
 namespace DevSite.Controllers
 {
     public class ModulesController : Controller
     {
         private readonly IUnitOfWork uow;
+        private readonly IMapper mapper;
 
-        public ModulesController(IUnitOfWork uow)
+        public ModulesController(IUnitOfWork uow, IMapper mapper)
         {
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: Modules
@@ -38,14 +41,17 @@ namespace DevSite.Controllers
                 selectedModule = null;
             }
 
-            ModuleListViewModel moduleIndexModel = new ModuleListViewModel
+            var model = mapper.Map<IEnumerable<ModuleViewModel>>(moduleList);
+            var selectedMapped = mapper.Map<ModuleViewModel>(selectedModule);
+
+            ModuleListViewModel courseIndexModel = new ModuleListViewModel
             {
-                Modules = moduleList,
-                SelectedModule = selectedModule
+                Modules = model,
+                SelectedModule = selectedMapped
             };
 
 
-            return View(moduleIndexModel);
+            return View(courseIndexModel);
         }
 
         // GET: Modules/Details/5
@@ -63,7 +69,9 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(module);
+            var model = mapper.Map<ModuleViewModel>(module);
+
+            return View(model);
         }
 
         // GET: Modules/Create
@@ -77,18 +85,37 @@ namespace DevSite.Controllers
         // POST: Modules/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,CourseId")] Module module)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await uow.ModuleRepository.AddAsync(module);
+        //        await uow.ModuleRepository.SaveAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
+        //    return View(module);
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,CourseId")] Module module)
+        public async Task<IActionResult> Create(ModuleViewModel moduleViewModel)
         {
+            if (ModuleExists(moduleViewModel.Id))
+            {
+                ModelState.AddModelError("CourseId", "Course already exists");
+            }
+
             if (ModelState.IsValid)
             {
+                var module = mapper.Map<Module>(moduleViewModel);
                 await uow.ModuleRepository.AddAsync(module);
                 await uow.ModuleRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
-            return View(module);
+            return View(moduleViewModel);
         }
 
         // GET: Modules/Edit/5
@@ -141,7 +168,10 @@ namespace DevSite.Controllers
                 return RedirectToAction(nameof(Index));
             }
             //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
-            return View(module);
+            //return View(module);
+
+            var model = mapper.Map<ModuleViewModel>(module);
+            return View(model);
         }
 
         // GET: Modules/Delete/5
@@ -159,7 +189,8 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(module);
+            var model = mapper.Map<ModuleViewModel>(module);
+            return View(model);
         }
 
         // POST: Modules/Delete/5

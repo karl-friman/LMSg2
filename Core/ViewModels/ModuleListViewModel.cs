@@ -11,10 +11,10 @@ namespace Core.ViewModels
 {
     public class ModuleListViewModel
     {
-        public List<Module> Modules { get; set; }
+        public IEnumerable<ModuleViewModel> Modules { get; set; }
 
-        [Display(Name = "Selected Module")]
-        public Module SelectedModule { get; set; }
+        [Display(Name = "Selected Course")]
+        public ModuleViewModel SelectedModule { get; set; }
         public IEnumerable<SelectListItem> CourseSelectList { get; set; }
     }
 }

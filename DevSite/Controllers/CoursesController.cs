@@ -81,19 +81,40 @@ namespace DevSite.Controllers
         // POST: Courses/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate")] Course course)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await uow.CourseRepository.AddAsync(course);
+        //        await uow.CourseRepository.SaveAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(course);
+        //}
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate")] Course course)
+        public async Task<IActionResult> Create(CourseViewModel courseViewModel)
         {
+
+            if (CourseExists(courseViewModel.Id))
+            {
+                ModelState.AddModelError("CourseId", "Course already exists");
+            }
+
             if (ModelState.IsValid)
             {
+                var course = mapper.Map<Course>(courseViewModel);
                 await uow.CourseRepository.AddAsync(course);
                 await uow.CourseRepository.SaveAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AddSuccess));
             }
-            return View(course);
+            return View(courseViewModel);
         }
-
+   
         // GET: Courses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -143,7 +164,7 @@ namespace DevSite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(EditSuccess));
                
             }
             var model = mapper.Map<CourseViewModel>(course);
@@ -176,12 +197,29 @@ namespace DevSite.Controllers
            // var model = mapper.Map<CourseViewModel>(course);
             uow.CourseRepository.Remove(course);
             await uow.CourseRepository.SaveAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(DeleteSuccess));
         }
 
         private bool CourseExists(int id)
         {
             return uow.CourseRepository.Any(id);
         }
+
+        public IActionResult AddSuccess()
+        {
+            return View();
+        }
+
+        public IActionResult DeleteSuccess()
+        {
+            return View();
+        }
+
+        public IActionResult EditSuccess()
+        {
+            return View();
+        }
+
+
     }
 }

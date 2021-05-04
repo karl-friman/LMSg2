@@ -11,10 +11,10 @@ namespace Core.ViewModels
 
     public class ActivityListViewModel
     {
-        public List<Activity> Activities { get; set; }
+        public IEnumerable<ActivityViewModel> Activities { get; set; }
 
         [Display(Name = "Selected Activity")]
-        public Activity SelectedActivity { get; set; }
+        public ActivityViewModel SelectedActivity { get; set; }
     }
 
 }
