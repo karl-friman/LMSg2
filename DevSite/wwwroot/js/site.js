@@ -24,22 +24,4 @@ if (notification == "true") {
     scrollToSelected();
 }
 
-$(function () {
-    var icons = {
-        header: "ui-icon-circle-arrow-e",
-        activeHeader: "ui-icon-circle-arrow-s"
-    };
-    $("#courses").accordion({
-        collapsible: true,
-        heightStyle: "content",
-        active: false,
-        icons: icons
-    });
-    $("#toggle").button().on("click", function () {
-        if ($("#courses").accordion("option", "icons")) {
-            $("#courses").accordion("option", "icons", null);
-        } else {
-            $("#courses").accordion("option", "icons", icons);
-        }
-    });
-});
+
