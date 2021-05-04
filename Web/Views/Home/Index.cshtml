@@ -1,18 +1,28 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@model IEnumerable<Core.Entities.Activity>
+@using Microsoft.AspNetCore.Identity
 @using Core.Entities;
 @inject SignInManager<LMSUser> SignInManager
 @inject UserManager<LMSUser> UserManager
 
+@{
+    ViewData["Title"] = "Index";
+}
 
-@if (User.IsInRole("Student"))
+
+
+
+@if (User.IsInRole("Admin"))
 {
-    <h1>Hello Student</h1>
-    <a class="nav-link text-dark" asp-controller="Documents" asp-action="Index">Files</a>
+
+    <h1>Hello Admin</h1>
+    <a class="nav-link text-dark" asp-controller="Courses" asp-action="Index">Courses</a>
 
 
 }
 else
 {
-    <h1>Hello Admin</h1>
-    <a class="nav-link text-dark" asp-controller="Courses" asp-action="Index">Courses</a>
+    <partial name="StudentDashboardPartial" />
+    @*<h1>Hello Student</h1>
+        <a class="nav-link text-dark" asp-controller="Documents" asp-action="Index">Files</a>*@
+
 }
