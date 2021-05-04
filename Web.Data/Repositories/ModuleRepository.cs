@@ -42,6 +42,7 @@ namespace Web.Data.Repositories
             if (includeAll)
             {
                 return await db.Modules
+                             .Include(c => c.Course)
                              .Include(d => d.Documents)
                              .Include(a => a.Activities)
                              .FirstOrDefaultAsync(m => m.Id == id);

@@ -44,6 +44,8 @@ namespace Web.Data.Repositories
             {
 
                 return await db.Users
+                             .Include(c => c.Course)
+                             .Include(d => d.Documents)
                              .FirstOrDefaultAsync(m => m.Id == id);
             }
             else
