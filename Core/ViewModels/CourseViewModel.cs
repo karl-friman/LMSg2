@@ -20,7 +20,6 @@ namespace Core.ViewModels
         [Display(Name = "Course End Date")]
         public DateTime EndDate { get; set; }
 
-        public Course SelectedCourse { get; set; }
 
         //Navigation props 
         [Display(Name = "Students")]
