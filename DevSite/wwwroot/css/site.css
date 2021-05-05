@@ -69,3 +69,36 @@ body {*/
   white-space: nowrap;
   line-height: 60px;*/ /* Vertically center the text there */
 /*}*/
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+.candidate-list .candidate-list-image img {
+    width: 80px;
+    height: 80px;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+.candidate-grid .candidate-list-image {
+    text-align: center;
+    margin-right: 0px;
+}
+
+.candidate-grid .candidate-list-image img {
+    height: 150px;
+    width: 100%;
+}
+
+.card {
+    max-width: 16rem;
+    min-width: 12rem;
+    margin-left: 1rem;
+}
+
+.card:hover {
+    color: #1832a5;
+    -webkit-box-shadow: -1px 4px 5px 1px rgba(26, 53, 85, 0.486);
+    box-shadow: -1px 4px 5px 1px rgba(29, 75, 124, 0.459);
+}

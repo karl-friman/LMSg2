@@ -140,8 +140,8 @@ namespace Web.Data.Data
             {
                 UserName = "student@student.com",
                 Email = "student@student.com",
-                FirstName = "MainSystem",
-                LastName = "Administrator",
+                FirstName = "MainStudent",
+                LastName = "Student",
                 Avatar = "https://pbs.twimg.com/media/EUDSegdWsAE1YMJ.jpg",
                 PhoneNumber = fake.Phone.PhoneNumberFormat(),
                 CourseId = 1,

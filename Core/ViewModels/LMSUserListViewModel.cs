@@ -10,7 +10,7 @@ namespace Core.ViewModels
 {
     public class LMSUserListViewModel
     {
-        public List<LMSUser> LMSUsers { get; set; }
+        public List<LMSUserViewModel> LMSUsers { get; set; }
         //public UserType UserType { get; set; }
         //public string FullName { get; set; }
         //public DateTime DateOfBirth { get; set; }
