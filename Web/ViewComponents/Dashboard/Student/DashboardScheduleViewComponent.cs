@@ -23,7 +23,7 @@ namespace Web.ViewComponents.Dashboard.Student
             this.uow = uow;
             this.mapper = mapper;
         }
-        //<vc:DashboardSchedule userId="@item.Id"></vc:DashboardSchedule>
+
         public async Task<IViewComponentResult> InvokeAsync(string userId)
         {
             var user = await uow.LMSUserRepository.GetOne(userId, true);

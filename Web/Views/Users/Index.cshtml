@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Entities;
+@inject SignInManager<LMSUser> SignInManager
+@inject UserManager<LMSUser> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (User.IsInRole("Admin"))
+{
+    <partial name="AdminStudent" />
+}
+else
+{
+    <partial name="StudentClass" />
+}

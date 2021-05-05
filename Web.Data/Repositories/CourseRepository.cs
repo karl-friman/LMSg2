@@ -23,6 +23,7 @@ namespace Web.Data.Repositories
             {
                 List<Course> courseList = await db.Courses
                                 .Include(d => d.Documents)
+                                .Include(u => u.Users)
                                 .Include(m => m.Modules)
                                 .ThenInclude(a => a.Activities)
                                 .OrderBy(x => x.Name)
@@ -43,6 +44,7 @@ namespace Web.Data.Repositories
 
                 return await db.Courses
                              .Include(d => d.Documents)
+                             .Include(u => u.Users)
                              .Include(m => m.Modules)
                              .ThenInclude(a => a.Activities)
                              .FirstOrDefaultAsync(m => m.Id == id);

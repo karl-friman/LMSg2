@@ -24,4 +24,9 @@ if (notification == "true") {
     scrollToSelected();
 }
 
+$(function () {
+    $("#effect").hide();
 
+    var options = {};
+    $("#effect").show("fade", options, 600);
+});
