@@ -2,7 +2,7 @@
 @model DashboardStudentScheduleViewModel
 
 <div class="card border-secondary mb-3" style="max-width: 30rem;">
-    <div class="card-header">Hello @User.Identity.Name, here's your day! <br /> <p>Here's what happening in NA21 today!</p></div>
+    <div class="card-header">Hello @User.Identity.Name, here's your day! <br /> Here's what happening in NA21 today!</div>
 
     <div class="card-body">
 
@@ -10,7 +10,7 @@
         {
 
 
-            
+
             @if (activity.StartDate < DateTime.Now && activity.EndDate > DateTime.Now)
             {
                 //if (activity.ActivityType is not null)
@@ -18,25 +18,30 @@
                 switch (activity.ActivityType.Name)
                 {
                     case "Lecture":
-                        <h5 class="card-title text-danger">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <h5 class="card-title text-danger">@activity.Name <br/> @activity.StartDate-@activity.EndDate</h5>
                         <p class="card-text"> @activity.Description</p>
                         break;
                     case "Assignment":
-                        <h5 class="card-title text-info">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <h5 class="card-title text-info">@activity.Name <br/>@activity.StartDate-@activity.EndDate</h5>
                         <p class="card-text"> @activity.Description</p>
                         break;
                     case "E-Learning":
-                        <h5 class="card-title text-primary">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <h5 class="card-title text-primary">@activity.Name <br/> @activity.StartDate-@activity.EndDate</h5>
                         <p class="card-text"> @activity.Description</p>
                         break;
 
                     default:
-                        <h5 class="card-title text-primary">@activity.Name @activity.StartDate-@activity.EndDate</h5>
-                        <p class="card-text"> @activity.Description</p>
+                        @*<h5 class="card-title text-primary">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <p class="card-text"> @activity.Description</p>*@
+                        <h5 class="card-title text-primary">No activities available</h5>
+                        <p class="card-text"> No activities available</p>
                         break;
                 }
                 //}
+
             }
+          
+
 
 
         }
