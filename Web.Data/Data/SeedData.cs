@@ -35,7 +35,7 @@ namespace Web.Data.Data
                 await context.SaveChangesAsync();
 
                 var activityTypes = new List<ActivityType>();
-                activityTypes.Add(new ActivityType() { Name = "Assignement" });
+                activityTypes.Add(new ActivityType() { Name = "Assignment" });
                 activityTypes.Add(new ActivityType() { Name = "Lecture" });
                 activityTypes.Add(new ActivityType() { Name = "E-Learning" });
                 activityTypes.Add(new ActivityType() { Name = "Excursion" });
@@ -198,7 +198,7 @@ namespace Web.Data.Data
             foreach (Module module in modules)
             {
                 //Activities cannot finish after modules have finished.
-                var startDate = module.StartDate.AddMonths(fake.Random.Int(0, 5));
+                var startDate = module.StartDate.AddDays(fake.Random.Int(0, 7));
                 var monthsToAdd = fake.Random.Int(1, 5);
                 var moduleEndDate = module.StartDate.AddMonths(monthsToAdd);
                 if (moduleEndDate > module.EndDate)
@@ -289,7 +289,7 @@ namespace Web.Data.Data
                 for (int i = 0; i < fake.Random.Int(2, amount); i++)
                 {
                     //Modules cannot finish after courses have finished.
-                    var startDate = course.StartDate.AddMonths(fake.Random.Int(0, 5));
+                    var startDate = course.StartDate.AddMonths(fake.Random.Int(0, 2));
                     var monthsToAdd = fake.Random.Int(1, 5);
                     var moduleEndDate = course.StartDate.AddMonths(monthsToAdd);
                     if (moduleEndDate > course.EndDate)
@@ -322,7 +322,7 @@ namespace Web.Data.Data
                 {
                     Name = fake.Company.CatchPhrase(),
                     Description = fake.Lorem.Paragraphs(1),
-                    StartDate = DateTime.Now.AddDays(fake.Random.Int(-2, 2)),
+                    StartDate = DateTime.Now.AddDays(fake.Random.Int(-30, 2)),
                     EndDate = courseEndDate,
                 };
 

@@ -9,12 +9,35 @@
         @foreach (var activity in Model.Activities)
         {
 
-            @if (activity.StartDate.Date == DateTime.Now.Date)
-            {
-                <h5 class="card-title">@activity.Name @activity.StartDate-@activity.EndDate</h5>
-                <p class="card-text"> @activity.Description</p>
 
+            
+            @if (activity.StartDate < DateTime.Now && activity.EndDate > DateTime.Now)
+            {
+                //if (activity.ActivityType is not null)
+                //{
+                switch (activity.ActivityType.Name)
+                {
+                    case "Lecture":
+                        <h5 class="card-title text-danger">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+                    case "Assignment":
+                        <h5 class="card-title text-info">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+                    case "E-Learning":
+                        <h5 class="card-title text-primary">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+
+                    default:
+                        <h5 class="card-title text-primary">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+                }
+                //}
             }
+
 
         }
     </div>

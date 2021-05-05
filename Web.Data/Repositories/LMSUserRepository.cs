@@ -25,6 +25,7 @@ namespace Web.Data.Repositories
                                .Include(c => c.Course)
                                .ThenInclude(m => m.Modules)
                                .ThenInclude(a => a.Activities)
+                               .ThenInclude(at => at.ActivityType)
                                .Include(d => d.Documents)
                                .OrderBy(x => x.Email)
                                .ToListAsync();
@@ -50,6 +51,7 @@ namespace Web.Data.Repositories
                              .Include(c => c.Course)
                              .ThenInclude(m => m.Modules)
                              .ThenInclude(a => a.Activities)
+                             .ThenInclude(at => at.ActivityType)
                              .Include(d => d.Documents)
                              .FirstOrDefaultAsync(m => m.Id == id);
             }
