@@ -16,7 +16,9 @@ namespace Core.Entities
         public DateTime EndDate { get; set; }
 
         //Foreign key
+        [Display(Name = "Modules")]
         public int ModuleId { get; set; }
+        [Display(Name = "Activity Type")]
         public int? ActivityTypeId { get; set; }
         //Navigation props 
         public Module Module { get; set; }

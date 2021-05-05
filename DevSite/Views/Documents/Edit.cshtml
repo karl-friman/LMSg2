@@ -40,17 +40,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="CourseId" class="control-label"></label>
-                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
+                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseSelectList"></select>
                 <span asp-validation-for="CourseId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ModuleId" class="control-label"></label>
-                <select asp-for="ModuleId" class="form-control" asp-items="ViewBag.ModuleId"></select>
+                <select asp-for="ModuleId" class="form-control" asp-items="ViewBag.ModuleSelectList"></select>
                 <span asp-validation-for="ModuleId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ActivityId" class="control-label"></label>
-                <select asp-for="ActivityId" class="form-control" asp-items="ViewBag.ActivityId"></select>
+                <select asp-for="ActivityId" class="form-control" asp-items="ViewBag.ActivityTypeSelectList"></select>
                 <span asp-validation-for="ActivityId" class="text-danger"></span>
             </div>
             <div class="form-group">

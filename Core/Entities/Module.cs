@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +18,14 @@ namespace Core.Entities
         public DateTime EndDate { get; set; }
 
         //Foreign keys
+        [Display(Name = "Course")]
         public int CourseId { get; set; }
 
         //Navigation props 
         public Course Course { get; set; }
         public ICollection<Activity> Activities { get; set; }
         public ICollection<Document> Documents { get; set; }
+        [NotMapped]
+        public IEnumerable<SelectListItem> CourseSelectList { get; set; }
     }
 }

@@ -34,6 +34,7 @@ namespace Web
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<LMSUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
         }
@@ -62,10 +63,13 @@ namespace Web
 
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapDefaultControllerRoute().RequireAuthorization(); 
+                //endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}").RequireAuthorization(); 
                 endpoints.MapRazorPages();
+                
             });
         }
     }

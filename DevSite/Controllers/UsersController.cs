@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using Core.Repositories;
+using AutoMapper;
+using Core.ViewModels;
 
 namespace DevSite.Controllers
 {
@@ -19,18 +21,26 @@ namespace DevSite.Controllers
     {
         private readonly UserManager<LMSUser> _userManager;
         private readonly IUnitOfWork uow;
+        private readonly IMapper mapper;
 
-        public UsersController(UserManager<LMSUser> userManager, IUnitOfWork uow)
+        public UsersController(UserManager<LMSUser> userManager, IUnitOfWork uow, IMapper mapper)
         {
             _userManager = userManager;
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
             //var x = _context.Users.
-            return View(await uow.LMSUserRepository.GetAll(includeAll: true));
+            // return View(await uow.LMSUserRepository.GetAll(includeAll: true));
+
+            //var userList = await uow.DocumentRepository.GetAll(includeAll: false);
+            var userList = await uow.LMSUserRepository.GetAll(includeAll: true);
+            var model = mapper.Map<IEnumerable<LMSUserViewModel>>(userList);
+            return View(model);
+
 
             //LMSUser selectedUser = null;
 
@@ -71,7 +81,8 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            var model = mapper.Map<LMSUserViewModel>(user);
+            return View(model);
         }
 
         // GET: Users/Create
@@ -85,16 +96,24 @@ namespace DevSite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Email,UserType,PhoneNumber,FirstName,LastName,DateOfBirth,Avatar,CourseId,Course,Documents")] LMSUser user)
+        public async Task<IActionResult> Create( LMSUserViewModel userViewModel)
         {
+            if (UserExists(userViewModel.Id))
+            {
+                ModelState.AddModelError("LMSUserId", "User already exists");
+            }
+
             if (ModelState.IsValid)
             {
+                var user = mapper.Map<LMSUser>(userViewModel);
                 await uow.LMSUserRepository.AddAsync(user);
                 await uow.LMSUserRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(userViewModel);
         }
+
+        
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -148,7 +167,8 @@ namespace DevSite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            var model = mapper.Map<LMSUserViewModel>(user);
+            return View(model);
         }
 
         // GET: Users/Delete/5
@@ -165,7 +185,8 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            var model = mapper.Map<LMSUserViewModel>(user);
+            return View(model);
         }
 
         // POST: Users/Delete/5

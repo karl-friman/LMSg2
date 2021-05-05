@@ -9,21 +9,26 @@ using Core.Entities;
 using Web.Data.Data;
 using Core.ViewModels;
 using Core.Repositories;
+using AutoMapper;
 
 namespace DevSite.Controllers
 {
     public class DocumentsController : Controller
     {
         private readonly IUnitOfWork uow;
-        public DocumentsController(IUnitOfWork uow)
+        private readonly IMapper mapper;
+        public DocumentsController(IUnitOfWork uow, IMapper mapper)
         {
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            return View(await uow.DocumentRepository.GetAll(includeAll: true));
+            var doucmentList = await uow.DocumentRepository.GetAll(includeAll: true);
+            var model = mapper.Map<IEnumerable<DocumentViewModel>>(doucmentList);
+            return View(model);
         }
 
         // GET: Documents/Details/5
@@ -40,7 +45,8 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(document);
+            var model = mapper.Map<DocumentViewModel>(document);
+            return View(model);
         }
 
         // GET: Documents/Create
@@ -52,18 +58,39 @@ namespace DevSite.Controllers
         // POST: Documents/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Name,Description,TimeStamp,FilePath,UserId,CourseId,ModuleId,ActivityId")] Document document)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await uow.DocumentRepository.AddAsync(document);
+        //        await uow.DocumentRepository.SaveAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(document);
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,TimeStamp,FilePath,UserId,CourseId,ModuleId,ActivityId")] Document document)
+        public async Task<IActionResult> Create(DocumentViewModel documentViewModel)
         {
+            if (DocumentExists(documentViewModel.Id))
+            {
+                ModelState.AddModelError("DocumentId", "Document already exists");
+            }
+
             if (ModelState.IsValid)
             {
+                var document = mapper.Map<Document>(documentViewModel);
                 await uow.DocumentRepository.AddAsync(document);
                 await uow.DocumentRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(document);
+            return View(documentViewModel);
         }
+
+
 
         // GET: Documents/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -113,7 +140,8 @@ namespace DevSite.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(document);
+            var model = mapper.Map<DocumentViewModel>(document);
+            return View(model);
         }
 
         // GET: Documents/Delete/5
@@ -130,7 +158,8 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-            return View(document);
+            var model = mapper.Map<DocumentViewModel>(document);
+            return View(model);
         }
 
         // POST: Documents/Delete/5
