@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Entities;
+@inject SignInManager<LMSUser> SignInManager
+@inject UserManager<LMSUser> UserManager
+
+@model IEnumerable<Core.Entities.Activity>
+
+
+
+<div class="card border-secondary mb-3" style="max-width: 30rem;">
+    <div class="card-header">Hello @User.Identity.Name, here's your day! <br/> <p>Here's what happening in NA21 today!</p></div>
+
+    <div class="card-body">
+
+        @foreach (var activity in Model)
+        {
+
+            @if(activity.StartDate.Date == DateTime.Now.Date)
+            {
+            <h5 class="card-title">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+            <p class="card-text"> @activity.Description</p>
+
+            }
+
+        }
+    </div>
+</div>
+

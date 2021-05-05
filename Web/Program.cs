@@ -23,7 +23,7 @@ namespace Web
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
-                context.Database.EnsureDeleted();
+                //context.Database.EnsureDeleted();
                 context.Database.Migrate();
 
                 //dotnet user-sercrets set "AdminPW" "LMS"

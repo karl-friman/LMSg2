@@ -63,12 +63,13 @@ namespace Web
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapDefaultControllerRoute().RequireAuthorization(); 
                 //endpoints.MapRazorPages();
-                endpoints.MapDefaultControllerRoute().RequireAuthorization();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}").RequireAuthorization(); 
                 endpoints.MapRazorPages();
+                
             });
         }
     }
