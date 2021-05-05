@@ -77,7 +77,7 @@ namespace Web.Data.Data
 
                 var foundAdmin = await userManager.FindByEmailAsync(adminEmail);
 
-                if (foundAdmin != null) return;
+                //if (foundAdmin != null) return;
 
                 var addAdminResult = await userManager.CreateAsync(admin, adminPW);
                 var addStudentResult = await userManager.CreateAsync(student, studentPW);
@@ -144,7 +144,7 @@ namespace Web.Data.Data
                 LastName = "Administrator",
                 Avatar = "https://pbs.twimg.com/media/EUDSegdWsAE1YMJ.jpg",
                 PhoneNumber = fake.Phone.PhoneNumberFormat(),
-                //  PasswordHash = "asdfasdf123!A",
+                CourseId = 1,
                 UserType = UserType.Student
             };
             // users.Add(admin);

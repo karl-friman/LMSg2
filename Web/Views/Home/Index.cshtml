@@ -8,7 +8,7 @@
     ViewData["Title"] = "Index";
 }
 
-
+<h1>Hej från Index</h1>
 
 
 @if (User.IsInRole("Admin"))
@@ -16,12 +16,18 @@
 
     <h1>Hello Admin</h1>
     <a class="nav-link text-dark" asp-controller="Courses" asp-action="Index">Courses</a>
+    //await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) });
 
 
 }
 else
 {
-    <partial name="StudentDashboardPartial" />
+    <div>
+    @await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) });
+
+    @*<partial name="StudentDashboardPartial" model="@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })"/>*@
+    @*<vc:dashboard-schedule userId="@UserManager.GetUserId(User)"></vc:dashboard-schedule>*@
+    </div>
     @*<h1>Hello Student</h1>
         <a class="nav-link text-dark" asp-controller="Documents" asp-action="Index">Files</a>*@
 

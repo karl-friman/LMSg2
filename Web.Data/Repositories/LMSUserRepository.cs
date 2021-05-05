@@ -23,6 +23,9 @@ namespace Web.Data.Repositories
             {
                 List<LMSUser> usersList = await db.Users
                                .Include(c => c.Course)
+                               .ThenInclude(m => m.Modules)
+                               .ThenInclude(a => a.Activities)
+                               .Include(d => d.Documents)
                                .OrderBy(x => x.Email)
                                .ToListAsync();
                 return usersList;
@@ -45,6 +48,8 @@ namespace Web.Data.Repositories
 
                 return await db.Users
                              .Include(c => c.Course)
+                             .ThenInclude(m => m.Modules)
+                             .ThenInclude(a => a.Activities)
                              .Include(d => d.Documents)
                              .FirstOrDefaultAsync(m => m.Id == id);
             }

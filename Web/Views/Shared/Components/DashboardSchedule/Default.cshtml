@@ -1,13 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using Core.Entities;
-@inject SignInManager<LMSUser> SignInManager
-@inject UserManager<LMSUser> UserManager
-
-@*@model IEnumerable<Core.Entities.Activity>*@
-@model Core.ViewModels.Dashboard.Student.DashboardStudentScheduleViewModel
-
-
-
+﻿
+@model DashboardStudentScheduleViewModel
 
 <div class="card border-secondary mb-3" style="max-width: 30rem;">
     <div class="card-header">Hello @User.Identity.Name, here's your day! <br /> <p>Here's what happening in NA21 today!</p></div>
@@ -27,4 +19,3 @@
         }
     </div>
 </div>
-
