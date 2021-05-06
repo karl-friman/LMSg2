@@ -10,8 +10,8 @@ using Web.Data.Data;
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210429124248_docs")]
-    partial class docs
+    [Migration("20210506034437_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -393,7 +393,7 @@ namespace Web.Data.Migrations
             modelBuilder.Entity("Core.Entities.Activity", b =>
                 {
                     b.HasOne("Core.Entities.ActivityType", "ActivityType")
-                        .WithMany("Activity")
+                        .WithMany("Activities")
                         .HasForeignKey("ActivityTypeId");
 
                     b.HasOne("Core.Entities.Module", "Module")
@@ -506,7 +506,7 @@ namespace Web.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.ActivityType", b =>
                 {
-                    b.Navigation("Activity");
+                    b.Navigation("Activities");
                 });
 
             modelBuilder.Entity("Core.Entities.Course", b =>

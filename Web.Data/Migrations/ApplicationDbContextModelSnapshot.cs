@@ -391,7 +391,7 @@ namespace Web.Data.Migrations
             modelBuilder.Entity("Core.Entities.Activity", b =>
                 {
                     b.HasOne("Core.Entities.ActivityType", "ActivityType")
-                        .WithMany("Activity")
+                        .WithMany("Activities")
                         .HasForeignKey("ActivityTypeId");
 
                     b.HasOne("Core.Entities.Module", "Module")
@@ -504,7 +504,7 @@ namespace Web.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.ActivityType", b =>
                 {
-                    b.Navigation("Activity");
+                    b.Navigation("Activities");
                 });
 
             modelBuilder.Entity("Core.Entities.Course", b =>

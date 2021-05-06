@@ -26,8 +26,8 @@ namespace DevSite.Controllers
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            var doucmentList = await uow.DocumentRepository.GetAll(includeAll: true);
-            var model = mapper.Map<IEnumerable<DocumentViewModel>>(doucmentList);
+            var doucumentList = await uow.DocumentRepository.GetAll(includeAll: true);
+            var model = mapper.Map<IEnumerable<DocumentViewModel>>(doucumentList);
             return View(model);
         }
 

@@ -13,9 +13,7 @@ namespace Core.Entities
         public string Description { get; set; }
         public DateTime TimeStamp { get; set; }
         public string FilePath { get; set; }
-       // public FileUpload FileUpload { get; set; }
-
-        
+        // public FileUpload FileUpload { get; set; }
 
         //Foreign key
         public int LMSUserId { get; set; }
