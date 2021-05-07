@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using Core.Entities;
 
-namespace Web.Controllers
+namespace DevSite.Controllers
 {
     public class FileUpload: Controller
     {
@@ -76,7 +76,7 @@ namespace Web.Controllers
         userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
           //   if (!String.IsNullOrEmpty(userId))
           
-            var allUsers = await uow.LMSUserRepository.GetAll(includeAll: true);
+            var allUsers = await uow.LMSUserRepository.GetAll(includeAll: false);
             DocumentFileViewModel docsViewModel = null;
 
             foreach (LMSUser u in allUsers)
@@ -86,8 +86,9 @@ namespace Web.Controllers
                     docsViewModel = new DocumentFileViewModel
                     {
                         Course = u.Course,
-                        Modules = u.Course.Modules,
                         Documents = u.Course.Documents,
+                        Modules = u.Course.Modules,
+                        FilePath = u.Course.Document.FilePath
                     };
 
                 }

@@ -11,12 +11,14 @@ namespace Core.ViewModels
     {
     
         public Course Course { get; set; }
-       // public Module Module { get; set; }
-      //  public Activity Activity{ get; set; }
+        public Module Module { get; set; }
+        //public Activity Activity { get; set; }
         public string FilePath { get; set; }
 
         public ICollection<Document> Documents { get; set; }
         public ICollection<Module> Modules { get; set; }
+
+       
 
         public ICollection<Activity> Activities { get; set; }
 
