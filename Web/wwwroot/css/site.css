@@ -89,7 +89,7 @@ span {
     width: 20px;
     height: 2px;
     display: block;
-    background: #555;
+/*    background: #555;*/
     transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
 }
 
@@ -116,9 +116,10 @@ span {
         margin: 5px auto;
     }*/
 #page-content-wrapper {
-    overflow: scroll;
-    height: 1200px;
+    /*overflow: scroll;*/
+    height: auto;
 }
+
 .wrapper {
     display: flex;
     align-items: stretch;
@@ -160,42 +161,43 @@ a, a:hover, a:focus {
 
 #sidebar {
     /* don't forget to add all the previously mentioned styles here too */
-    background: #7386D5;
-    color: #fff;
+    /*background: #7386D5;*/
+    color: #000;
     transition: all 0.3s;
     height: 1200px;
 }
 
-#sidebar .sidebar-header {
-    padding: 20px;
-    background: #6d7fcc;
-}
+    #sidebar .sidebar-header {
+        padding: 20px;
+        /*background: #6d7fcc;*/
+        
+    }
 
-#sidebar ul.components {
-    padding: 20px 0;
-    border-bottom: 1px solid #47748b;
-}
+    #sidebar ul.components {
+        padding: 20px 0;
+        border-bottom: 1px solid #47748b;
+    }
 
-#sidebar ul p {
-    color: #fff;
-    padding: 10px;
-}
+    #sidebar ul p {
+        color: #000;
+        padding: 10px;
+    }
 
-#sidebar ul li a {
-    padding: 10px;
-    font-size: 1.1em;
-    display: block;
-}
+    #sidebar ul li a {
+        padding: 10px;
+        font-size: 1.1em;
+        display: block;
+    }
 
-#sidebar ul li a:hover {
-     color: darkslateblue;
-     background: #fff;
-}
+        #sidebar ul li a:hover {
+            color: white;
+            background: #6d7fcc;
+        }
 
-#sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
-}
+    #sidebar ul li.active > a, a[aria-expanded="true"] {
+        color: #000;
+        background: #6d7fcc;
+    }
 
 ul ul a {
     font-size: 0.9em !important;
@@ -213,20 +215,17 @@ ul ul a {
 
 .center-box {
     position: absolute;
-
     top: 200px;
-
     background: #fff;
     overflow: scroll;
     height: 600px;
     z-index: 1;
-
     /*
   This doesn't work
   margin-left: -25%;
   margin-top: -25%;
   */
-/*    width: 40%;
+    /*    width: 40%;
     height: 50%;
     padding: 20px;
     background: red;
@@ -237,15 +236,15 @@ ul ul a {
 
 .top-box {
     position: absolute;
-      overflow: scroll;
-      height: 600px;
-      color: grey;
+    overflow: scroll;
+    height: 600px;
+    color: grey;
     /*
   This doesn't work
   margin-left: -25%;
   margin-top: -25%;
   */
-/*    width: 40%;
+    /*    width: 40%;
     height: 50%;
     padding: 20px;
     background: red;
@@ -266,7 +265,7 @@ ul ul a {
   margin-left: -25%;
   margin-top: -25%;
   */
-/*    width: 40%;
+    /*    width: 40%;
     height: 50%;
     padding: 20px;
     background: red;
@@ -274,28 +273,27 @@ ul ul a {
     text-align: center;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);*/
 }
+
 .main-schedule {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-#yesterday, #tomorrow {
 
+#yesterday, #tomorrow {
     opacity: 0.4;
 }
 
 .today {
     background: white;
     opacity: 1;
-
 }
-
 
 footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    background: #fff;
+    padding-right: 2em;
 }
 
 .user-list .user-list-image img {
@@ -349,7 +347,7 @@ footer {
         display: block;
     }
 }
-}
-.row{
-    margin: 1.5em; 
+
+.row {
+    margin: 1.5em;
 }

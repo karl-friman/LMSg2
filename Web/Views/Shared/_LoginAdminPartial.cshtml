@@ -9,10 +9,10 @@
     <div>
         <div class="sidebar-header">
             <div class="col text-left logo pl-5">
-                <a style="color: #fff;" asp-controller="Home" asp-action="Index">LMS</a>
+                <a asp-controller="Home" asp-action="Index">LMS</a>
             </div>
             <hr />
-            <a style=" color: #fff; " class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+            <a class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
 
 
         </div>
@@ -38,7 +38,7 @@
 
 
         <form style=" color: #fff;" class="sidebar-header " asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button style="color: #fff; font-size: 0.9em;" type="submit" class="btn col text-left logo pl-5 ">Log out</button>
+            <button font-size: 0.9em;" type="submit" class="btn col text-left logo pl-5 ">Log out</button>
         </form>
     </div>
 </nav>

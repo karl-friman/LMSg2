@@ -1,0 +1,76 @@
+﻿@model CourseViewModel
+
+@{
+    ViewData["Title"] = "My Course";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header">
+            <h1>@Model.Name</h1>
+            <p>@Model.Description</p>
+            <p>@Model.StartDate.ToString("dddd, dd MMMM yyyy")</p>
+            <p>@Model.EndDate.ToString("dddd, dd MMMM yyyy")</p>
+
+        </div>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-lg-12">
+        <div class="page-header">
+            <h1>Course Modules</h1>
+        </div>
+    </div>
+</div>
+<div class="row mb-3">
+    <div id="accordion" class="accordion" style="width:40em;">
+        @foreach (var item in Model.Modules)
+        {
+            <h3>@item.Name</h3>
+            <div class="card">
+                <div class="card-header">
+                    Deadline: @item.EndDate.ToString("dddd, dd MMMM yyyy")
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">@item.Name</h4>
+                    <p class="card-text">@item.Description</p>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Assigned on @item.StartDate.ToString("dddd, dd MMMM yyyy")</li>
+                        <li class="list-group-item"><strong>Documents: @*@item.modDocuments.Count()*@</strong></li>
+                        <li class="list-group-item">
+                            <ul class="list-group list-group-flush">
+                                @*@foreach (var document in item.Documents)
+                                    {
+                                        <li class="list-group-item"><a href="@document.FilePath">@document.Name</a></li>
+                                    }*@
+                            </ul>
+                        </li>
+                        <li class="list-group-item"><a type="button" class="btn btn-outline-info" href="#">Submit assignment</a></li>
+                    </ul>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(function () {
+        var icons = {
+            header: "ui-icon-circle-arrow-e",
+            activeHeader: "ui-icon-circle-arrow-s"
+        };
+        $("#accordion").accordion({
+            collapsible: true,
+            heightStyle: "content",
+            active: false,
+            icons: icons
+        });
+        $("#toggle").button().on("click", function () {
+            if ($("#courses").accordion("option", "icons")) {
+                $("#courses").accordion("option", "icons", null);
+            } else {
+                $("#courses").accordion("option", "icons", icons);
+            }
+        });
+    });
+</script>

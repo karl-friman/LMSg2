@@ -53,7 +53,16 @@ namespace DevSite.Controllers
 
             return View(courseIndexModel);
         }
+        // GET: Courses
+        public async Task<IActionResult> StudentCourse()
+        {
+            string userId = _userManager.GetUserId(User);
+            LMSUser user = await uow.LMSUserRepository.GetOne(userId, includeAll: false);
+            Course course = await uow.CourseRepository.GetOne(user.CourseId, includeAll: true);
 
+            CourseViewModel model = mapper.Map<CourseViewModel>(course);
+            return View(model);
+        }
         public async Task<IActionResult> Assignments()
         {
             string userId = _userManager.GetUserId(User);
