@@ -14,6 +14,9 @@
 
         </div>
     </div>
+    <div class="progress">
+        <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="@Model.StartDate.ToString("yyyy-MM-dd") * 100" aria-valuemin="0" aria-valuemax=@Model.EndDate.ToString("yyyy-MM-dd") * 100></div>
+    </div>
 </div>
 <hr />
 <div class="row">
@@ -41,16 +44,35 @@
                         <li class="list-group-item">
                             <ul class="list-group list-group-flush">
                                 @*@foreach (var document in item.Documents)
-                                    {
-                                        <li class="list-group-item"><a href="@document.FilePath">@document.Name</a></li>
-                                    }*@
+                    {
+                        <li class="list-group-item"><a href="@document.FilePath">@document.Name</a></li>
+                    }*@
                             </ul>
                         </li>
                         <li class="list-group-item"><a type="button" class="btn btn-outline-info" href="#">Submit assignment</a></li>
                     </ul>
-                </div>
+                    <h3>Activities</h3>
+
+
+                    <div  class="card" style="width:40em;">
+                    @foreach (var activity in item.Activities)
+                    {
+                        <partial name="~/Views/Users/StudentSchedulePartial" model="activity" />
+                            @*<p>@activity.ActivityType.Name</p>
+                            <div class="card">
+                                <p>@activity.StartDate.ToString("yyyy-MM-dd")</p>
+                                <h4 class="card-title">@activity.Name</h4>
+                                <p class="card-text">@activity.Description</p>
+                            </div>*@
+
+                            }
+                        </div>
+
+
+                    </div>
             </div>
         }
+
     </div>
 </div>
 <script>
@@ -72,5 +94,19 @@
                 $("#courses").accordion("option", "icons", icons);
             }
         });
+    });
+
+    $(function () {
+        var icons = {
+            header: "ui-icon-circle-arrow-e",
+            activeHeader: "ui-icon-circle-arrow-s"
+        };
+        $("#accordionActivity").accordion({
+            collapsible: true,
+            heightStyle: "content",
+            active: false,
+            icons: icons
+        });
+     
     });
 </script>
