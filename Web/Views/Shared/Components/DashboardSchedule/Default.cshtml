@@ -1,10 +1,12 @@
 ﻿
 @model DashboardStudentScheduleViewModel
 
-<div class="card border-secondary mb-3" style="max-width: 30rem;">
-    <div class="card-header">Hello @User.Identity.Name, here's your day! <br /> Here's what happening in NA21 today!</div>
+<div class="card border-secondary mb-3" style="max-width: 40rem;">
+    <div class="card-header"><h5>Hello @User.Identity.Name, here's your activities! </h5> <h6>This is happening in <strong>@Model.Course.Name</strong> today!</h6> </div>
 
     <div class="card-body">
+
+
 
         @foreach (var activity in Model.Activities)
         {
@@ -13,34 +15,72 @@
 
             @if (activity.StartDate < DateTime.Now && activity.EndDate > DateTime.Now)
             {
+
                 //if (activity.ActivityType is not null)
                 //{
                 switch (activity.ActivityType.Name)
                 {
+
                     case "Lecture":
-                        <h5 class="card-title text-danger">@activity.Name <br/> @activity.StartDate-@activity.EndDate</h5>
-                        <p class="card-text"> @activity.Description</p>
-                        break;
-                    case "Assignment":
-                        <h5 class="card-title text-info">@activity.Name <br/>@activity.StartDate-@activity.EndDate</h5>
-                        <p class="card-text"> @activity.Description</p>
-                        break;
-                    case "E-Learning":
-                        <h5 class="card-title text-primary">@activity.Name <br/> @activity.StartDate-@activity.EndDate</h5>
-                        <p class="card-text"> @activity.Description</p>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-title text-info ">@activity.Name </h6> <span class="badge badge-info w-25 h-100">Lecture</span>
+                        </div>
+                        <h6 class="card-title text-info">08:15 - 10:30</h6>
+
+                        <p class="card-text "> @activity.Description</p>
+                        <hr />
                         break;
 
+                        
+                    case "E-Learning":
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-title text-primary ">@activity.Name </h6> <span class="badge badge-primary w-25 h-100">E-Learning</span>
+                        </div>
+                        <h6 class="card-title text-primary">10:40 - 12:00</h6>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+                    case "Excursion":
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-title text-warning ">@activity.Name </h6> <span class="badge badge-warning w-25 h-100">Excursion</span>
+                        </div>
+                        <h6 class="card-title text-warning">13:05 - 14:30</h6>
+                        <p class="card-text"> @activity.Description</p>
+                        <hr />
+                        break;
+                    case "Internship":
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-title text-danger ">@activity.Name </h6> <span class="badge badge-danger w-25 h-100">Internship</span>
+                        </div>
+                        <h6 class="card-title text-danger">Ongoing</h6>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+                    case "Teamwork":
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-title text-secondary ">@activity.Name </h6> <span class="badge badge-secondary w-25 h-100">Teamwork</span>
+                        </div>
+                        <h6 class="card-title text-secondary">16:00 - 1700</h6>
+                        <p class="card-text"> @activity.Description</p>
+                        <hr />
+                        break;
+                    case "Assignment":
+                        <div class="d-flex justify-content-between">
+                            <h6 class="card-title text-success ">@activity.Name </h6> <span class="badge badge-success w-25 h-100">Assignment</span>
+                        </div>
+                        <h6 class="card-title text-success">All day</h6>
+                        <p class="card-text"> @activity.Description</p>
+                        <hr />
+                        break;
                     default:
-                        @*<h5 class="card-title text-primary">@activity.Name @activity.StartDate-@activity.EndDate</h5>
-                        <p class="card-text"> @activity.Description</p>*@
-                        <h5 class="card-title text-primary">No activities available</h5>
-                        <p class="card-text"> No activities available</p>
+                        <h5 class="card-title text-primary">@activity.Name</h5>
+                        <h6 class="card-title text-danger">@activity.StartDate - @activity.EndDate</h6>
+                        <p class="card-text"> @activity.Description</p>
+                        <hr />
                         break;
                 }
                 //}
 
             }
-          
+
 
 
 

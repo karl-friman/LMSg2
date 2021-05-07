@@ -1,0 +1,58 @@
+﻿@using Core.ViewModels;
+@using Core.Utilities;
+@using System.Text;
+@using Microsoft.AspNetCore.Html;
+@model DashboardStudentScheduleViewModel
+
+
+@{
+    ViewData["Title"] = "Index";
+
+}
+
+<div class="border-secondary m-5">
+
+    <div class="main-schedule">
+        <div id="yesterday" class="position-relative p-5 w-75">
+            <h3  id="slide" class="mb-5">YESTERDAY</h3>
+
+            @foreach (var activity in Model.Activities)
+            {
+                @if (activity.StartDate < DateTime.Now)
+                {
+                    <partial name="StudentSchedulePartial" model="activity" />
+                }
+            }
+            <div style="" id="today"></div>
+        </div>
+
+        <div class="today w-75">
+            <div class="position-relative p-5 ">
+                <div><a href="#yesterday" class="text-dark"><i class="fas fa-chevron-up"></i></a></div>
+                <hr />
+                <h3 class="mb-5">TODAY</h3>
+                @foreach (var activity in Model.Activities)
+                {
+                    @if (activity.StartDate < DateTime.Now && activity.EndDate > DateTime.Now)
+                    {
+                        <partial name="StudentSchedulePartial" model="activity" />
+                    }
+                }
+            
+                <div><a href="#tomorrow" class="text-dark"><i class="fas fa-chevron-down"></i> </a></div>
+            </div>
+        </div>
+
+        <div id="tomorrow" class="position-relative p-5 w-75">
+            <hr />
+            <h3 class="mb-5">TOMORROW</h3>
+            @foreach (var activity in Model.Activities)
+            {
+                @if (activity.StartDate > DateTime.Now)
+                {
+                    <partial name="StudentSchedulePartial" model="activity" />
+                }
+            }
+        </div>
+    </div>
+</div>

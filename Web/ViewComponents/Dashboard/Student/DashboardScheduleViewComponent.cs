@@ -29,13 +29,14 @@ namespace Web.ViewComponents.Dashboard.Student
             var user = await uow.LMSUserRepository.GetOne(userId, true);
 
             var modules = user.Course.Modules;
-            var activities = modules.SelectMany(a => a.Activities).ToList();
+            var activities = modules.SelectMany(a => a.Activities).OrderBy(d => d.StartDate).ToList();
 
             var model = new DashboardStudentScheduleViewModel
             {
                 Course = user.Course,
                 FullName = user.FullName,
                 Activities = activities
+
             };
 
             return View(model);

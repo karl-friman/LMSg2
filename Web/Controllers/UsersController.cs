@@ -14,6 +14,7 @@ using System.Text;
 using Core.Repositories;
 using AutoMapper;
 using Core.ViewModels;
+using Core.ViewModels.Dashboard.Student;
 
 namespace DevSite.Controllers
 {
@@ -44,6 +45,31 @@ namespace DevSite.Controllers
             var course = await uow.CourseRepository.GetOne(user.CourseId, includeAll: true);
             var courseMembers = course.Users.ToList();
             var model = mapper.Map<IEnumerable<LMSUserViewModel>>(courseMembers);
+            return View(model);
+        }
+        
+        // GET: Users
+        public async Task<IActionResult> StudentSchedule()
+        {
+            var userId = _userManager.GetUserId(User);
+            var user = await uow.LMSUserRepository.GetOne(userId, true);
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+            var modules = user.Course.Modules;
+            
+            var activities = modules.SelectMany(a => a.Activities).ToList();
+
+            var model = new DashboardStudentScheduleViewModel
+            {
+                Course = user.Course,
+                FullName = user.FullName,
+                Activities = activities
+
+            };
+
             return View(model);
         }
 
