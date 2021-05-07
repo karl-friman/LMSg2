@@ -1,0 +1,104 @@
+﻿
+@model DocumentViewModel
+
+<div class="card border-secondary mb-3" style="max-width: 30rem;">
+    <div class="card-header">Hello @User.Identity.Name, here's your day! <br /> <p>Here's what happening in NA21 today!</p></div>
+
+    <div class="card-body">
+
+        @foreach (var item in Model.LMSUser.Course.Modules)
+        {
+
+
+
+            @*@if (activity.StartDate < DateTime.Now && activity.EndDate > DateTime.Now)
+            {*@
+                //if (activity.ActivityType is not null)
+                //{
+                @*switch (activity.ActivityType.Name)
+                {
+                    case "Lecture":
+                        <h5 class="card-title text-danger">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+                    case "Assignment":
+                        <h5 class="card-title text-info">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+                    case "E-Learning":
+                        <h5 class="card-title text-primary">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+
+                    default:
+                        <h5 class="card-title text-primary">@activity.Name @activity.StartDate-@activity.EndDate</h5>
+                        <p class="card-text"> @activity.Description</p>
+                        break;
+                }*@
+                //}
+
+
+              <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Primary card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+<div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Secondary card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+<div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Success card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+<div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Danger card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+<div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Warning card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+<div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Info card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+<div class="card bg-light mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Light card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+<div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body">
+    <h5 class="card-title">Dark card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  </div>
+</div>
+
+
+           }
+
+
+        }
+    </div>
+</div>

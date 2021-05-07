@@ -88,7 +88,7 @@ namespace DevSite.Controllers
                         Course = u.Course,
                         Documents = u.Course.Documents,
                         Modules = u.Course.Modules,
-                        FilePath = u.Course.Document.FilePath
+      //                  FilePath = u.Course.Document.FilePath
                     };
 
                 }
