@@ -10,37 +10,38 @@
     ViewData["Title"] = "Index";
 
 }
-
-<div class="row">
-    <div class="col-lg-12">
-        <div class="page-header">
-            <h1>My Class</h1>
-        </div>
-    </div>
-</div>
-<hr />
-<div id="effect">
-    <div class="row">
-        @foreach (var user in Model)
-        {
-            <div class="">
-                <div class="card user-card border-primary mb-3" >
-                    <div class="user-list user-grid">
-                        <div class="card-header">@user.FullName</div>
-                        <div class="card-body">
-                            <div class="user-list-image">
-                                <img class="img-fluid"
-                                     src="@user.Avatar"
-                                     alt="">
+<div class="d-flex m-5">
+    <div>
+        <div class="card border-secondary">
+            <div class="card-header">
+                <h5>My Class</h5>
+                <hr />
+                <div id="effect">
+                    <div class="row">
+                        @foreach (var user in Model)
+                        {
+                            <div class="">
+                                <div class="card user-card border-primary mb-3">
+                                    <div class="user-list user-grid">
+                                        <div class="card-header">@user.FullName</div>
+                                        <div class="card-body">
+                                            <div class="user-list-image">
+                                                <img class="img-fluid"
+                                                     src="@user.Avatar"
+                                                     alt="">
+                                            </div>
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item"><strong>Phone:</strong> @user.PhoneNumber</li>
+                                                <li class="list-group-item"><strong>Email:</strong> @user.Email</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><strong>Phone:</strong> @user.PhoneNumber</li>
-                                <li class="list-group-item"><strong>Email:</strong> @user.Email</li>
-                            </ul>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
-        }
+        </div>
     </div>
 </div>

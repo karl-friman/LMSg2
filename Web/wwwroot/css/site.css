@@ -1,143 +1,10 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-
-/*a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}*/
-
-/* Provide sufficient contrast against white background */
-/*a {
-  color: #0366d6;
-}
-
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
-}*/
-
-/* Sticky footer styles
--------------------------------------------------- */
-/*html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}*/
-
-/* Sticky footer styles
--------------------------------------------------- */
-/*html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {*/
-/* Margin bottom by footer height */
-/*margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px;*/ /* Vertically center the text there */
-/*}*/
-
-/*sidebar*/
-/*.render-content {
-    margin-left: 300px;
-}*/
-#sidebarCollapse {
-    width: 40px;
-    height: 40px;
-    background: #f5f5f5;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    align-items: center;
-    border-radius: 10px;
-}
-
-span {
-    width: 20px;
-    height: 2px;
-    display: block;
-/*    background: #555;*/
-    transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
-}
-
-/* #sidebarCollapse span:first-of-type {
-             rotate first one 
-            transform: rotate(45deg) translate(2px, 2px);
-        }
-
-        #sidebarCollapse span:nth-of-type(2) {
-             second one is not visible 
-            opacity: 0;
-        }
-
-        #sidebarCollapse span:last-of-type {
-             rotate third one 
-            transform: rotate(-45deg) translate(1px, -1px);
-        }
-
-    #sidebarCollapse.active span {
-         no rotation 
-        transform: none;
-         all bars are visible 
-        opacity: 1;
-        margin: 5px auto;
-    }*/
-#page-content-wrapper {
-    /*overflow: scroll;*/
-    height: auto;
-}
-
-.wrapper {
-    display: flex;
-    align-items: stretch;
-    height: 1200px;
-}
-
-#sidebar {
-    min-width: 250px;
-    max-width: 250px;
-    height: 100%;
-}
-
-    #sidebar.active {
-        margin-left: -250px;
-    }
+/*
+    DEMO STYLE
+*/
 
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-
 
 body {
     font-family: 'Poppins', sans-serif;
@@ -152,25 +19,63 @@ p {
     color: #999;
 }
 
-a, a:hover, a:focus {
+a,
+a:hover,
+a:focus {
     color: inherit;
     text-decoration: none;
     transition: all 0.3s;
 }
 
-
-#sidebar {
-    /* don't forget to add all the previously mentioned styles here too */
-    /*background: #7386D5;*/
-    color: #000;
-    transition: all 0.3s;
-    height: 1200px;
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+/* ---------------------------------------------------
+    SIDEBAR STYLE
+----------------------------------------------------- */
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: #e8e8e4;
+    color: #fff;
+    transition: all 0.3s;
+    position: fixed;
+    top: 0;
+    height: 100%;
+}
+
+    #sidebar.active {
+        margin-left: -250px;
+    }
+
     #sidebar .sidebar-header {
-        padding: 20px;
-        /*background: #6d7fcc;*/
-        
+        padding: 2em;
+        background: #e8e8e4;
     }
 
     #sidebar ul.components {
@@ -179,31 +84,68 @@ a, a:hover, a:focus {
     }
 
     #sidebar ul p {
-        color: #000;
+        color: #fff;
         padding: 10px;
     }
 
     #sidebar ul li a {
-        padding: 10px;
+        padding: 0.5em 2em;
         font-size: 1.1em;
         display: block;
     }
 
         #sidebar ul li a:hover {
-            color: white;
-            background: #6d7fcc;
+            color: #7386D5;
+            background: #fff;
         }
 
-    #sidebar ul li.active > a, a[aria-expanded="true"] {
-        color: #000;
+    #sidebar ul li.active > a,
+    a[aria-expanded="true"] {
+        color: #fff;
         background: #6d7fcc;
     }
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
 
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
     background: #6d7fcc;
 }
+
+ul.CTAs {
+    padding: 20px;
+}
+
+    ul.CTAs a {
+        text-align: center;
+        font-size: 0.9em !important;
+        display: block;
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+a.logout {
+    background: #fff;
+    color: #7386D5;
+}
+
+a.article,
+a.article:hover {
+    background: #6d7fcc !important;
+    color: #fff !important;
+}
+
 
 .notActive {
     opacity: 0;
@@ -293,7 +235,8 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding-right: 2em;
+    padding: 1em 2em;
+    font-size: 0.9em;
 }
 
 .user-list .user-list-image img {
@@ -314,7 +257,7 @@ footer {
     }
 
 .user-card {
-    width: 17rem;
+    width: 16rem;
     margin-left: 1rem;
 }
 
@@ -333,6 +276,9 @@ footer {
     text-align: center;
 }
 
+#page-content-wrapper{
+    padding-left: 15em;
+}
 
 @media (max-width: 768px) {
     #sidebar {
@@ -345,6 +291,10 @@ footer {
 
     .topNav {
         display: block;
+    }
+
+    #page-content-wrapper {
+        padding-left: 0em;
     }
 }
 
