@@ -1,21 +1,23 @@
-﻿@using Core.Entities;
-@model Core.Entities.LMSUser
+﻿@model Core.ViewModels.LMSUserViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Create";
 }
 
 <div class="row">
-    <h1>Edit</h1>
+    <div class="col-lg-12">
+        <div class="page-header">
+            <h1>Add Student</h1>
+        </div>
+    </div>
 </div>
+
 <hr />
-<div class="row">
-    <div id="effect">
+<div id="effect">
+    <div class="row">
         <div class="col-md-8">
-            <form asp-action="Edit">
+            <form asp-action="AddStudent">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="ConcurrencyStamp" />
                 <div class="form-group">
                     <label asp-for="FirstName" class="control-label"></label>
                     <input asp-for="FirstName" class="form-control" />
@@ -50,9 +52,10 @@
                     <label asp-for="CourseId" class="control-label"></label>
                     <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseSelectList"></select>
                 </div>
+                <input type="hidden" id="UserType" name="UserType" value="0">
 
                 <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <input type="submit" value="Create" class="btn btn-primary" />
                     <a type="button" class="btn btn-outline-info" href="#" onclick="history.go(-1)">Go Back</a>
                 </div>
             </form>
@@ -60,6 +63,7 @@
     </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

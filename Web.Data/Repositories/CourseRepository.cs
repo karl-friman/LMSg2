@@ -22,12 +22,16 @@ namespace Web.Data.Repositories
             if (includeAll)
             {
                 List<Course> courseList = await db.Courses
-                                .Include(d => d.Documents)
-                                .Include(u => u.Users)
-                                .Include(m => m.Modules)
-                                .ThenInclude(a => a.Activities)
-                                .OrderBy(x => x.Name)
-                                .ToListAsync();
+                            .Include(d => d.Documents)
+                            .Include(u => u.Users)
+                            .Include(m => m.Modules)
+                            .ThenInclude(a => a.Activities)
+                            .ThenInclude(d => d.Documents)
+                            .Include(m => m.Modules)
+                            .ThenInclude(a => a.Activities)
+                            .ThenInclude(at => at.ActivityType)
+                            .OrderBy(x => x.Name)
+                            .ToListAsync();
                 return courseList;
 
             }
@@ -43,11 +47,16 @@ namespace Web.Data.Repositories
             {
 
                 return await db.Courses
-                             .Include(d => d.Documents)
-                             .Include(u => u.Users)
-                             .Include(m => m.Modules)
-                             .ThenInclude(a => a.Activities)
-                             .FirstOrDefaultAsync(m => m.Id == id);
+                            .Include(d => d.Documents)
+                            .Include(u => u.Users)
+                            .Include(m => m.Modules)
+                            .ThenInclude(a => a.Activities)
+                            .ThenInclude(d => d.Documents)
+                            .Include(m => m.Modules)
+                            .ThenInclude(a => a.Activities)
+                            .ThenInclude(at => at.ActivityType)
+                            .OrderBy(x => x.Name)
+                            .FirstOrDefaultAsync(m => m.Id == id);
             }
             else
             {
@@ -55,6 +64,28 @@ namespace Web.Data.Repositories
                             .FirstOrDefaultAsync(m => m.Id == id);
             }
         }
+        //public async Task<List<Course>> GetAssignmentForUser(string userId){
+
+        //    LMSUser user = await uow.LMSUserRepository.GetOne(userId, includeAll: false);
+        //    IEnumerable<Activity> activities = course.Modules
+        //                                        .SelectMany(a => a.Activities)
+        //                                        .ToList()
+        //                                        .Where(a => a.ActivityType.Name == "Assignment");
+
+        //    List<Course> courseList = await db.Courses
+        //        .Include(d => d.Documents)
+        //        .Include(u => u.Users)
+        //        .Include(m => m.Modules)
+        //        .ThenInclude(a => a.Activities)
+        //        .ThenInclude(d => d.Documents)
+        //        .Include(m => m.Modules)
+        //        .ThenInclude(a => a.Activities)
+        //        .ThenInclude(at => at.ActivityType)
+        //        .OrderBy(x => x.Name)
+        //        .ToListAsync();
+        //    return courseList;
+        //}
+
         public async Task<bool> SaveAsync()
         {
             return (await db.SaveChangesAsync()) >= 0;

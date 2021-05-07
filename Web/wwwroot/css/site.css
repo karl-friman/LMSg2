@@ -93,7 +93,7 @@ footer {
 }
 
 .user-card {
-    width: 14rem;
+    width: 17rem;
     margin-left: 1rem;
 }
 
@@ -110,4 +110,7 @@ footer {
 
 .user-card-header {
     text-align: center;
+}
+.row{
+    margin: 1.5em; 
 }

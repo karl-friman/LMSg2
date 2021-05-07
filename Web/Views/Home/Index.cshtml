@@ -23,10 +23,10 @@
 else
 {
     <div>
-    @await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) });
+    @*@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) });*@
 
     @*<partial name="StudentDashboardPartial" model="@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })"/>*@
-    @*<vc:dashboard-schedule userId="@UserManager.GetUserId(User)"></vc:dashboard-schedule>*@
+    <vc:dashboard-schedule user-id="@UserManager.GetUserId(User)"></vc:dashboard-schedule>
     </div>
     @*<h1>Hello Student</h1>
         <a class="nav-link text-dark" asp-controller="Documents" asp-action="Index">Files</a>*@

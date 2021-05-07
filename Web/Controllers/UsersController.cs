@@ -14,6 +14,7 @@ using System.Text;
 using Core.Repositories;
 using AutoMapper;
 using Core.ViewModels;
+using Core.Extension;
 
 namespace DevSite.Controllers
 {
@@ -46,7 +47,24 @@ namespace DevSite.Controllers
             var model = mapper.Map<IEnumerable<LMSUserViewModel>>(courseMembers);
             return View(model);
         }
+        // GET: Users
+        public async Task<IActionResult> AdminStaff()
+        {
+            var allUsers = await uow.LMSUserRepository.GetAll(includeAll: false);
+            var filteredUsers = allUsers.FindAll(z => z.UserType.ToString() == "Admin");
 
+            var model = mapper.Map<IEnumerable<LMSUserViewModel>>(filteredUsers);
+            return View(model);
+        }
+        // GET: Users
+        public async Task<IActionResult> AdminStudents()
+        {
+            var allUsers = await uow.LMSUserRepository.GetAll(includeAll: false);
+            var filteredUsers = allUsers.FindAll(z => z.UserType.ToString() == "Student");
+
+            var model = mapper.Map<IEnumerable<LMSUserViewModel>>(filteredUsers);
+            return View(model);
+        }
         // GET: Users/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -65,18 +83,52 @@ namespace DevSite.Controllers
             return View(model);
         }
 
-        // GET: Users/Create
-        public IActionResult Create()
+        // GET: 
+        public async Task<IActionResult> AddStudent()
         {
+            var courseSelectList = await uow.CourseRepository.GetSelectListItems();
+            ViewData["CourseSelectList"] = courseSelectList;
             return View();
         }
 
-        // POST: Users/Create
+        // POST: 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( LMSUserViewModel userViewModel)
+        public async Task<IActionResult> AddStudent( LMSUserViewModel userViewModel)
+        {
+             if (UserExists(userViewModel.Id))
+            {
+                ModelState.AddModelError("LMSUserId", "User already exists");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var user = mapper.Map<LMSUser>(userViewModel);
+                await uow.LMSUserRepository.AddAsync(user);
+                await uow.LMSUserRepository.SaveAsync();
+                return RedirectToAction(nameof(Details),user);
+            }
+
+            return View(userViewModel);
+            //return View("AdminStudents", userViewModel);
+            //return RedirectToAction("AdminStudents");
+        }
+        // GET: 
+        public async Task<IActionResult> AddStaff()
+        {
+            var courseSelectList = await uow.CourseRepository.GetSelectListItems();
+            ViewData["CourseSelectList"] = courseSelectList;
+            return View();
+        }
+
+        // POST: 
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddStaff(LMSUserViewModel userViewModel)
         {
             if (UserExists(userViewModel.Id))
             {
@@ -88,12 +140,14 @@ namespace DevSite.Controllers
                 var user = mapper.Map<LMSUser>(userViewModel);
                 await uow.LMSUserRepository.AddAsync(user);
                 await uow.LMSUserRepository.SaveAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", user);
+                //return RedirectToAction(nameof(Index));
             }
             return View(userViewModel);
+            //return View("AdminStaff", userViewModel);
+            //return RedirectToAction("AdminStaff");
         }
 
-        
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -105,7 +159,8 @@ namespace DevSite.Controllers
             }
 
             var user = await _userManager.FindByIdAsync(id);
-
+            var courseSelectList = await uow.CourseRepository.GetSelectListItems();
+            ViewData["CourseSelectList"] = courseSelectList;
             if (user == null)
             {
                 return NotFound();
@@ -144,7 +199,7 @@ namespace DevSite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", user);
             }
             var model = mapper.Map<LMSUserViewModel>(user);
             return View(model);

@@ -7,25 +7,71 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Core.Entities;
 using Web.Data.Data;
+using Core.ViewModels;
+using Core.Repositories;
+using Core.Extension;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
-namespace Web.Controllers
+namespace DevSite.Controllers
 {
     public class ActivitiesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        //private readonly ApplicationDbContext _context;
+        private readonly UserManager<LMSUser> _userManager;
+        private readonly IUnitOfWork uow;
+        private readonly IMapper mapper;
 
-        public ActivitiesController(ApplicationDbContext context)
+        public ActivitiesController(UserManager<LMSUser> userManager, IUnitOfWork uow,IMapper mapper)
         {
-            _context = context;
+            //_context = context;
+            _userManager = userManager;
+            this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET: Activities
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? selected)
         {
-            var applicationDbContext = _context.Activities.Include(a => a.ActivityType).Include(a => a.Module);
-            return View(await applicationDbContext.ToListAsync());
-        }
+            Activity selectedActivity = null;
 
+            List<Activity> activityList = await uow.ActivityRepository.GetAll(includeAll: true);
+
+            if (selected is not null)
+            {
+                selectedActivity = await uow.ActivityRepository.GetOne(Id: selected, includeAll: false);
+            }
+            else
+            {
+                selectedActivity = null;
+            }
+
+            var model = mapper.Map<IEnumerable<ActivityViewModel>>(activityList);
+            var selectedMapped = mapper.Map<ActivityViewModel>(selectedActivity);
+
+            ActivityListViewModel activityIndexModel = new ActivityListViewModel
+            {
+                Activities = model,
+                SelectedActivity = selectedMapped
+            };
+
+            return View(activityIndexModel);
+        }
+        public async Task<IActionResult> Assignments()
+        {
+            string userId = _userManager.GetUserId(User);
+            LMSUser user = await uow.LMSUserRepository.GetOne(userId, includeAll: false);
+            Course course = await uow.CourseRepository.GetOne(user.CourseId, includeAll: true);
+            IEnumerable<Activity> activities = course.Modules
+                                                .SelectMany(a => a.Activities)
+                                                .ToList()
+                                                .Where(a => a.ActivityType.Name == "Assignment");
+
+            IEnumerable<ActivityViewModel> model = mapper.Map<IEnumerable<ActivityViewModel>>(activities);
+            return View(model);
+            //Fråga: går det att skriva mer effektiv kod med LINQ?
+            //Hur få med documents?
+        }
         // GET: Activities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -34,42 +80,65 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activities
-                .Include(a => a.ActivityType)
-                .Include(a => a.Module)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var activity = await uow.ActivityRepository.GetOne(id, includeAll: true);
             if (activity == null)
             {
                 return NotFound();
             }
 
-            return View(activity);
+            var model = mapper.Map<ActivityViewModel>(activity);
+            //var selectedMapped = mapper.Map<CourseViewModel>(selectedCourse);
+
+            return View(model);
         }
 
         // GET: Activities/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id");
-            ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id");
+            var ModuleSelectList = await uow.ModuleRepository.GetSelectListItems();
+            ViewData["ModuleSelectList"] = ModuleSelectList;
+            var ActivityTypeSelectList = await uow.ActivityTypeRepository.GetSelectListItems();
+            ViewData["ActivityTypeSelectList"] = ActivityTypeSelectList;
             return View();
         }
 
         // POST: Activities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId,ActivityTypeId")] Activity activity)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await uow.ActivityRepository.AddAsync(activity);
+        //        await uow.ActivityRepository.SaveAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    //ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
+        //    //ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
+        //    return View(activity);
+        //}
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,StartDate,EndDate,ModuleId,ActivityTypeId")] Activity activity)
+        public async Task<IActionResult> Create(ActivityViewModel activityViewModel)
         {
+            if (ActivityExists(activityViewModel.Id))
+            {
+                ModelState.AddModelError("activityViewModel.Id", "Activity already exists");
+            }
+
             if (ModelState.IsValid)
             {
-                _context.Add(activity);
-                await _context.SaveChangesAsync();
+                var activity = mapper.Map<Activity>(activityViewModel);
+                await uow.ActivityRepository.AddAsync(activity);
+                await uow.ActivityRepository.SaveAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
-            ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
-            return View(activity);
+            return View(activityViewModel);
         }
 
         // GET: Activities/Edit/5
@@ -80,13 +149,15 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activities.FindAsync(id);
+            var activity = await uow.ActivityRepository.GetOne(id, false);
             if (activity == null)
             {
                 return NotFound();
             }
-            ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
-            ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
+            var ModuleSelectList = await uow.ModuleRepository.GetSelectListItems();
+            ViewData["ModuleSelectList"] = ModuleSelectList;
+            var ActivityTypeSelectList = await uow.ActivityTypeRepository.GetSelectListItems();
+            ViewData["ActivityTypeSelectList"] = ActivityTypeSelectList;
             return View(activity);
         }
 
@@ -106,8 +177,8 @@ namespace Web.Controllers
             {
                 try
                 {
-                    _context.Update(activity);
-                    await _context.SaveChangesAsync();
+                    uow.ActivityRepository.Update(activity);
+                    await uow.ActivityRepository.SaveAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,9 +193,8 @@ namespace Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ActivityTypeId"] = new SelectList(_context.ActivityTypes, "Id", "Id", activity.ActivityTypeId);
-            ViewData["ModuleId"] = new SelectList(_context.Modules, "Id", "Id", activity.ModuleId);
-            return View(activity);
+            var model = mapper.Map<CourseViewModel>(activity);
+            return View(model);
         }
 
         // GET: Activities/Delete/5
@@ -135,16 +205,14 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activities
-                .Include(a => a.ActivityType)
-                .Include(a => a.Module)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var activity = await uow.ActivityRepository.GetOne(id, includeAll: false);
             if (activity == null)
             {
                 return NotFound();
             }
 
-            return View(activity);
+            var model = mapper.Map<ActivityViewModel>(activity);
+            return View(model);
         }
 
         // POST: Activities/Delete/5
@@ -152,15 +220,15 @@ namespace Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var activity = await _context.Activities.FindAsync(id);
-            _context.Activities.Remove(activity);
-            await _context.SaveChangesAsync();
+            var activity = await uow.ActivityRepository.GetOne(id, includeAll: false);
+            uow.ActivityRepository.Remove(activity);
+            await uow.ActivityRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ActivityExists(int id)
         {
-            return _context.Activities.Any(e => e.Id == id);
+            return uow.ActivityRepository.Any(id);
         }
     }
 }

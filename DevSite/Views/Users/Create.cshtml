@@ -1,4 +1,5 @@
-﻿@model Core.ViewModels.LMSUserViewModel
+﻿@using Core.Entities;
+@model Core.ViewModels.LMSUserViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -43,21 +44,15 @@
                 <span asp-validation-for="Avatar" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Course" class="control-label"></label>
-                <input asp-for="Course" class="form-control" />
-                <span asp-validation-for="Course" class="text-danger"></span>
+                <label asp-for="CourseId" class="control-label"></label>
+                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseSelectList"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Documents" class="control-label"></label>
-                <input asp-for="Documents" class="form-control" />
-                <span asp-validation-for="Documents" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
                 <label asp-for="UserType" class="control-label"></label>
                 <select asp-for="UserType" asp-items="@Html.GetEnumSelectList<UserType>()" class="form-control">
                     <option selected="selected" value=" ">Please select</option>
                 </select>
-            </div>*@
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

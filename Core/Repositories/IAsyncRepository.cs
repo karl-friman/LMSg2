@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Core.Repositories
 {
     public interface IAsyncRepository<T>
-        //public interface IAsyncRepository<T, TInput>
+    //public interface IAsyncRepository<T, TInput>
     {
         Task<List<T>> GetAll(bool includeAll);
         Task<T> GetOne(int? Id, bool includeAll);
@@ -21,6 +21,6 @@ namespace Core.Repositories
         bool Any(int? Id);
         bool Any(string Id);
         void Remove(T removed);
-       
+        //Task<List<T>> GetAssignmentForUser(string userId);
     }
 }
