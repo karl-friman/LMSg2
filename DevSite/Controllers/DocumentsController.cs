@@ -239,10 +239,9 @@ namespace DevSite.Controllers
         public async Task<IActionResult> StudentFilesView()
         {
             var userId = _userManager.GetUserId(User);
-            var testId = "7974161f-2b6a-4572-af14-44aeea8e10c3";
-            var testId2 = "70f937bf-0d55-40df-8ab8-ef15a9a229ea";
+            var testId = "7d6ddd4b-0519-48d2-9b5e-2fdacf4cdfa2";
             //var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
-            var currentUser = await uow.LMSUserRepository.GetOne(testId2, true);
+            var currentUser = await uow.LMSUserRepository.GetOne(testId, true);
 
             var allDocuments = await uow.DocumentRepository.GetAll(true);
             var userDocuments = allDocuments.Where(u => u.LMSUser == currentUser);
