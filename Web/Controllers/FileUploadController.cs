@@ -102,22 +102,7 @@ namespace Web.Controllers
             var filteredUsers = allUsers.FindAll(z => z.UserType.ToString() == "Student");
             var id = filteredUsers.Select(a => a.Id);
 
-
-            var model10 = mapper.Map<IEnumerable<LMSUserViewModel>>(filteredUsers);
-            var courseList = await uow.CourseRepository.GetAll(includeAll: true);
-            var model = mapper.Map<IEnumerable<CourseViewModel>>(courseList);
-
-            var moduleList = await uow.ModuleRepository.GetAll(includeAll: true);
-            var model1 = mapper.Map<IEnumerable<ModuleViewModel>>(moduleList);
-
-
-            var activitiesList = await uow.ActivityRepository.GetAll(includeAll: true);
-            var model2 = mapper.Map<IEnumerable<ActivityViewModel>>(activitiesList);
-
-
-            var usersList = await uow.LMSUserRepository.GetAll(includeAll: true);
-            var model3 = mapper.Map<IEnumerable<LMSUserViewModel>>(usersList);
-
+           // var model1 = mapper.Map<IEnumerable<ModuleViewModel>>(moduleList);
           
            
             return View(docsViewModel);

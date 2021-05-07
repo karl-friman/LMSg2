@@ -18,7 +18,7 @@ namespace Core.Entities
         public DateTime StartDate { get; set; }
         [Display(Name = "Course End Date")]
         public DateTime EndDate { get; set; }
-        public Document Document { get; set; }
+        //public Document Document { get; set; }
 
         //Navigation props 
         [Display(Name = "Students")]
