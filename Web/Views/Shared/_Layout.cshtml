@@ -24,11 +24,13 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/startbootstrap-simple-sidebar@5.1.2/css/simple-sidebar.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="https://kit.fontawesome.com/7646600d33.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
 
-    <div class="d-flex" id="wrapper">
+    @*<div class="d-flex" id="wrapper">*@
+    <div class="wrapper ">
         <!-- Sidebar student -->
 
         @if (SignInManager.IsSignedIn(User))
@@ -45,24 +47,59 @@
             }
         }
 
+        @*<div id="content">
+        
+        </div>*@
 
 
-        <div style="background: #F7F9FB;" id="page-content-wrapper">
+    <div id="page-content-wrapper">
+        @if(SignInManager.IsSignedIn(User)) {
+        <nav class="topNav navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                @RenderBody()
-            </div>
+                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i style="color: #000;"class="fas fa-align-left"></i>
+                 
+                </button>
+                @*<button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fas fa-align-left"></i>
+                    <span>Toggle Sidebar</span>
+                </button>*@
 
+            </div>
+          
+        </nav>
+        }
+        <div class="render-content container-fluid">
+            @RenderBody()
         </div>
+        <footer class="footer text-muted text-center">
+            <div class="container">
+                &copy; 2021 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
+
+    @*<div style="background: #F7F9FB;" id="page-content-wrapper">
+        <button type="button" id="sidebarCollapse" class="navbar-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="container-fluid">
+            @RenderBody()
+        </div>
+
+    </div>*@
 
     </div>
 
 
 
-    <footer class="footer text-muted text-center">
-        <div class="container">
-            &copy; 2021 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+        @*<footer class="footer text-muted text-center">
+            <div class="container">
+                &copy; 2021 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>*@
 
 
 

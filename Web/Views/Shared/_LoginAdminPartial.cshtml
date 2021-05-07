@@ -3,7 +3,48 @@
 @inject SignInManager<LMSUser> SignInManager
 @inject UserManager<LMSUser> UserManager
 
-<div style="background: #fff;" class="border-right d-flex flex-column justify-content-between " id="sidebar-wrapper">
+
+<nav id="sidebar" class="d-flex flex-column justify-content-between">
+    <!-- Sidebar Header -->
+    <div>
+        <div class="sidebar-header">
+            <div class="col text-left logo pl-5">
+                <a style="color: #fff;" asp-controller="Home" asp-action="Index">LMS</a>
+            </div>
+            <hr />
+            <a style=" color: #fff; " class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+
+
+        </div>
+
+
+        <!-- Sidebar Links -->
+        <ul class="list-unstyled components">
+            <li class="pl-5 mt-3">
+                <a asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+            <li class="pl-5 mt-3">
+                <a asp-controller="Users" asp-action="AdminStudents">Students</a>
+            </li>
+            <li class="pl-5 mt-3">
+                <a asp-controller="Users" asp-action="AdminStaff">Staff</a>
+            </li>
+            <li class="pl-5 mt-3">
+                <a asp-controller="Literature" asp-action="RegisterNewVehicle">Literature</a>
+            </li>
+        
+        </ul>
+
+
+
+        <form style=" color: #fff;" class="sidebar-header " asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button style="color: #fff; font-size: 0.9em;" type="submit" class="btn col text-left logo pl-5 ">Log out</button>
+        </form>
+    </div>
+</nav>
+
+
+@*<div style="background: #fff;" class="border-right d-flex flex-column justify-content-between " id="sidebar-wrapper">
     <div>
         <div style="background: #109BF8; " class="col text-left logo pl-5">
             <a style="color: #fff;" asp-controller="Home" asp-action="Index">LMS</a>
@@ -38,7 +79,7 @@
     <form style="background: #109BF8; color: #fff;" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
         <button style="color: #fff;" type="submit" class="nav-link btn ">Logout</button>
     </form>
-</div>
+</div>*@
 
 
 
