@@ -19,7 +19,7 @@ namespace Core.ViewModels
 
 
         //Foreign key
-        public int LMSUserId { get; set; }
+        public string LMSUserId { get; set; }
         public int? CourseId { get; set; }
         public int? ModuleId { get; set; }
         public int? ActivityId { get; set; }
@@ -29,5 +29,12 @@ namespace Core.ViewModels
         //public Course? Course { get; set; }
         //public Module? Module { get; set; }
         //public Activity Activity { get; set; }
+
+        public Course Course { get; set; }
+        public Module Module { get; set; }
+        public Activity Activity { get; set; }
+
+        //ICollection<Module>Modules { get; set; }
+
     }
 }

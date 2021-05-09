@@ -16,15 +16,19 @@ namespace Core.Entities
         // public FileUpload FileUpload { get; set; }
 
         //Foreign key
-        public int LMSUserId { get; set; }
+        public string LMSUserId { get; set; }
         public int? CourseId { get; set; }
         public int? ModuleId { get; set; }
         public int? ActivityId { get; set; }
 
         //Navigation props 
         public LMSUser LMSUser { get; set; }
-        //public Course? Course { get; set; }
-        //public Module? Module { get; set; }
-        //public Activity Activity { get; set; }
+        
+        //has been added
+        public Course Course { get; set; }
+        public Module Module { get; set; }
+        public Activity Activity { get; set; }
+
+        
     }
 }

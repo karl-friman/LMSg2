@@ -29,7 +29,7 @@ namespace Web.Data.Data
                 await context.AddRangeAsync(courses);
 
                 //Create Modules
-                var modules = modulesCreator(5, fake, courses);
+                var modules = modulesCreator(25, fake, courses);
                 await context.AddRangeAsync(modules);
                 //Save to Db
                 await context.SaveChangesAsync();
@@ -230,7 +230,7 @@ namespace Web.Data.Data
 
             foreach (Course course in courses)
             {
-                for (int i = 0; i < fake.Random.Int(1, 2); i++)
+                for (int i = 0; i < fake.Random.Int(1, 80); i++)
                 {
                     var document = new Document
                     {
@@ -240,6 +240,7 @@ namespace Web.Data.Data
                         FilePath = "/docs/lorem.txt",//fake.System.FilePath(),
                         CourseId = course.Id,     
                         LMSUser = fake.Random.ListItem(lmsusers)
+
                     };
                     documents.Add(document);
                 }

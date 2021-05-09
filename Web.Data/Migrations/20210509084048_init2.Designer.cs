@@ -10,8 +10,8 @@ using Web.Data.Data;
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210506034437_init")]
-    partial class init
+    [Migration("20210509084048_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,10 +113,7 @@ namespace Web.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LMSUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LMSUserId1")
+                    b.Property<string>("LMSUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ModuleId")
@@ -134,7 +131,7 @@ namespace Web.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("LMSUserId1");
+                    b.HasIndex("LMSUserId");
 
                     b.HasIndex("ModuleId");
 
@@ -409,23 +406,29 @@ namespace Web.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Document", b =>
                 {
-                    b.HasOne("Core.Entities.Activity", null)
+                    b.HasOne("Core.Entities.Activity", "Activity")
                         .WithMany("Documents")
                         .HasForeignKey("ActivityId");
 
-                    b.HasOne("Core.Entities.Course", null)
+                    b.HasOne("Core.Entities.Course", "Course")
                         .WithMany("Documents")
                         .HasForeignKey("CourseId");
 
                     b.HasOne("Core.Entities.LMSUser", "LMSUser")
                         .WithMany("Documents")
-                        .HasForeignKey("LMSUserId1");
+                        .HasForeignKey("LMSUserId");
 
-                    b.HasOne("Core.Entities.Module", null)
+                    b.HasOne("Core.Entities.Module", "Module")
                         .WithMany("Documents")
                         .HasForeignKey("ModuleId");
 
+                    b.Navigation("Activity");
+
+                    b.Navigation("Course");
+
                     b.Navigation("LMSUser");
+
+                    b.Navigation("Module");
                 });
 
             modelBuilder.Entity("Core.Entities.LMSUser", b =>
