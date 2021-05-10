@@ -30,9 +30,9 @@ namespace Core.ViewModels
         //public Module? Module { get; set; }
         //public Activity Activity { get; set; }
 
-        public Course Course { get; set; }
-        public Module Module { get; set; }
-        public Activity Activity { get; set; }
+        //public Course Course { get; set; }
+        //public Module Module { get; set; }
+        //public Activity Activity { get; set; }
 
         //ICollection<Module>Modules { get; set; }
 

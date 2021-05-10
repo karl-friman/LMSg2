@@ -238,16 +238,19 @@ namespace DevSite.Controllers
         //GET
         public async Task<IActionResult> StudentFilesView()
         {
+            
+           //efd031d8-4f8a-4fed-bc12-39794139adfc
             var userId = _userManager.GetUserId(User);
-            var testId = "6ff004f1-3753-4fbc-a02e-1169fcbb7afb";
+            var testId = "341f2735-a809-4923-9588-094e5c6c2a33";
             //var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
             var currentUser = await uow.LMSUserRepository.GetOne(testId, true);
 
             var allUserDocuments = currentUser.Documents.ToList();
-            var userDocuments = allUserDocuments.Where(u => u.CourseId != null);
-
+           //var userDocuments = allUserDocuments.Where(u => u.CourseId == currentUser.CourseId);
             
-            var model = mapper.Map<IEnumerable<DocumentViewModel>>(userDocuments);
+            var model = mapper.Map<IEnumerable<DocumentViewModel>>(allUserDocuments);
+
+
 
             return View(model);
         }

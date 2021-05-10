@@ -29,9 +29,10 @@ namespace Web.Data.Data
                 await context.AddRangeAsync(courses);
 
                 //Create Modules
-                var modules = modulesCreator(25, fake, courses);
+                var modules = modulesCreator(5, fake, courses);
                 await context.AddRangeAsync(modules);
                 //Save to Db
+               
                 await context.SaveChangesAsync();
 
                 var activityTypes = new List<ActivityType>();
@@ -45,7 +46,8 @@ namespace Web.Data.Data
                 var activities = activitiesCreator(fake, activityTypes, modules);
                 await context.AddRangeAsync(activities);
                 //Save to Db
-                await context.SaveChangesAsync();
+                
+               await context.SaveChangesAsync();
 
 
                 //Create Users
@@ -237,7 +239,7 @@ namespace Web.Data.Data
                         Name = fake.Company.CatchPhrase(),
                         Description = fake.Lorem.Paragraphs(1),
                         TimeStamp = DateTime.Now,
-                        FilePath = "/docs/lorem.txt",//fake.System.FilePath(),
+                        FilePath = "C:Users/Elev/source/repos/LMSg2/Web/wwwroot/docs/documents",
                         CourseId = course.Id,     
                         LMSUser = fake.Random.ListItem(lmsusers)
 
@@ -255,7 +257,7 @@ namespace Web.Data.Data
                         Name = fake.Company.CatchPhrase(),
                         Description = fake.Lorem.Paragraphs(1),
                         TimeStamp = DateTime.Now,
-                        FilePath = fake.System.FilePath(),
+                        FilePath = "C:Users/Elev/source/repos/LMSg2/Web/wwwroot/docs/modules",
                         ModuleId = module.Id,
                         LMSUser = fake.Random.ListItem(lmsusers)
                     };
@@ -272,7 +274,7 @@ namespace Web.Data.Data
                         Name = fake.Company.CatchPhrase(),
                         Description = fake.Lorem.Paragraphs(1),
                         TimeStamp = DateTime.Now,
-                        FilePath = fake.System.FilePath(),
+                        FilePath = "C:Users/Elev/source/repos/LMSg2/Web/wwwroot/docs/activities",
                         ActivityId = activity.Id,
                         LMSUser = fake.Random.ListItem(lmsusers)
                     };

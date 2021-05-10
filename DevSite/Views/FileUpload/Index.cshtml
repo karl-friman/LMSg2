@@ -7,15 +7,15 @@
 <body>
     <table>
         <tr>
-            <th>Courses Name</th>
+        
             <th>Courses Name</th>
             <th></th>
         </tr>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Course.Name</td>
-                @*<td>@Html.ActionLink("Download", "DownloadFile", new { fileName = item.Name })</td>*@
+                @*<td>@item.Course.Name</td>*@
+                <td>@Html.ActionLink("Download", "DownloadFile", new { fileName = item.Course.Name })</td>
             </tr>
         }
     </table>

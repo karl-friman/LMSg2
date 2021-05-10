@@ -404,11 +404,11 @@ namespace Web.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Document", b =>
                 {
-                    b.HasOne("Core.Entities.Activity", "Activity")
+                    b.HasOne("Core.Entities.Activity", null)
                         .WithMany("Documents")
                         .HasForeignKey("ActivityId");
 
-                    b.HasOne("Core.Entities.Course", "Course")
+                    b.HasOne("Core.Entities.Course", null)
                         .WithMany("Documents")
                         .HasForeignKey("CourseId");
 
@@ -416,17 +416,11 @@ namespace Web.Data.Migrations
                         .WithMany("Documents")
                         .HasForeignKey("LMSUserId");
 
-                    b.HasOne("Core.Entities.Module", "Module")
+                    b.HasOne("Core.Entities.Module", null)
                         .WithMany("Documents")
                         .HasForeignKey("ModuleId");
 
-                    b.Navigation("Activity");
-
-                    b.Navigation("Course");
-
                     b.Navigation("LMSUser");
-
-                    b.Navigation("Module");
                 });
 
             modelBuilder.Entity("Core.Entities.LMSUser", b =>

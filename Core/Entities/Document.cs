@@ -25,9 +25,9 @@ namespace Core.Entities
         public LMSUser LMSUser { get; set; }
         
         //has been added
-        public Course Course { get; set; }
-        public Module Module { get; set; }
-        public Activity Activity { get; set; }
+        //public Course Course { get; set; }
+        //public Module Module { get; set; }
+        //public Activity Activity { get; set; }
 
         
     }

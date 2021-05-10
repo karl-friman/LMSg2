@@ -22,15 +22,15 @@ namespace DevSite
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
-           //  context.Database.EnsureDeleted();
-          //   context.Database.Migrate();
+          //context.Database.EnsureDeleted();
+         // context.Database.Migrate();
                 var config = services.GetRequiredService<IConfiguration>();
                 //dotnet user-secrets set "adminPW""LMS-Group2"
                 var adminPW = config["adminPW"];
                 var studentPW = config["studentPW"];
                 try
                 {
-                  //SeedData.InitAsync(services, adminPW, studentPW).Wait();
+                //  SeedData.InitAsync(services, adminPW, studentPW).Wait();
                 }
                 catch (Exception ex)
                 {

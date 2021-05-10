@@ -5,33 +5,69 @@
 @model IEnumerable<DocumentViewModel>
 
 
+@{
+    ViewData["Title"] = "Index";
+    // var i = 0;
+    //  string activeCourse = "false";
+}
+
+
+
+
 @foreach (var item in Model)
 {
-    <div><strong>@Html.DisplayNameFor(modelItem => item.LMSUser.Course):</strong> @Html.DisplayFor(modelItem => item.LMSUser.Course.Name)</div>
-    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-        <div class="card-header"></div>
-        <div class="card-body">
-            @*<h4 class="card-title">@item.LMSUser.Documents.Where(x => x.Id=@item</h4>*@
-            @*<h5 class="card-title">@item.Name</h5>
-        <h5 class="card-title">@item.Id</h5>*@
-            @*<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>*@
-          
-        </div>
-    </div> 
-    @*<div class="card mb-3" style="max-width: 540px;">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="..." alt="...">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">@item.ModuleId</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-            </div>
-        </div>
-    </div>*@
+    string classContents = "btn btn-outline-primary";
+
+    <h3>
+        @Html.ActionLink(linkText: item.Name, actionName: "StudentFilesView", controllerName: "Documents",
+               protocol: null, hostname: null, fragment: null,
+               routeValues: new { selected = item.LMSUserId },
+               htmlAttributes: new { @class = classContents })
+    </h3>
+
+    <h3>
+        @Html.ActionLink(linkText: item.FilePath, actionName: "StudentFilesView", controllerName: "Documents",
+               protocol: null, hostname: null, fragment: null,
+               routeValues: new { selected = item.LMSUserId },
+               htmlAttributes: new { @class = classContents })
+    </h3>
+
+    //<p>@Html.ActionLink(linkText: item.FilePath, actionName: "DownloadFile")</p>
 
 }
+
+
+
+@*<script>
+        $("#module_@module.Id").accordion({
+            collapsible: true,
+            heightStyle: "content",
+            active: false,
+        });
+    </script>*@
+
+<script>
+    $(function () {
+        var icons = {
+            header: "ui-icon-circle-arrow-e",
+            activeHeader: "ui-icon-circle-arrow-s"
+        };
+        @*$("#courses").accordion({
+            collapsible: true,
+            heightStyle: "content",
+          /* active: @activeCourse,*/
+            icons: icons
+        });*@
+        $("#toggle").button().on("click", function () {
+            if ($("#courses").accordion("option", "icons")) {
+                $("#courses").accordion("option", "icons", null);
+            } else {
+                $("#courses").accordion("option", "icons", icons);
+            }
+        });
+    });
+</script>
+
+
+
 
