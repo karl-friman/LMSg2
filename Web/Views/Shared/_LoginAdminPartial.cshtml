@@ -2,24 +2,53 @@
 @using Core.Entities;
 @inject SignInManager<LMSUser> SignInManager
 @inject UserManager<LMSUser> UserManager
+<!-- Sidebar  -->
+<nav id="sidebar" class="fixed-top h-100">
+    <div class="sidebar-header text-dark">
+        <h6>LSM Group 2</h6>
+    </div>
 
+    <ul class="list-unstyled components text-dark">
 
-<nav id="sidebar" class="d-flex flex-column justify-content-between">
+        <li>
+            <a asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li>
+            <a asp-controller="Users" asp-action="AdminStudents">Students</a>
+        </li>
+        <li>
+            <a asp-controller="Users" asp-action="AdminStaff">Staff</a>
+        </li>
+        <li>
+            <a asp-controller="Literature" asp-action="RegisterNewVehicle">Literature</a>
+        </li>
+    </ul>
+
+    <ul class="list-unstyled CTAs">
+        <li>
+            <form name="logout" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <a href="#" class="logout" onclick="this.forms['logout'].submit()">Log out</a>
+            </form>
+        </li>
+    </ul>
+</nav>
+
+<!--<nav id="sidebar" class="d-flex flex-column justify-content-between">-->
     <!-- Sidebar Header -->
-    <div>
+    <!--<div>
         <div class="sidebar-header">
             <div class="col text-left logo pl-5">
                 <a asp-controller="Home" asp-action="Index">LMS</a>
             </div>
             <hr />
-            <a class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+            <a class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello //User.Identity.Name!</a>
 
 
-        </div>
+        </div>-->
 
 
         <!-- Sidebar Links -->
-        <ul class="list-unstyled components">
+        <!--<ul class="list-unstyled components">
             <li class="pl-5 mt-3">
                 <a asp-controller="Home" asp-action="Index">Home</a>
             </li>
@@ -32,54 +61,54 @@
             <li class="pl-5 mt-3">
                 <a asp-controller="Literature" asp-action="RegisterNewVehicle">Literature</a>
             </li>
-        
+
         </ul>
 
 
 
-        <form style=" color: #fff;" class="sidebar-header " asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <form style=" color: #fff;" class="sidebar-header " asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="//Url.Action("Index", "Home", new { area = "" })">
             <button font-size: 0.9em;" type="submit" class="btn col text-left logo pl-5 ">Log out</button>
         </form>
     </div>
-</nav>
+</nav>-->
 
 
 @*<div style="background: #fff;" class="border-right d-flex flex-column justify-content-between " id="sidebar-wrapper">
-    <div>
-        <div style="background: #109BF8; " class="col text-left logo pl-5">
-            <a style="color: #fff;" asp-controller="Home" asp-action="Index">LMS</a>
+        <div>
+            <div style="background: #109BF8; " class="col text-left logo pl-5">
+                <a style="color: #fff;" asp-controller="Home" asp-action="Index">LMS</a>
+            </div>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse w-100">
+                <ul class="navbar-nav flex-grow-1">
+                    <li style="background: #003277;">
+                        <a style=" color: #fff; " class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                    </li>
+
+
+                    <li class="pl-5 mt-3">
+                        <a style="color: #1C7CD5;" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="pl-5 mt-3">
+                        <a style="color: #1C7CD5;" asp-controller="Users" asp-action="AdminStudents">Students</a>
+                    </li>
+                    <li class="pl-5 mt-3">
+                        <a style="color: #1C7CD5;" asp-controller="Users" asp-action="AdminStaff">Staff</a>
+                    </li>
+                    <li class="pl-5 mt-3">
+                        <a style="color: #1C7CD5;" asp-controller="Literature" asp-action="RegisterNewVehicle">Literature</a>
+                    </li>
+
+                </ul>
+
+
+
+            </div>
         </div>
-        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse w-100">
-            <ul class="navbar-nav flex-grow-1">
-                <li style="background: #003277;">
-                    <a style=" color: #fff; " class="nav-link w-100 pl-5" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-                </li>
 
-
-                <li class="pl-5 mt-3">
-                    <a style="color: #1C7CD5;" asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-                <li class="pl-5 mt-3">
-                    <a style="color: #1C7CD5;" asp-controller="Users" asp-action="AdminStudents">Students</a>
-                </li>
-                <li class="pl-5 mt-3">
-                    <a style="color: #1C7CD5;" asp-controller="Users" asp-action="AdminStaff">Staff</a>
-                </li>
-                <li class="pl-5 mt-3">
-                    <a style="color: #1C7CD5;" asp-controller="Literature" asp-action="RegisterNewVehicle">Literature</a>
-                </li>
-
-            </ul>
-
-
-
-        </div>
-    </div>
-
-    <form style="background: #109BF8; color: #fff;" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-        <button style="color: #fff;" type="submit" class="nav-link btn ">Logout</button>
-    </form>
-</div>*@
+        <form style="background: #109BF8; color: #fff;" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button style="color: #fff;" type="submit" class="nav-link btn ">Logout</button>
+        </form>
+    </div>*@
 
 
 
