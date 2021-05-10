@@ -9,80 +9,102 @@
         <div class="card border-secondary">
             <div class="card-header">
                 <h5>My Course</h5>
-                <hr/>
-                <div class="row">
-                    <div class="col-lg-12">
-                            <h3>@Model.Name</h3>
-                        <div style="background: white;"class="page-header col-lg-8">
-                            <p>@Model.Description</p>
-                            <h5>Duration</h5>
-                            <p>@Model.StartDate.ToString("dddd, dd MMMM yyyy")</p>
-                            <p>@Model.EndDate.ToString("dddd, dd MMMM yyyy")</p>
-
-                        </div>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: 25%;" aria-valuenow="@Model.StartDate.ToString("yyyy-MM-dd") * 100" aria-valuemin="0" aria-valuemax=@Model.EndDate.ToString("yyyy-MM-dd") * 100></div>
-                    </div>
-                </div>
                 <hr />
                 <div class="row">
                     <div class="col-lg-12">
+                        <div class="d-flex justify-content-between">
+                            <h5>@Model.Name</h5>
+
+                            <p class="text-success font-weight-bold">@Model.StartDate.ToString("dddd, dd MMMM yyyy") - @Model.EndDate.ToString("dddd, dd MMMM yyyy")</p>
+
+                        </div>
+                        <div class="page-header col-lg-12">
+                            <p>@Model.Description</p>
+
+                            <hr />
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row ml-5">
+                    <div class="col-lg-12">
                         <div class="page-header">
-                            <h1>Course Modules</h1>
+                            <h5>Course Modules</h5>
+
                         </div>
                     </div>
                 </div>
-                <div class="row mb-3">
+                <div class="row mb-3 ml-5">
 
-                    <div id="accordion" class="accordion" style="width:40em;">
+                    <div id="accordion" class="accordion w-75" ">
                         @foreach (var item in Model.Modules)
                         {
-                          
-                            <h3>    @item.Name</h3>
+
+                            <h3>@item.Name</h3>
                             <div class="card">
-                                <div class="card-header">
-                                    Deadline: @item.EndDate.ToString("dddd, dd MMMM yyyy")
+                                <div class="card-header text-danger font-weight-bold">
+                                        <p class="text-info">Assigned on @item.StartDate.ToString("dddd, dd MMMM yyyy")</p>
+                                        <p class="text-danger">Deadline: @item.EndDate.ToString("dddd, dd MMMM yyyy")</p> 
                                 </div>
                                 <div class="card-body">
                                     <h4 class="card-title">@item.Name</h4>
                                     <p class="card-text">@item.Description</p>
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">Assigned on @item.StartDate.ToString("dddd, dd MMMM yyyy")</li>
-                                        <li class="list-group-item"><strong>Documents: @*@item.modDocuments.Count()*@</strong></li>
-                                        <li class="list-group-item">
-                                            <ul class="list-group list-group-flush">
-                                                @*@foreach (var document in item.Documents)
-                                                    {
-                                                        <li class="list-group-item"><a href="@document.FilePath">@document.Name</a></li>
-                                                    }*@
-                                            </ul>
-                                        </li>
-                                        <li class="list-group-item"><a type="button" class="btn btn-outline-info" href="#">Submit assignment</a></li>
-                                    </ul>
-                                    <h3>Activities</h3>
-                                    <ul>
-                                    @foreach (var activity in item.Activities)
-                                    {
-                                        <li>@activity.StartDate   @activity.Name</li>
+                                    <div class="d-flex">
+                                        <!--<li class="list-group-item"><strong>Documents:--> @*@item.modDocuments.Count()*@<!--</strong></li>-->
+                                        <!--<li class="list-group-item">
+                                        <ul class="list-group list-group-flush">-->
+                                        @*@foreach (var document in item.Documents)
+                                            {
+                                                <li class="list-group-item"><a href="@document.FilePath">@document.Name</a></li>
+                                            }*@
+                                        <!--</ul>
+                                        </li>-->
 
-                                    }
-                                    </ul>
+                                    </div>
+                                    <div class="ml-5 pl-5">
+                                        <h3>Activities</h3>
+                                        <div>
+                                            @foreach (var activity in item.Activities)
+                                            {
+                                                if (activity.ActivityType.Name.Contains("Assignment"))
+                                                {
+                                                    <div>
+                                                        <div class="d-flex justify-content-between align-content-center">
+                                                            <h6>@activity.ActivityType.Name</h6>
+                                                        </div>
+                                                        <p>@activity.StartDate.ToString("HH:mm") @activity.Name</p>
+                                                            <p class=""><a class="btn btn-info" href="#">Submit assignment</a></p>
+                                                    </div>
+                                                    <hr/>
+                                                }
+                                                else { 
+                                                <div>
+                                                    <h6>@activity.ActivityType.Name</h6>
+                                                    <p>@activity.StartDate.ToString("HH:mm") @activity.Name</p>
+                                                </div>
+                                                <hr/>
+                                                }
+
+                                            }
+                                        </div>
+                                    </div>
 
 
-                                    <div class="card" style="width:40em;">
-                                        @foreach (var activity in item.Activities)
-                                        {
-                                            
-                                            @*<p>@activity.ActivityType.Name</p>
+
+                                    @*<div id="accordionActivity" class="card" style="width:40em;">*@
+                                    @*@foreach (var activity in item.Activities)
+                                            {
+
+                                                <p>@activity.ActivityType.Name</p>
                                                 <div class="card">
                                                     <p>@activity.StartDate.ToString("yyyy-MM-dd")</p>
                                                     <h4 class="card-title">@activity.Name</h4>
                                                     <p class="card-text">@activity.Description</p>
-                                                </div>*@
+                                                </div>
 
-                                        }
-                                    </div>
+                                            }
+                                        </div>*@
 
 
                                 </div>
@@ -91,44 +113,52 @@
 
                     </div>
                 </div>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
-                <script>
-                    $(function () {
-                        var icons = {
-                            header: "ui-icon-circle-arrow-e",
-                            activeHeader: "ui-icon-circle-arrow-s",
-                            paddingRight: 10
-                        };
-                        $("#accordion").accordion({
-                            collapsible: true,
-                            heightStyle: "content",
-                            active: false,
-                            icons: icons
-                        });
-                        $("#toggle").button().on("click", function () {
-                            if ($("#courses").accordion("option", "icons")) {
-                                $("#courses").accordion("option", "icons", null);
-                            } else {
-                                $("#courses").accordion("option", "icons", icons);
-                            }
-                        });
-                    });
+<script>
+    $(function () {
+        var icons = {
+            header: "ui-icon-circle-arrow-e",
+            activeHeader: "ui-icon-circle-arrow-s",
+        };
+        $("#accordion").accordion({
+            collapsible: true,
+            heightStyle: "content",
+            active: false,
+            icons: icons
+        });
+        $("#toggle").button().on("click", function () {
+            if ($("#courses").accordion("option", "icons")) {
+                $("#courses").accordion("option", "icons", null);
+            } else {
+                $("#courses").accordion("option", "icons", icons);
+            }
+        });
+    });
 
-                    $(function () {
-                        var icons = {
-                            header: "ui-icon-circle-arrow-e",
-                            activeHeader: "ui-icon-circle-arrow-s"
-                        };
-                        $("#accordionActivity").accordion({
-                            collapsible: true,
-                            heightStyle: "content",
-                            active: false,
-                            icons: icons
-                        });
 
-                    });
-                </script>
+
+    $(function () {
+        var icons = {
+            header: "ui-icon-circle-arrow-e",
+            activeHeader: "ui-icon-circle-arrow-s"
+        };
+        $("#accordionActivity").accordion({
+            collapsible: true,
+            heightStyle: "content",
+            active: false,
+            icons: icons
+        });
+
+    });
+
+    $(function () {
+
+        $("#progressbar").progressbar({
+            value: 37
+        });
+    });
+</script>

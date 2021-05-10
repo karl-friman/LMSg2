@@ -333,6 +333,19 @@ footer {
     text-align: center;
 }
 
+#accordion .ui-accordion-header {
+    background: #F0AD4E;
+    padding: 2%;
+    margin-bottom: 1%;
+    border-radius: 16px;
+    padding-left: 10%;
+}
+
+#accordion .icon {
+   padding-right: 10%;
+   
+}
+
 
 @media (max-width: 768px) {
     #sidebar {
