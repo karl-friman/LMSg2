@@ -4,19 +4,19 @@
 {
 
     case "Lecture":
+        <h6 class="card-title text-info">@Model.StartDate.ToString("H:mm") - @Model.EndDate.ToString("H:mm")</h6>
         <div class="d-flex justify-content-between">
             <h6 class="card-title text-info ">@Model.Name </h6> <span class="badge badge-info w-25 h-100">Lecture</span>
         </div>
-        <h6 class="card-title text-info">@Model.StartDate.ToString("H:mm") - @Model.EndDate.ToString("H:mm")</h6>
 
         <p class="card-text "> @Model.Description</p>
         <hr />
         break;
     case "Assignment":
+        <h6 class="card-title text-success">@Model.StartDate.ToString("H:mm") - @Model.EndDate.ToString("H:mm")</h6>
         <div class="d-flex justify-content-between">
             <h6 class="card-title text-success ">@Model.Name </h6> <span class="badge badge-success w-25 h-100">Assignment</span>
         </div>
-        <h6 class="card-title text-success">@Model.StartDate.ToString("H:mm") - @Model.EndDate.ToString("H:mm")</h6>
         <p class="card-text"> @Model.Description</p>
         <hr />
 
@@ -29,25 +29,25 @@
         <p class="card-text"> @Model.Description</p>
         break;
     case "Excursion":
+        <h6 class="card-title text-warning">@Model.StartDate.ToString("H:mm") - @Model.EndDate.ToString("H:mm")</h6>
         <div class="d-flex justify-content-between">
             <h6 class="card-title text-warning ">@Model.Name </h6> <span class="badge badge-warning w-25 h-100">Excursion</span>
         </div>
-        <h6 class="card-title text-warning">@Model.StartDate.ToString("H:mm") - @Model.EndDate.ToString("H:mm")</h6>
         <p class="card-text"> @Model.Description</p>
         <hr />
         break;
     case "Internship":
+        <h6 class="card-title text-danger">@Model.StartDate.ToString("yyyy-MM-dd") - @Model.EndDate.ToString("yyyy-MM-dd")</h6>
         <div class="d-flex justify-content-between">
             <h6 class="card-title text-danger ">@Model.Name </h6> <span class="badge badge-danger w-25 h-100">Internship</span>
         </div>
-        <h6 class="card-title text-danger">@Model.StartDate.ToString("yyyy-MM-dd") - @Model.EndDate.ToString("yyyy-MM-dd")</h6>
         <p class="card-text"> @Model.Description</p>
         break;
     case "Teamwork":
+        <h6 class="card-title text-secondary">@Model.StartDate.ToString("H:mm") - @Model.EndDate.ToString("H:mm")</h6>
         <div class="d-flex justify-content-between">
             <h6 class="card-title text-secondary ">@Model.Name </h6> <span class="badge badge-secondary w-25 h-100">Teamwork</span>
         </div>
-        <h6 class="card-title text-secondary">@Model.StartDate.ToString("H:mm") - @Model.EndDate.ToString("H:mm")</h6>
         <p class="card-text"> @Model.Description</p>
         <hr />
         break;
