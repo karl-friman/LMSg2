@@ -6,42 +6,30 @@
 
 @{
     ViewData["Title"] = "Index";
+
 }
 
 
 @if (User.IsInRole("Admin"))
 {
-
+<div class="d-flex mt-3 ml-5">
     <h1>Hello Admin</h1>
     <a class="nav-link text-dark" asp-controller="Courses" asp-action="Index">Courses</a>
-    
-
     //await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) });
 
-
+</div>
 }
 else
 {
-    <div class="d-flex m-5">
-        <div>
-
-            @*@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })*@
-            @*<partial name="StudentDashboardPartial" model="@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })"/>*@
-            <vc:dashboard-schedule user-id="@UserManager.GetUserId(User)"></vc:dashboard-schedule>
-        </div>
-
-        @*<div class="d-flex flex-column">
-                <div>Course Modules</div>
-                <div class="d-flex" >
-                    <div>My Course</div>
-                    <div>Assignment</div>
-                </div>
-            </div>*@
-
-
-
+<div class="d-flex mt-3 ml-5">
+    <div>
+        @*@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })*@
+        @*<partial name="StudentDashboardPartial" model="@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })"/>*@
+        <vc:dashboard-schedule user-id="@UserManager.GetUserId(User)"></vc:dashboard-schedule>
     </div>
-    @*<h1>Hello Student</h1>
-        <a class="nav-link text-dark" asp-controller="Documents" asp-action="Index">Files</a>*@
+    <div class="pl-3">
+        <vc:dashboard-modules user-id="@UserManager.GetUserId(User)"></vc:dashboard-modules>
+    </div>
+</div>
 
 }

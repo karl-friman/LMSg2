@@ -1,49 +1,41 @@
 ﻿
 @model DashboardStudentScheduleViewModel
 
-<div class="card border-secondary mb-3" style="max-width: 40rem;">
-    <div class="card-header"><h5>Hello @User.Identity.Name, here's your activities! </h5> <h6>This is happening in <strong>@Model.Course.Name</strong> today!</h6> </div>
+<div class="card border-secondary mb-3 student-dashboard-day-card">
+    <div class="card-header"><h4>Hello @User.Identity.Name!</h4><br/> <h6>Here's what's happening in "<strong>@Model.Course.Name</strong>" today!</h6> </div>
 
     <div class="card-body">
-
-
-
         @foreach (var activity in Model.Activities)
         {
-
-
-
             @if (activity.StartDate < DateTime.Now && activity.EndDate > DateTime.Now)
             {
-
-                //if (activity.ActivityType is not null)
-                //{
                 switch (activity.ActivityType.Name)
                 {
 
                     case "Lecture":
-                        <h6 class="card-title text-info">08:15 - 10:30</h6>
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title text-info ">@activity.Name </h6> <span class="badge badge-info w-25 h-100">Lecture</span>
                         </div>
+                        <h6 class="card-title text-info">08:15 - 10:30</h6>
 
                         <p class="card-text "> @activity.Description</p>
                         <hr />
                         break;
 
-                        
+
                     case "E-Learning":
-                        <h6 class="card-title text-primary">10:40 - 12:00</h6>
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title text-primary ">@activity.Name </h6> <span class="badge badge-primary w-25 h-100">E-Learning</span>
                         </div>
+                        <h6 class="card-title text-primary">10:40 - 12:00</h6>
                         <p class="card-text"> @activity.Description</p>
+                        <hr />
                         break;
                     case "Excursion":
-                        <h6 class="card-title text-warning">13:05 - 14:30</h6>
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title text-warning ">@activity.Name </h6> <span class="badge badge-warning w-25 h-100">Excursion</span>
                         </div>
+                        <h6 class="card-title text-warning">13:05 - 14:30</h6>
                         <p class="card-text"> @activity.Description</p>
                         <hr />
                         break;
@@ -51,22 +43,23 @@
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title text-danger ">@activity.Name </h6> <span class="badge badge-danger w-25 h-100">Internship</span>
                         </div>
-                        <h6 class="card-title text-danger">Ongoing</h6>
+                        @*<h6 class="card-title text-danger">Ongoing</h6>*@
                         <p class="card-text"> @activity.Description</p>
+                        <hr />
                         break;
                     case "Teamwork":
-                        <h6 class="card-title text-secondary">16:00 - 1700</h6>
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title text-secondary ">@activity.Name </h6> <span class="badge badge-secondary w-25 h-100">Teamwork</span>
                         </div>
+                        <h6 class="card-title text-secondary">16:00 - 1700</h6>
                         <p class="card-text"> @activity.Description</p>
                         <hr />
                         break;
                     case "Assignment":
-                        <h6 class="card-title text-success">All day</h6>
                         <div class="d-flex justify-content-between">
                             <h6 class="card-title text-success ">@activity.Name </h6> <span class="badge badge-success w-25 h-100">Assignment</span>
                         </div>
+                        <h6 class="card-title text-success">All day</h6>
                         <p class="card-text"> @activity.Description</p>
                         <hr />
                         break;
@@ -77,13 +70,7 @@
                         <hr />
                         break;
                 }
-                //}
-
             }
-
-
-
-
         }
     </div>
 </div>

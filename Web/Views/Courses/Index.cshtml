@@ -1,53 +1,175 @@
-﻿@model IEnumerable<Core.Entities.Course>
+﻿@using Core.ViewModels;
+@using Core.Utilities;
+@using System.Text;
+@using Microsoft.AspNetCore.Html;
+@model CourseListViewModel
 
 @{
     ViewData["Title"] = "Index";
+    var i = 0;
+    string activeCourse = "false";
 }
 
-<h1>Index</h1>
+<div class="d-flex mt-3 ml-5">
+    <div>
+        <div class="card border-secondary">
+            <div class="card-header">
+                <h4>Courses</h4>
+                <hr />
+                <div class="row">
+                    <a asp-action="Create"><u>Create a new course</u></a>
+                </div>
+                <div class="row">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    <div id="courses">
+
+                        @foreach (var course in Model.Courses)
+                        {
+                            string classContents = "btn btn-outline-primary";
+
+                            @if (Model.SelectedCourse is not null)
+                            {
+                                if (Model.SelectedCourse.Id == course.Id)
+                                {
+                                    classContents = "btn btn-outline-warning";
+                                    activeCourse = i.ToString();
+                                }
+                            }
+                            <h3>
+                                <a href="#" class="btn btn-outline-primary">@course.Name</a>
+                                @*@Html.ActionLink(linkText: course.Name, actionName: "Index", controllerName: "Courses",
+                                    protocol: null, hostname: null, fragment: null,
+                                    routeValues: new { selected = course.Id },
+                                    htmlAttributes: new { @class = classContents })*@
+                            </h3>
+                            <div>
+                                <ul class="list-unstyled list-group list-group-flush">
+                                    <li class="list-group-item"><em>@Html.DisplayFor(modelItem => course.Description)</em></li>
+                                    <li class="list-group-item">@Html.DisplayNameFor(modelItem => course.StartDate): @Html.DisplayFor(modelItem => course.StartDate)</li>
+                                    <li class="list-group-item">@Html.DisplayNameFor(modelItem => course.EndDate): @Html.DisplayFor(modelItem => course.EndDate)</li>
+                                    <li class="list-group-item">
+                                        <a asp-controller="Courses" asp-action="Edit" asp-route-id="@course.Id"><u>Edit course</u></a> |
+                                        <a asp-controller="Courses" asp-action="Delete" asp-route-id="@course.Id"><u>Delete course</u></a>
+                                    </li>
+                                </ul>
+                                <ul class="list-unstyled list-group">
+                                    <li class="list-group-item">
+                                        <strong>Modules</strong> in this course:
+                                        @if (course.Modules != null)
+                                        {
+                                            <span>@course.Modules.Count()</span>
+                                        }
+
+                                        <br />
+                                        <a asp-controller="Modules" asp-action="Create" asp-route-id="@course.Id"><u>Create module</u></a>
+                                    </li>
+                                </ul>
+
+                                @if (course.Modules != null)
+                                {
+
+                                    foreach (var module in course.Modules)
+                                    {
+                                        <div id="module_@module.Id">
+                                            @if (module != null)
+                                            {
+                                                <h3>
+                                                    <u>
+                                                        <a href="#" class="btn btn-outline-secondary">@module.Name</a>
+                                                        @*@Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
+                                                            protocol: null, hostname: null, fragment: null,
+                                                            routeValues: new { selected = module.Id },
+                                                            htmlAttributes: new { @class = "btn  btn-outline-primary" })*@
+                                                    </u>
+
+                                                </h3>
+                                                <div>
+                                                    <ul class="list-unstyled list-group">
+                                                        <li class="list-group-item"><em>@Html.DisplayFor(modelItem => module.Description)</em></li>
+                                                        <li class="list-group-item">
+                                                            <a asp-controller="Modules" asp-action="Edit" asp-route-id="@module.Id"><u>Edit module</u></a> |
+                                                            <a asp-controller="Modules" asp-action="Delete" asp-route-id="@module.Id"><u>Delete module</u></a>
+                                                        </li>
+
+
+                                                        @if (module.Activities != null)
+                                                        {
+
+                                                            <li class="list-group-item">
+                                                                <strong>Activities</strong> in this module:@module.Activities.Count()
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                @foreach (var activity in module.Activities)
+                                                                {
+                                                                    <div id="activity_@activity.Id">
+                                                                        @if (activity != null)
+                                                                        {
+                                                                            <h3>
+                                                                                <a href="#" class="btn btn-outline-secondary">@activity.Name</a>
+                                                                            </h3>
+                                                                            <div>
+                                                                                <em>@Html.DisplayFor(modelItem => activity.Description)</em>
+                                                                                <br />
+                                                                                <a asp-controller="Activities" asp-action="Edit" asp-route-id="@activity.Id"><u>Edit activity</u></a> |
+                                                                                <a asp-controller="Activities" asp-action="Delete" asp-route-id="@activity.Id"><u>Delete activity</u></a>
+                                                                            </div>
+                                                                                
+                                                                            
+                                                                        }
+                                                                    </div>
+                                                                    <script>
+                                                                        $("#activity_@activity.Id").accordion({
+                                                                            collapsible: true,
+                                                                            heightStyle: "content",
+                                                                            active: false,
+                                                                        });
+                                                                    </script>
+                                                                }
+                                                            </li>
+
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                            }
+                                        </div>
+                                        <script>
+                                            $("#module_@module.Id").accordion({
+                                                collapsible: true,
+                                                heightStyle: "content",
+                                                active: false,
+                                            });
+                                        </script>
+                                    }
+                                }
+                            </div>
+                            i++;
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var icons = {
+            header: "ui-icon-circle-arrow-e",
+            activeHeader: "ui-icon-circle-arrow-s"
+        };
+        $("#courses").accordion({
+            collapsible: false,
+            heightStyle: "content",
+            active: 0,
+            icons: icons
+        });
+        $("#toggle").button().on("click", function () {
+            if ($("#courses").accordion("option", "icons")) {
+                $("#courses").accordion("option", "icons", null);
+            } else {
+                $("#courses").accordion("option", "icons", icons);
+            }
+        });
+    });
+</script>
+

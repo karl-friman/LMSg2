@@ -23,9 +23,9 @@ namespace Core.ViewModels
         public int CourseId { get; set; }
 
         //Navigation props 
-        public Course Course { get; set; }
-        public ICollection<Activity> Activities { get; set; }
-        public ICollection<Document> Documents { get; set; }
+        public CourseViewModel Course { get; set; }
+        public ICollection<ActivityViewModel> Activities { get; set; }
+        public ICollection<DocumentViewModel> Documents { get; set; }
         [NotMapped]
         public IEnumerable<SelectListItem> CourseSelectList { get; set; }
     }

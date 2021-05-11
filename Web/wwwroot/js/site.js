@@ -2,6 +2,26 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$.notify.addStyle('foo', {
+    html:
+        "<div>" +
+        "<div class='clearfix'>" +
+        "<div class='title' data-notify-html='title'/>" +
+        "</div>" +
+        "</div>" +
+        "</div>"
+});
+
+if (notification == "create") {
+    $.notify({
+        title: 'Created',
+    }, {
+        style: 'foo',
+        autoHide: true,
+        clickToHide: true
+    });
+}
+
 const urlParams = new URLSearchParams(window.location.search);
 const notification = urlParams.get('notify');
 
@@ -18,12 +38,12 @@ $(document).ready(function () {
     scrollToSelected();
 });
 
-$(function () {
-    $("#effect").hide();
+//$(function () {
+//    $("#effect").hide();
 
-    var options = {};
-    $("#effect").show("fade", options, 600);
-});
+//    var options = {};
+//    $("#effect").show("fade", options, 600);
+//});
 
 
 $(document).ready(function () {

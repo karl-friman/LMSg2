@@ -1,24 +1,35 @@
-﻿@model IEnumerable<ActivityViewModel>
+﻿@model ActivityListViewModel
 
 @{
     ViewData["Title"] = "Assignments";
+    var i = 0;
+    string activeCourse = "false";
 }
 
-<div class="d-flex m-5">
+<div class="d-flex mt-3 ml-5">
     <div>
         <div class="card border-secondary">
             <div class="card-header">
-                <h5>Assignments</h5>
+                <h4>Assignments</h4>
                 <hr />
                 <div id="effect">
                     <div class="row">
-                        <div id="accordion" class="accordion" style="width:40em;">
-                            @foreach (var item in Model)
+                        <div id="accordion">
+                            @foreach (var item in Model.Activities)
                             {
+                                string classContents = "";
+
+                                @if (Model.SelectedActivity is not null)
+                                {
+                                    if (Model.SelectedActivity.Id == item.Id)
+                                    {
+                                        classContents = "border-warning";
+                                        activeCourse = i.ToString();
+                                    }
+                                }
                                 <h3>@item.Name</h3>
-                                <div class="card">
+                                <div class="card @classContents">
                                     <div class="card-body">
-                                        <h4 class="card-title">@item.Module.Name</h4>
                                         <p class="card-text">@item.Description</p>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item text-primary">Assigned on @item.StartDate.ToString("dddd, dd MMMM yyyy")</li>
@@ -34,6 +45,7 @@
                                         </ul>
                                     </div>
                                 </div>
+                                i++;
                             }
                         </div>
                     </div>
@@ -52,7 +64,7 @@
         $("#accordion").accordion({
             collapsible: true,
             heightStyle: "content",
-            active: false,
+            active: @activeCourse,
             icons: icons
         });
         $("#toggle").button().on("click", function () {

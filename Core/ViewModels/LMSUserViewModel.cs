@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,10 +24,11 @@ namespace Core.ViewModels
         public string FullName => $"{FirstName} {LastName}";
 
         //Foreign Keys
+        [Display(Name = "Course")]
         public int? CourseId { get; set; }
 
         //Navigation props
-        public Course Course { get; set; }
-        public ICollection<Document> Documents { get; set; }
+        public CourseViewModel Course { get; set; }
+        public ICollection<DocumentViewModel> Documents { get; set; }
     }
 }

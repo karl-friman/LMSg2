@@ -10,18 +10,18 @@
     ViewData["Title"] = "Index";
 
 }
-<div class="d-flex m-5">
+<div class="d-flex mt-3 ml-5">
     <div>
-        <div class="card border-secondary">
+        <div class="card border-secondary student-class-card">
             <div class="card-header">
-                <h5>My Class</h5>
+                <h4>My Class</h4>
                 <hr />
                 <div id="effect">
                     <div class="row">
                         @foreach (var user in Model)
                         {
                             <div class="">
-                                <div class="card user-card border-primary mb-3">
+                                <div class="card user-card border-dark mb-3">
                                     <div class="user-list user-grid">
                                         <div class="card-header">@user.FullName</div>
                                         <div class="card-body">

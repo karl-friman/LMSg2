@@ -10,6 +10,7 @@ namespace Core.ViewModels
 {
     public class CourseViewModel
     {
+        [Display(Name = "Course")]
         public int Id { get; set; }
         [Display(Name = "Course")]
         public string Name { get; set; }
@@ -23,10 +24,10 @@ namespace Core.ViewModels
 
         //Navigation props 
         [Display(Name = "Students")]
-        public ICollection<LMSUser> Users { get; set; }
+        public ICollection<LMSUserViewModel> Users { get; set; }
         [Display(Name = "Modules")]
-        public ICollection<Module> Modules { get; set; }
+        public ICollection<ModuleViewModel> Modules { get; set; }
         [Display(Name = "Documents")]
-        public ICollection<Document> Documents { get; set; }
+        public ICollection<DocumentViewModel> Documents { get; set; }
     }
 }

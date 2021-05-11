@@ -130,7 +130,7 @@ namespace DevSite.Controllers
 
             if (CourseExists(courseViewModel.Id))
             {
-                ModelState.AddModelError("CourseId", "Course already exists");
+                ModelState.AddModelError("Name", "Course already exists");
             }
 
             if (ModelState.IsValid)
@@ -138,7 +138,7 @@ namespace DevSite.Controllers
                 var course = mapper.Map<Course>(courseViewModel);
                 await uow.CourseRepository.AddAsync(course);
                 await uow.CourseRepository.SaveAsync();
-                return RedirectToAction(nameof(AddSuccess));
+                return RedirectToAction(nameof(Index));
             }
             return View(courseViewModel);
         }
@@ -157,8 +157,8 @@ namespace DevSite.Controllers
                 return NotFound();
             }
 
-          //  var model = mapper.Map<CourseViewModel>(course);
-            return View(course);
+            var model = mapper.Map<CourseViewModel>(course);
+            return View(model);
         }
 
         // POST: Courses/Edit/5
@@ -192,7 +192,7 @@ namespace DevSite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(EditSuccess));
+                return RedirectToAction(nameof(Index));
                
             }
             var model = mapper.Map<CourseViewModel>(course);
@@ -225,7 +225,7 @@ namespace DevSite.Controllers
            // var model = mapper.Map<CourseViewModel>(course);
             uow.CourseRepository.Remove(course);
             await uow.CourseRepository.SaveAsync();
-            return RedirectToAction(nameof(DeleteSuccess));
+            return RedirectToAction(nameof(Index));
         }
 
         private bool CourseExists(int id)

@@ -4,119 +4,104 @@
     ViewData["Title"] = "My Course";
 }
 
-<div class="d-flex m-5 col-lg-8">
+<div class="d-flex mt-3 ml-5">
     <div>
         <div class="card border-secondary">
             <div class="card-header">
-                <h5>My Course</h5>
+                <h4>My Course</h4>
                 <hr />
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="d-flex justify-content-between">
-                            <h5>@Model.Name</h5>
-
-                            <p class="text-success font-weight-bold">@Model.StartDate.ToString("dddd, dd MMMM yyyy") - @Model.EndDate.ToString("dddd, dd MMMM yyyy")</p>
-
+                    <div>
+                        <div>
+                            <h6>@Model.Name</h6>
+                            <p class="text-success font-italic">@Model.StartDate.ToString("dddd, dd MMMM yyyy") - @Model.EndDate.ToString("dddd, dd MMMM yyyy")</p>
                         </div>
-                        <div class="page-header col-lg-12">
-                            <p>@Model.Description</p>
-
-                            <hr />
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row ml-5">
-                    <div class="col-lg-12">
                         <div class="page-header">
-                            <h5>Course Modules</h5>
-
+                            <p>@Model.Description</p>
                         </div>
                     </div>
+
                 </div>
-                <div class="row mb-3 ml-5">
 
-                    <div id="accordion" class="accordion w-75" ">
-                        @foreach (var item in Model.Modules)
-                        {
+            </div>
+            <div class="row mb-0 pb-0">
+                <h6 class="pl-4 mb-0 pb-0">Course Modules</h6><br />
+            </div>
 
-                            <h3>@item.Name</h3>
-                            <div class="card">
-                                <div class="card-header text-danger font-weight-bold">
-                                        <p class="text-info">Assigned on @item.StartDate.ToString("dddd, dd MMMM yyyy")</p>
-                                        <p class="text-danger">Deadline: @item.EndDate.ToString("dddd, dd MMMM yyyy")</p> 
-                                </div>
-                                <div class="card-body">
-                                    <h4 class="card-title">@item.Name</h4>
-                                    <p class="card-text">@item.Description</p>
-                                    <div class="d-flex">
-                                        <!--<li class="list-group-item"><strong>Documents:--> @*@item.modDocuments.Count()*@<!--</strong></li>-->
-                                        <!--<li class="list-group-item">
-                                        <ul class="list-group list-group-flush">-->
-                                        @*@foreach (var document in item.Documents)
+            <div class="row mb-3">
+                <div id="accordion" class="accordion">
+                    @foreach (var item in Model.Modules)
+                    {
+
+                        <h3>@item.Name</h3>
+                        <div class="card">
+                            <div class="card-body">
+
+                                <p class="card-text">@item.Description</p>
+                                <div>
+                                    <div>
+                                        @foreach (var activity in item.Activities)
+                                        {
+                                            if (activity.ActivityType.Name.Contains("Assignment"))
                                             {
-                                                <li class="list-group-item"><a href="@document.FilePath">@document.Name</a></li>
-                                            }*@
-                                        <!--</ul>
-                                        </li>-->
-
-                                    </div>
-                                    <div class="ml-5 pl-5">
-                                        <h3>Activities</h3>
-                                        <div>
-                                            @foreach (var activity in item.Activities)
-                                            {
-                                                if (activity.ActivityType.Name.Contains("Assignment"))
-                                                {
-                                                    <div>
-                                                        <div class="d-flex justify-content-between align-content-center">
-                                                            <h6>@activity.ActivityType.Name</h6>
-                                                        </div>
-                                                        <p>@activity.StartDate.ToString("HH:mm") @activity.Name</p>
-                                                            <p class=""><a class="btn btn-info" href="#">Submit assignment</a></p>
-                                                    </div>
-                                                    <hr/>
-                                                }
-                                                else { 
                                                 <div>
-                                                    <h6>@activity.ActivityType.Name</h6>
-                                                    <p>@activity.StartDate.ToString("HH:mm") @activity.Name</p>
+                                                    <div class="d-flex justify-content-between align-content-center">
+                                                        <h6 class="text-black">@activity.ActivityType.Name</h6>
+                                                    </div>
+                                                    <p>@activity.Name</p>
+                                                    <p><em class="text-danger">Deadline @activity.EndDate.ToString("D")</em></p>
+                                                    <p class="">
+
+                                                        @Html.ActionLink(linkText: "Submit assignment", actionName: "Assignments", controllerName: "Activities",
+                                                                         protocol: null, hostname: null, fragment: null,
+                                                                         routeValues: new { selected = @activity.Id },
+                                                                         htmlAttributes: new { @class = "btn btn-outline-info" })
+
+                                                        @*<a class="btn btn-outline-info" asp-controller="Activities" asp-action="Assignments" asp-route-id="@activity.Id">Submit assignment</a>*@
+                                                    </p>
                                                 </div>
-                                                <hr/>
-                                                }
-
+                                                <hr />
                                             }
-                                        </div>
-                                    </div>
-
-
-
-                                    @*<div id="accordionActivity" class="card" style="width:40em;">*@
-                                    @*@foreach (var activity in item.Activities)
+                                            else
                                             {
-
-                                                <p>@activity.ActivityType.Name</p>
-                                                <div class="card">
-                                                    <p>@activity.StartDate.ToString("yyyy-MM-dd")</p>
-                                                    <h4 class="card-title">@activity.Name</h4>
-                                                    <p class="card-text">@activity.Description</p>
+                                                <div>
+                                                    <h6 class="text-black">@activity.ActivityType.Name</h6>
+                                                    <p>@activity.Name</p>
                                                 </div>
-
+                                                <hr />
                                             }
-                                        </div>*@
 
-
+                                        }
+                                    </div>
                                 </div>
-                            </div>
-                        }
 
-                    </div>
+
+
+                                @*<div id="accordionActivity" class="card" style="width:40em;">*@
+                                @*@foreach (var activity in item.Activities)
+                                        {
+
+                                            <p>@activity.ActivityType.Name</p>
+                                            <div class="card">
+                                                <p>@activity.StartDate.ToString("yyyy-MM-dd")</p>
+                                                <h4 class="card-title">@activity.Name</h4>
+                                                <p class="card-text">@activity.Description</p>
+                                            </div>
+
+                                        }
+                                    </div>*@
+
+
+                            </div>
+                        </div>
+                    }
+
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
     $(function () {

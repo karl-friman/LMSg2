@@ -11,6 +11,7 @@ namespace Core.ViewModels
 {
     public class ActivityViewModel
     {
+        [Display(Name = "Activity")]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -23,9 +24,9 @@ namespace Core.ViewModels
         [Display(Name = "Activity Type")]
         public int? ActivityTypeId { get; set; }
         //Navigation props 
-        public Module Module { get; set; }
-        public ActivityType ActivityType { get; set; }
+        public ModuleViewModel Module { get; set; }
+        public ActivityTypeViewModel ActivityType { get; set; }
         [Display(Name = "Documents")]
-        public ICollection<Document> Documents { get; set; }
+        public ICollection<DocumentViewModel> Documents { get; set; }
     }
 }

@@ -36,8 +36,11 @@
 
         <ul class="list-unstyled CTAs">
             <li>
-                <form name="logout" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <a href="#" class="logout" onclick="this.forms['logout'].submit()">Log out</a>
+                @*<form name="logout" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <a href="#" class="logout" onclick="this.forms['logout'].submit()">Log out</a>
+        </form>*@
+                <form class="ml-3" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="logout">Logout</button>
                 </form>
             </li>
         </ul>

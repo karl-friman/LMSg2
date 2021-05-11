@@ -57,20 +57,42 @@ namespace DevSite.Controllers
 
             return View(activityIndexModel);
         }
-        public async Task<IActionResult> Assignments()
+        public async Task<IActionResult> Assignments(int? selected)
         {
             string userId = _userManager.GetUserId(User);
             LMSUser user = await uow.LMSUserRepository.GetOne(userId, includeAll: false);
             Course course = await uow.CourseRepository.GetOne(user.CourseId, includeAll: true);
-            IEnumerable<Activity> activities = course.Modules
-                                                .SelectMany(a => a.Activities)
-                                                .ToList()
-                                                .Where(a => a.ActivityType.Name == "Assignment");
+            //IEnumerable<Activity> activities = course.Modules
+                                                //.SelectMany(a => a.Activities)
+                                                //.ToList()
+                                                //.Where(a => a.ActivityType.Name == "Assignment");
 
-            IEnumerable<ActivityViewModel> model = mapper.Map<IEnumerable<ActivityViewModel>>(activities);
-            return View(model);
-            //Fråga: går det att skriva mer effektiv kod med LINQ?
-            //Hur få med documents?
+            Activity selectedActivity = null;
+
+            var activityList = course.Modules
+                                    .SelectMany(a => a.Activities)
+                                    .ToList()
+                                    .Where(a => a.ActivityType.Name == "Assignment").ToList();
+
+            if (selected is not null)
+            {
+                selectedActivity = await uow.ActivityRepository.GetOne(Id: selected, includeAll: false);
+            }
+            else
+            {
+                selectedActivity = null;
+            }
+
+            var model = mapper.Map<IEnumerable<ActivityViewModel>>(activityList);
+            var selectedMapped = mapper.Map<ActivityViewModel>(selectedActivity);
+
+            ActivityListViewModel activityIndexModel = new ActivityListViewModel
+            {
+                Activities = model,
+                SelectedActivity = selectedMapped
+            };
+
+            return View(activityIndexModel);
         }
         // GET: Activities/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -124,11 +146,11 @@ namespace DevSite.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ActivityViewModel activityViewModel)
+        public async Task<IActionResult> Create([Bind("Name,Description,StartDate,EndDate,ModuleId")] ActivityViewModel activityViewModel)
         {
             if (ActivityExists(activityViewModel.Id))
             {
-                ModelState.AddModelError("activityViewModel.Id", "Activity already exists");
+                ModelState.AddModelError("Name", "Activity already exists");
             }
 
             if (ModelState.IsValid)
@@ -136,7 +158,7 @@ namespace DevSite.Controllers
                 var activity = mapper.Map<Activity>(activityViewModel);
                 await uow.ActivityRepository.AddAsync(activity);
                 await uow.ActivityRepository.SaveAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Courses");
             }
             return View(activityViewModel);
         }
@@ -158,7 +180,9 @@ namespace DevSite.Controllers
             ViewData["ModuleSelectList"] = ModuleSelectList;
             var ActivityTypeSelectList = await uow.ActivityTypeRepository.GetSelectListItems();
             ViewData["ActivityTypeSelectList"] = ActivityTypeSelectList;
-            return View(activity);
+
+            var model = mapper.Map<ActivityViewModel>(activity);
+            return View(model);
         }
 
         // POST: Activities/Edit/5
@@ -191,7 +215,7 @@ namespace DevSite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "Courses");
             }
             var model = mapper.Map<CourseViewModel>(activity);
             return View(model);
@@ -223,7 +247,7 @@ namespace DevSite.Controllers
             var activity = await uow.ActivityRepository.GetOne(id, includeAll: false);
             uow.ActivityRepository.Remove(activity);
             await uow.ActivityRepository.SaveAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Courses");
         }
 
         private bool ActivityExists(int id)

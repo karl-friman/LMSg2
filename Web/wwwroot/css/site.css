@@ -120,7 +120,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    /*background: #6d7fcc;*/
 }
 
 ul.CTAs {
@@ -227,7 +227,6 @@ a.article:hover {
 }
 
 .today {
-    background: white;
     opacity: 1;
 }
 
@@ -262,9 +261,9 @@ footer {
 }
 
     .user-card:hover {
-        color: #1832a5;
-        -webkit-box-shadow: -1px 4px 5px 1px rgba(26, 53, 85, 0.486);
-        box-shadow: -1px 4px 5px 1px rgba(29, 75, 124, 0.459);
+        color: #6b705c;
+        -webkit-box-shadow: -1px 4px 5px 1px #b7b7a4;
+        box-shadow: -1px 4px 5px 1px #b7b7a4;
     }
 
 .user-list-group {
@@ -277,18 +276,67 @@ footer {
 }
 
 #accordion .ui-accordion-header {
-    background: #F0AD4E;
+    background: #b7b7a4;
     padding: 2%;
     margin-bottom: 1%;
-    border-radius: 16px;
-    padding-left: 10%;
+    padding-left: 2%;
+    width: 40em;
+    /*border-radius: 16px;*/
 }
 
-#accordion .icon {
+#accordion .ui-accordion-header a {
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
+    border-right: 1px solid rgba(0, 0, 0, .2);
+    border-left: 1px solid rgba(0, 0, 0, .2);
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    border-top: 1px solid rgba(250, 250, 250, .2);
+}
+
+.accordion .icon {
    padding-right: 10%;
-   
 }
 
+#accordion .ui-accordion-header a {
+    border-style: dotted;
+    background: black;
+}
+
+#accordion .ui-accordion-content {
+    box-shadow: inset 0px -1px 0px 0px rgba(0, 0, 0, .4), inset 0px 1px 1px 0px rgba(0, 0, 0, .2);
+}
+
+#accordion .ui-accordion-content:last-of-type {
+    box-shadow: inset 0px 1px 1px 0px rgba(0, 0, 0, .2), inset 0px 0 0px 0px rgba(0, 0, 0, .5);
+}
+
+#page-content-wrapper {
+    padding-left: 12em;
+}
+
+.row {
+    margin: 1.5em;
+}
+
+.card-body {
+    max-width: 30em;
+}
+
+.card {
+    max-width: 45em;
+}
+
+.student-class-card {
+    max-width: 70em;
+}
+
+.course-edit-card {
+    min-width: 32em;
+}
+
+.student-dashboard-day-card {
+    width: 25em;
+}
 
 @media (max-width: 768px) {
     #sidebar {
@@ -308,6 +356,3 @@ footer {
     }
 }
 
-.row {
-    margin: 1.5em;
-}

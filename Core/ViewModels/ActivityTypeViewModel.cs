@@ -13,6 +13,6 @@ namespace Core.ViewModels
         public string Name { get; set; }
 
         //Navigation props 
-        public ICollection<Activity> Activities { get; set; }
+        public ICollection<ActivityViewModel> Activities { get; set; }
     }
 }

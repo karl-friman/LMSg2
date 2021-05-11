@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Data.Data;
 
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210511125013_userid")]
+    partial class userid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,10 +113,7 @@ namespace Web.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LMSUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LMSUserId1")
+                    b.Property<string>("LMSUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ModuleId")
@@ -132,7 +131,7 @@ namespace Web.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("LMSUserId1");
+                    b.HasIndex("LMSUserId");
 
                     b.HasIndex("ModuleId");
 
@@ -417,7 +416,7 @@ namespace Web.Data.Migrations
 
                     b.HasOne("Core.Entities.LMSUser", "LMSUser")
                         .WithMany("Documents")
-                        .HasForeignKey("LMSUserId1");
+                        .HasForeignKey("LMSUserId");
 
                     b.HasOne("Core.Entities.Module", null)
                         .WithMany("Documents")
