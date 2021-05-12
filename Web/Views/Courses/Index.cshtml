@@ -8,6 +8,8 @@
     ViewData["Title"] = "Index";
     var i = 0;
     string activeCourse = "false";
+    string activeModule = "false";
+    string activeModuleAccordion = null;
 }
 
 <div class="d-flex mt-3 ml-5">
@@ -25,13 +27,13 @@
 
                         @foreach (var course in Model.Courses)
                         {
-                            string classContents = "btn btn-outline-primary";
+                            string classContents = "";
 
                             @if (Model.SelectedCourse is not null)
                             {
                                 if (Model.SelectedCourse.Id == course.Id)
                                 {
-                                    classContents = "btn btn-outline-warning";
+                                    classContents = "border-warning";
                                     activeCourse = i.ToString();
                                 }
                             }
@@ -42,7 +44,7 @@
                                     routeValues: new { selected = course.Id },
                                     htmlAttributes: new { @class = classContents })*@
                             </h3>
-                            <div>
+                            <div class="@classContents">
                                 <ul class="list-unstyled list-group list-group-flush">
                                     <li class="list-group-item"><em>@Html.DisplayFor(modelItem => course.Description)</em></li>
                                     <li class="list-group-item">@Html.DisplayNameFor(modelItem => course.StartDate): @Html.DisplayFor(modelItem => course.StartDate)</li>
@@ -67,80 +69,88 @@
 
                                 @if (course.Modules != null)
                                 {
-
-                                    foreach (var module in course.Modules)
-                                    {
-                                        <div id="module_@module.Id">
-                                            @if (module != null)
-                                            {
-                                                <h3>
-                                                    <u>
-                                                        <a href="#" class="btn btn-outline-secondary">@module.Name</a>
-                                                        @*@Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
-                                                            protocol: null, hostname: null, fragment: null,
-                                                            routeValues: new { selected = module.Id },
-                                                            htmlAttributes: new { @class = "btn  btn-outline-primary" })*@
-                                                    </u>
-
-                                                </h3>
-                                                <div>
-                                                    <ul class="list-unstyled list-group">
-                                                        <li class="list-group-item"><em>@Html.DisplayFor(modelItem => module.Description)</em></li>
-                                                        <li class="list-group-item">
-                                                            <a asp-controller="Modules" asp-action="Edit" asp-route-id="@module.Id"><u>Edit module</u></a> |
-                                                            <a asp-controller="Modules" asp-action="Delete" asp-route-id="@module.Id"><u>Delete module</u></a>
-                                                        </li>
-
-
-                                                        @if (module.Activities != null)
+                                    var m = 0;
+                                    <div id="module_@course.Id">
+                                        @foreach (var module in course.Modules)
+                                        {
+                                            <h3>
+                                                <u>
+                                                    <a href="#" class="btn btn-outline-secondary">@module.Name</a>
+                                                    @*@Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
+                                                        protocol: null, hostname: null, fragment: null,
+                                                        routeValues: new { selected = module.Id },
+                                                        htmlAttributes: new { @class = "btn  btn-outline-primary" })*@
+                                                </u>
+                                                @{
+                                                    
+                                                    string moduleClassContents = "";
+                                                    if (Model.SelectedModule is not null)
+                                                    {
+                                                        if (Model.SelectedModule.Id == module.Id)
                                                         {
+                                                            moduleClassContents = "border-danger";
+                                                            activeModule = m.ToString();
+                                                            activeModuleAccordion = $"module_{course.Id}";
+                                                            <span id="selected"></span>
+                                                        }
+                                                    }
 
-                                                            <li class="list-group-item">
-                                                                <strong>Activities</strong> in this module:@module.Activities.Count()
-                                                            </li>
-                                                            <li class="list-group-item">
+                                                }
+                                            </h3>
+                                            <div class="@moduleClassContents">
+                                                <ul class="list-unstyled list-group">
+                                                    <li class="list-group-item"><em>@Html.DisplayFor(modelItem => module.Description)</em></li>
+                                                    <li class="list-group-item">
+                                                        <a asp-controller="Modules" asp-action="Edit" asp-route-id="@module.Id"><u>Edit module</u></a> |
+                                                        <a asp-controller="Modules" asp-action="Delete" asp-route-id="@module.Id"><u>Delete module</u></a>
+                                                    </li>
+                                                    @if (module.Activities != null)
+                                                    {
+                                                        <li class="list-group-item">
+                                                            <strong>Activities</strong> in this module:@module.Activities.Count()
+                                                            <br />
+                                                            <a asp-controller="Activities" asp-action="Create" asp-route-id="@module.Id"><u>Create activity</u></a>
+                                                        </li>
+                                                        <li class="list-group-item">
+                                                            <div id="activity_@module.Id">
                                                                 @foreach (var activity in module.Activities)
                                                                 {
-                                                                    <div id="activity_@activity.Id">
-                                                                        @if (activity != null)
-                                                                        {
-                                                                            <h3>
-                                                                                <a href="#" class="btn btn-outline-secondary">@activity.Name</a>
-                                                                            </h3>
-                                                                            <div>
-                                                                                <em>@Html.DisplayFor(modelItem => activity.Description)</em>
-                                                                                <br />
-                                                                                <a asp-controller="Activities" asp-action="Edit" asp-route-id="@activity.Id"><u>Edit activity</u></a> |
-                                                                                <a asp-controller="Activities" asp-action="Delete" asp-route-id="@activity.Id"><u>Delete activity</u></a>
-                                                                            </div>
-                                                                                
-                                                                            
-                                                                        }
-                                                                    </div>
-                                                                    <script>
-                                                                        $("#activity_@activity.Id").accordion({
-                                                                            collapsible: true,
-                                                                            heightStyle: "content",
-                                                                            active: false,
-                                                                        });
-                                                                    </script>
+                                                                    if (activity != null)
+                                                                    {
+                                                                        <h3>
+                                                                            <a href="#" class="btn btn-outline-secondary">@activity.Name</a>
+                                                                        </h3>
+                                                                        <div>
+                                                                            <em>@Html.DisplayFor(modelItem => activity.Description)</em>
+                                                                            <br />
+                                                                            <a asp-controller="Activities" asp-action="Edit" asp-route-id="@activity.Id"><u>Edit activity</u></a> |
+                                                                            <a asp-controller="Activities" asp-action="Delete" asp-route-id="@activity.Id"><u>Delete activity</u></a>
+                                                                        </div>
+                                                                    }
                                                                 }
-                                                            </li>
+                                                            </div>
+                                                            <script>
+                                                                $("#activity_@module.Id").accordion({
+                                                                    collapsible: true,
+                                                                    heightStyle: "content",
+                                                                    active: false,
+                                                                });
+                                                            </script>
+                                                        </li>
 
-                                                        }
-
-                                                    </ul>
-                                                </div>
-                                            }
-                                        </div>
-                                        <script>
-                                            $("#module_@module.Id").accordion({
-                                                collapsible: true,
-                                                heightStyle: "content",
-                                                active: false,
-                                            });
-                                        </script>
-                                    }
+                                                    }
+                                                </ul>
+                                            </div>
+                                            m++;
+                                        }
+                                    </div>
+                                    <script>
+                                        $("#module_@course.Id").accordion({
+                                            collapsible: true,
+                                            heightStyle: "content",
+                                            active: false,
+                                        });
+                                    </script>
                                 }
                             </div>
                             i++;
@@ -160,7 +170,7 @@
         $("#courses").accordion({
             collapsible: false,
             heightStyle: "content",
-            active: 0,
+            active: @activeCourse,
             icons: icons
         });
         $("#toggle").button().on("click", function () {
@@ -172,4 +182,13 @@
         });
     });
 </script>
-
+@{
+    if (activeModuleAccordion is not null)
+    {
+        <script>
+        $("#@activeModuleAccordion").accordion({
+        active: @activeModule,
+        });
+        </script>
+    }
+}

@@ -75,21 +75,21 @@ namespace DevSite.Controllers
         }
 
         // GET: Modules/Create
-        public async Task<IActionResult> CreateAsync(int? courseId)
+        public async Task<IActionResult> CreateAsync(int? id)
         {
-            courseId = 5;
-            if (courseId is not null)
+            ModuleViewModel moduleCreateModel = null;
+            if (id is not null)
             {
-                var CourseSelectList = await uow.CourseRepository.GetSelectListItems();
-                ViewData["CourseSelectList"] = CourseSelectList;
-               //ViewBag.CourseSelectList = new SelectList(CourseSelectList, "CourseSelectList", "Value", courseId);
+                moduleCreateModel = new ModuleViewModel
+                {
+                    CourseId = (int)id,
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now,
+                };
             }
-            else
-            {
-                var CourseSelectList = await uow.CourseRepository.GetSelectListItems();
-                ViewData["CourseSelectList"] = CourseSelectList;
-            }
-            return View();
+            var CourseSelectList = await uow.CourseRepository.GetSelectListItems();
+            ViewData["CourseSelectList"] = CourseSelectList;
+            return View(moduleCreateModel);
         }
 
         // POST: Modules/Create
@@ -123,7 +123,8 @@ namespace DevSite.Controllers
                 var module = mapper.Map<Module>(moduleViewModel);
                 await uow.ModuleRepository.AddAsync(module);
                 await uow.ModuleRepository.SaveAsync();
-                return RedirectToAction(nameof(Index), "Courses");
+                //return RedirectToAction(nameof(Index), "Courses");
+                return Redirect($"/Courses?selCourse={module.CourseId}");
             }
 
             var CourseSelectList = await uow.CourseRepository.GetSelectListItems();
@@ -181,7 +182,8 @@ namespace DevSite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), "Courses");
+                //return RedirectToAction(nameof(Index), "Courses");
+                return Redirect($"/Courses?selCourse={module.CourseId}&selModule={module.Id}");
             }
             //ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Id", @module.CourseId);
             //return View(module);
@@ -217,7 +219,8 @@ namespace DevSite.Controllers
             var module = await uow.ModuleRepository.GetOne(id, includeAll: false);
             uow.ModuleRepository.Remove(module);
             await uow.ModuleRepository.SaveAsync();
-            return RedirectToAction(nameof(Index), "Courses");
+            //return RedirectToAction(nameof(Index), "Courses");
+            return Redirect("/Courses?selCourse=" + module.CourseId);
         }
 
         private bool ModuleExists(int id)

@@ -115,13 +115,24 @@ namespace DevSite.Controllers
         }
 
         // GET: Activities/Create
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int? id)
         {
+            ActivityViewModel actCreateModel = null;
+            if (id is not null)
+            {
+                actCreateModel = new ActivityViewModel
+                {
+                    ModuleId = (int)id,
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now,
+                };
+            }
             var ModuleSelectList = await uow.ModuleRepository.GetSelectListItems();
             ViewData["ModuleSelectList"] = ModuleSelectList;
             var ActivityTypeSelectList = await uow.ActivityTypeRepository.GetSelectListItems();
             ViewData["ActivityTypeSelectList"] = ActivityTypeSelectList;
-            return View();
+
+            return View(actCreateModel);
         }
 
         // POST: Activities/Create
@@ -158,7 +169,9 @@ namespace DevSite.Controllers
                 var activity = mapper.Map<Activity>(activityViewModel);
                 await uow.ActivityRepository.AddAsync(activity);
                 await uow.ActivityRepository.SaveAsync();
-                return RedirectToAction(nameof(Index), "Courses");
+
+                var module = await uow.ModuleRepository.GetOne(activity.ModuleId, false);
+                return Redirect($"/Courses?selCourse={module.CourseId}&selModule={module.Id}");
             }
             return View(activityViewModel);
         }
@@ -215,7 +228,9 @@ namespace DevSite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), "Courses");
+
+                var module = await uow.ModuleRepository.GetOne(activity.ModuleId, false);
+                return Redirect($"/Courses?selCourse={module.CourseId}&selModule={module.Id}");
             }
             var model = mapper.Map<CourseViewModel>(activity);
             return View(model);
@@ -247,7 +262,9 @@ namespace DevSite.Controllers
             var activity = await uow.ActivityRepository.GetOne(id, includeAll: false);
             uow.ActivityRepository.Remove(activity);
             await uow.ActivityRepository.SaveAsync();
-            return RedirectToAction(nameof(Index), "Courses");
+
+            var module = await uow.ModuleRepository.GetOne(activity.ModuleId, false);
+            return Redirect($"/Courses?selCourse={module.CourseId}&selModule={module.Id}");
         }
 
         private bool ActivityExists(int id)

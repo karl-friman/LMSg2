@@ -27,28 +27,31 @@ namespace DevSite.Controllers
         }
 
         // GET: Courses
-        public async Task<IActionResult> Index(int? selected)
+        public async Task<IActionResult> Index(int? selCourse, int? selModule)
         {
             Course selectedCourse = null;
+            Module selectedModule = null;
 
             var courseList = await uow.CourseRepository.GetAll(includeAll: true);
 
-            if (selected is not null)
+            if (selCourse is not null)
             {
-                selectedCourse = await uow.CourseRepository.GetOne(Id: selected, includeAll: true);
+                selectedCourse = await uow.CourseRepository.GetOne(Id: selCourse, includeAll: true);
             }
-            else
+            if (selModule is not null)
             {
-                selectedCourse = null;
+                selectedModule = await uow.ModuleRepository.GetOne(Id: selModule, includeAll: true);
             }
 
             var model = mapper.Map<IEnumerable<CourseViewModel>>(courseList);
-            var selectedMapped = mapper.Map<CourseViewModel>(selectedCourse);
+            var selectedCourseMapped = mapper.Map<CourseViewModel>(selectedCourse);
+            var selectedModuleMapped = mapper.Map<ModuleViewModel>(selectedModule);
 
             CourseListViewModel courseIndexModel = new CourseListViewModel
             {
                 Courses = model,
-                SelectedCourse = selectedMapped
+                SelectedCourse = selectedCourseMapped,
+                SelectedModule = selectedModuleMapped
             };
 
             return View(courseIndexModel);
@@ -192,11 +195,14 @@ namespace DevSite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-               
+                //return RedirectToAction(nameof(Index));
+                return Redirect("/Courses?selCourse=" + course.Id);
+
             }
             var model = mapper.Map<CourseViewModel>(course);
-            return View(course);
+            return View(model);
+            //return RedirectToAction(nameof(Index), "Courses", model, new { selected = $"{course.Id}" });
+            
         }
 
         // GET: Courses/Delete/5

@@ -14,5 +14,6 @@ namespace Core.ViewModels
 
         [Display(Name = "Selected Course")]
         public CourseViewModel SelectedCourse { get; set; }
+        public ModuleViewModel SelectedModule { get; set; }
     }
 }
