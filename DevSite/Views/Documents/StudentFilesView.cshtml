@@ -2,7 +2,7 @@
 @using Core.Utilities;
 @using System.Text;
 @using Microsoft.AspNetCore.Html;
-@model IEnumerable<DocumentViewModel>
+@model UserDocumentViewModel
 
 
 @{
@@ -12,61 +12,68 @@
 }
 
 
+<div class="card">
+    <div class="card-header">
+        <h2>Course: @Model.CourseName</h2>
+    </div>
+    <div class="card-body">
+        <h3> <strong>Course Documents</strong></h3>
+        <ul>
+            @foreach (var item in @Model.CourseDocuments)
+            {
+                <li>
+                    
+                    <a href="@item.FilePath/@item.Name">@item.Name</a>
+                </li>
+                @*<div class="bg-light clearfix">
+                    <form asp-controller="Documents" asp-action="DownloadFile">
+                        <span>@item.FilePath</span>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="fileName" />
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary">@item.FilePath</button>
+                            </div>
+                        </div>
+                    </form>*@
+                @*<button type="button" class="btn btn-primary float-right">@Html.ActionLink("Download", "DownloadFile", new { Name = item.Name })</button>*@
+        @*</div>*@
 
+    }
+            </ul>
+            <br />
+            <br />
 
-@foreach (var item in Model)
-{
-    string classContents = "btn btn-outline-primary";
+            <h3> <strong>Module Documents</strong></h3>
+            @foreach (var item in @Model.ModuleViewModels)
+            {
 
-    <h3>
-        @Html.ActionLink(linkText: item.Name, actionName: "StudentFilesView", controllerName: "Documents",
-               protocol: null, hostname: null, fragment: null,
-               routeValues: new { selected = item.LMSUserId },
-               htmlAttributes: new { @class = classContents })
-    </h3>
-
-    <h3>
-        @Html.ActionLink(linkText: item.FilePath, actionName: "StudentFilesView", controllerName: "Documents",
-               protocol: null, hostname: null, fragment: null,
-               routeValues: new { selected = item.LMSUserId },
-               htmlAttributes: new { @class = classContents })
-    </h3>
-
-    //<p>@Html.ActionLink(linkText: item.FilePath, actionName: "DownloadFile")</p>
-
-}
-
-
-
-@*<script>
-        $("#module_@module.Id").accordion({
-            collapsible: true,
-            heightStyle: "content",
-            active: false,
-        });
-    </script>*@
-
-<script>
-    $(function () {
-        var icons = {
-            header: "ui-icon-circle-arrow-e",
-            activeHeader: "ui-icon-circle-arrow-s"
-        };
-        @*$("#courses").accordion({
-            collapsible: true,
-            heightStyle: "content",
-          /* active: @activeCourse,*/
-            icons: icons
-        });*@
-        $("#toggle").button().on("click", function () {
-            if ($("#courses").accordion("option", "icons")) {
-                $("#courses").accordion("option", "icons", null);
-            } else {
-                $("#courses").accordion("option", "icons", icons);
+                <div class="bg-light clearfix">
+                    <span>@item.Name</span>
+                    <button type="button" class="btn btn-primary float-right">Download</button>
+                </div>
             }
-        });
-    });
-</script>
+            <p></p>
+            <h3> <strong>Activity Documents</strong></h3>
+            @foreach (var item in @Model.ActivityViewModels)
+            {
+
+                <div class="bg-light clearfix">
+                    <span>@item.Name</span>
+                    <button type="button" class="btn btn-primary float-right">Download</button>
+                </div>
+            }
+
+            <p></p>
+            <h3> <strong>Students Documents</strong></h3>
+            @foreach (var item in @Model.LMSUserDocuments)
+            {
+                <div class="bg-light clearfix">
+                    <span>@item.Name</span>
+                    <button type="button" class="btn btn-primary float-right">Download</button>
+                </div>
+            }
+        </div>
+</div>
 
 
 

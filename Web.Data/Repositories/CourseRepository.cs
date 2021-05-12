@@ -74,9 +74,22 @@ namespace Web.Data.Repositories
             return db.Courses.Any(m => m.Id == Id);
         }
 
-        public Task<Course> GetOne(string Id, bool includeAll)
+        public async Task<Course> GetOne(string id, bool includeAll)
         {
-            throw new NotImplementedException();
+            if (includeAll)
+            {
+
+                return await db.Courses
+                             .Include(d => d.Documents)
+                             .Include(m => m.Modules)
+                             .ThenInclude(a => a.Activities)
+                             .FirstOrDefaultAsync(m => m.Id.Equals(id));
+            }
+            else
+            {
+                return await db.Courses
+                            .FirstOrDefaultAsync(m => m.Id.Equals(id));
+            }
         }
 
         public bool Any(string Id)
