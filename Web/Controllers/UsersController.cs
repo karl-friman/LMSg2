@@ -255,12 +255,28 @@ namespace DevSite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            //var user = await _userManager.FindByIdAsync(id);
+            var user = await uow.LMSUserRepository.GetOne(id, includeAll: true);
+            var allDocs = user.Documents.ToList();
+
+            foreach (var doc in allDocs)
+            {
+                uow.DocumentRepository.Remove(doc);
+            }
+
             uow.LMSUserRepository.Remove(user);
             await uow.LMSUserRepository.SaveAsync();
 
+            var userType = user.UserType.ToString(); 
 
-            return RedirectToAction(nameof(Index));
+            if (userType == "Student")
+            {
+                return RedirectToAction(nameof(AdminStudents));
+            }
+            else
+            {
+                return RedirectToAction(nameof(AdminStaff));
+            }
         }
 
         private bool UserExists(string id)

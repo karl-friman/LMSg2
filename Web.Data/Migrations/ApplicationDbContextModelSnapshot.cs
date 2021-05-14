@@ -111,7 +111,7 @@ namespace Web.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LMSUserId")
+                    b.Property<int?>("LMSUserId")
                         .HasColumnType("int");
 
                     b.Property<string>("LMSUserId1")

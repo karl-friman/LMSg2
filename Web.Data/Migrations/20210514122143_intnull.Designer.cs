@@ -10,8 +10,8 @@ using Web.Data.Data;
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210511125013_userid")]
-    partial class userid
+    [Migration("20210514122143_intnull")]
+    partial class intnull
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,7 +113,10 @@ namespace Web.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LMSUserId")
+                    b.Property<int?>("LMSUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LMSUserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ModuleId")
@@ -131,7 +134,7 @@ namespace Web.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("LMSUserId");
+                    b.HasIndex("LMSUserId1");
 
                     b.HasIndex("ModuleId");
 
@@ -416,7 +419,7 @@ namespace Web.Data.Migrations
 
                     b.HasOne("Core.Entities.LMSUser", "LMSUser")
                         .WithMany("Documents")
-                        .HasForeignKey("LMSUserId");
+                        .HasForeignKey("LMSUserId1");
 
                     b.HasOne("Core.Entities.Module", null)
                         .WithMany("Documents")

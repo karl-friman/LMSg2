@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Core.Entities.Activity>
+﻿@model CourseListViewModel
 @using Microsoft.AspNetCore.Identity
 @using Core.Entities;
 @inject SignInManager<LMSUser> SignInManager
@@ -13,20 +13,20 @@
 @if (User.IsInRole("Admin"))
 {
 <div class="d-flex mt-3 ml-5">
-
+    <partial name="AdminHomePartial" />
 </div>
 }
 else
 {
-<div class="d-flex mt-3 ml-5">
-    <div>
-        @*@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })*@
-        @*<partial name="StudentDashboardPartial" model="@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })"/>*@
-        <vc:dashboard-schedule user-id="@UserManager.GetUserId(User)"></vc:dashboard-schedule>
+    <div class="d-flex mt-3 ml-5">
+        <div>
+            @*@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })*@
+            @*<partial name="StudentDashboardPartial" model="@await Component.InvokeAsync("DashboardSchedule", new { userId = UserManager.GetUserId(User) })"/>*@
+            <vc:dashboard-schedule user-id="@UserManager.GetUserId(User)"></vc:dashboard-schedule>
+        </div>
+        <div class="pl-3">
+            <vc:dashboard-modules user-id="@UserManager.GetUserId(User)"></vc:dashboard-modules>
+        </div>
     </div>
-    <div class="pl-3">
-        <vc:dashboard-modules user-id="@UserManager.GetUserId(User)"></vc:dashboard-modules>
-    </div>
-</div>
 
 }

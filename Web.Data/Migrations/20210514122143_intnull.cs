@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web.Data.Migrations
 {
-    public partial class docs : Migration
+    public partial class intnull : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -256,7 +256,7 @@ namespace Web.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LMSUserId = table.Column<int>(type: "int", nullable: false),
+                    LMSUserId = table.Column<int>(type: "int", nullable: true),
                     CourseId = table.Column<int>(type: "int", nullable: true),
                     ModuleId = table.Column<int>(type: "int", nullable: true),
                     ActivityId = table.Column<int>(type: "int", nullable: true),

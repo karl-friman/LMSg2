@@ -338,6 +338,10 @@ footer {
     width: 25em;
 }
 
+.primary-admin-dashboard-card {
+    width: 32em;
+}
+
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;

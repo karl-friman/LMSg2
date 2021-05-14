@@ -1,0 +1,241 @@
+﻿@model CourseListViewModel
+@{
+    <script>
+        var courseNames = [];
+        var courseDaysData = [];
+        var courseStudentData = [];
+        var moduleNames = [];
+        var moduleData = [];
+    </script>
+
+    @foreach (var course in Model.Courses)
+    {
+        int totalDays = (int)(course.EndDate - course.StartDate).TotalDays;
+        int totalStudents = course.Users.Count();
+        <script>
+            courseNames.push('@course.Name');
+            courseDaysData.push(@totalDays);
+            courseStudentData.push(@totalStudents);
+        </script>
+
+
+        @foreach (var module in course.Modules)
+        {
+            int totalMDays = (int)(module.StartDate - DateTime.Now).TotalDays;
+            if (totalMDays > 0)
+            {
+                    <script>
+                        moduleNames.push('@module.Name');
+                        moduleData.push(@totalMDays);
+                    </script>
+
+                }
+            }
+
+    }
+}
+<div>
+    <div class="card border-secondary mb-3 primary-admin-dashboard-card ">
+        <div class="card-header">
+            <h4>Course Details</h4>
+        </div>
+        <canvas id="studentChart" width="400" height="400" class="p-2"></canvas>
+        <canvas id="moduleChart" width="400" height="400" class="p-2"></canvas>
+    </div>
+</div>
+<div class="pl-3">
+    <div class="card border-secondary mb-3">
+        <div class="card-header">
+            <h4>Active Courses</h4>
+        </div>
+        
+        <div class="card-body">
+
+            @foreach (var course in Model.Courses)
+            {
+
+                var progress = (int)((DateTime.Now - course.StartDate).TotalDays / (course.EndDate - course.StartDate).TotalDays);
+                if (progress < 1)
+                {
+                    progress = 1;
+                }
+                string progressWidth = progress.ToString() + "%";
+                if (course.StartDate < DateTime.Now && course.EndDate > DateTime.Now)
+                {
+
+                    <div>
+                        <h6 class="text-black"><a href="/Courses/?selCourse=@course.Id"><u>@course.Name</u></a></h6>
+                    </div>
+
+                    @*<p class="card-text">
+                        <span class="text-black font-italic"><small>Started @course.StartDate.ToString("dddd, dd MMMM yyyy")</small></span>
+                        <br />
+                        <span class="text-black font-italic"><small>Ends on @course.EndDate.ToString("dddd, dd MMMM yyyy")</small></span>
+                    </p>*@
+                    <hr>
+
+                }
+                if (course.StartDate > DateTime.Now && course.EndDate > DateTime.Now)
+                {
+
+                    <div>
+                        <h6 class="text-muted">@course.Name</h6>
+                    </div>
+                    <p class="card-text">
+                        <div class="text-muted font-italic"><small>Starts on @course.EndDate.ToString("dddd, dd MMMM yyyy")</small></div>
+                    </p>
+                    <hr>
+
+                }
+            }
+            <canvas id="courseChart" width="400" height="400" class="p-2"></canvas>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        const data1 = {
+            labels: courseNames,
+            datasets: [{
+                label: 'Days',
+                data: courseDaysData,
+                fill: true,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                pointRadius: 1,
+            }]
+        };
+
+        const config1 = {
+            type: 'pie',
+            data: data1,
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        display: true
+                    },
+                    title: {
+                        display: true,
+                        text: 'Days per course'
+                    }
+                }
+            },
+        };
+
+        var myChart1 = new Chart(
+            document.getElementById('courseChart'),
+            config1
+        );
+
+        const data2 = {
+            labels: courseNames,
+            datasets: [{
+                label: 'Students',
+                data: courseStudentData,
+                fill: false,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                pointRadius: 1,
+            }]
+        };
+
+        const config2 = {
+            type: 'bar',
+            data: data2,
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Most popular courses'
+                    }
+                }
+            },
+        };
+
+        var myChart2 = new Chart(
+            document.getElementById('studentChart'),
+            config2
+        );
+
+        const data3 = {
+            labels: moduleNames,
+            datasets: [{
+                label: 'Days',
+                data: moduleData,
+                fill: true,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                pointRadius: 1,
+            }]
+        };
+
+        const config3 = {
+            type: 'bar',
+            data: data3,
+            options: {
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Module Progress'
+                    }
+                }
+            },
+        };
+
+        var myChart3 = new Chart(
+            document.getElementById('moduleChart'),
+            config3
+        );
+    </script>
+

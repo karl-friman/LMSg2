@@ -12,6 +12,7 @@ using Core.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Web.Models;
 
 namespace Web.Controllers
 {
@@ -24,7 +25,7 @@ namespace Web.Controllers
         public HomeController(ILogger<HomeController> logger, UserManager<LMSUser> userManager, IUnitOfWork uow, IMapper mapper)
         {
             _logger = logger;
-            _userManager = userManager;
+            //_userManager = userManager;
             this.uow = uow;
             this.mapper = mapper;
         }
@@ -48,10 +49,10 @@ namespace Web.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+        //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        //public IActionResult Error()
+        //{
+        //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        //}
     }
 }

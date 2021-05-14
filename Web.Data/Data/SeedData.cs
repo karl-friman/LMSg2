@@ -171,7 +171,7 @@ namespace Web.Data.Data
                     };
                     users.Add(user);
                 }
-                for (int i = 0; i < amountOfStudents; i++)
+                for (int i = 0; i < fake.Random.Int(20, amountOfStudents); i++)
                 {
                     Random random = new Random();
                     int rand = random.Next(0,20) - 38;
@@ -322,7 +322,7 @@ namespace Web.Data.Data
                 {
                     Name = fake.Company.CatchPhrase(),
                     Description = fake.Lorem.Paragraphs(1),
-                    StartDate = DateTime.Now.AddDays(fake.Random.Int(-30, 2)),
+                    StartDate = DateTime.Now.AddDays(fake.Random.Int(-30, -10)),
                     EndDate = courseEndDate,
                 };
 
