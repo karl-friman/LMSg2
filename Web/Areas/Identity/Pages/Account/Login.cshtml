@@ -6,7 +6,11 @@
 }
 @{if (SignInManager.IsSignedIn(User) == false)
     {
-
+        <style>
+            input:focus {
+                outline-offset: 0;
+            }
+        </style>
         <div class="d-flex justify-content-center m-5">
 
             <div class="jumbotron w-50 m-5">
