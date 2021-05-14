@@ -13,6 +13,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Http;
+using System;
 
 namespace DevSite.Controllers
 {
@@ -22,12 +25,7 @@ namespace DevSite.Controllers
         private readonly IMapper mapper;
         private readonly UserManager<LMSUser> _userManager;
         private IWebHostEnvironment environment;
-       // private string Path1 = "C:Users/Elev/source/repos/LMSg2/Web/wwwroot/docs/user";
-        private string Path2 = "C:Users/Elev/source/repos/LMSg2/Web/wwwroot/docs/document";
-       // private string Path3 = "C:Users/Elev/source/repos/LMSg2/Web/wwwroot/docs/modules";
-       // private string Path4 = "C:Users/Elev/source/repos/LMSg2/Web/wwwroot/docs/activities";
-   
-
+        private string Path2 = "/docs/firstName_lastName";
 
         public DocumentsController(IUnitOfWork uow, IMapper mapper, UserManager<LMSUser> _userManager, IWebHostEnvironment environment)
         {
@@ -40,7 +38,7 @@ namespace DevSite.Controllers
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            var doucumentList = await uow.DocumentRepository.GetAll(includeAll: true);
+            var doucumentList = await uow.DocumentRepository.GetAllWithCourseAndModule(includeAll: true);
             var model = mapper.Map<IEnumerable<DocumentViewModel>>(doucumentList);
             return View(model);
         }
@@ -105,7 +103,7 @@ namespace DevSite.Controllers
 
             var model = new UserDocumentViewModel
             {
-                    DocumentName = allUserDocuments.Select(a => a.Name).ToString(),
+                   // DocumentName = allUserDocuments.Select(a => a.Name).ToString(),
                     CourseName = course.Name,
                     CourseDocuments = uow.CourseRepository.GetOne(courseId, false).Result.Documents,
                     ModuleViewModels = moduleVms,
@@ -117,7 +115,6 @@ namespace DevSite.Controllers
             return View(model);
                      
         }
-
         public IActionResult LmsFilesUploadDownload()
         {
             //Fetch all uploaded files in the Folder (Directory) based on the type of the document
@@ -137,75 +134,65 @@ namespace DevSite.Controllers
         public FileResult DownloadFile(string fileName)
         {
             //Build the File Path.
-            string path = Path.Combine(this.environment.WebRootPath, Path2) + "/" + fileName;
-
+            string path = Path.Combine(this.environment.WebRootPath) + "/docs/firstName_lastName"+"/"+fileName +".pdf";
+          // string path = Path.Combine(Directory.GetCurrentDirectory(), "/docs/firstName_lastName/", fileName + ".pdf");
             //Read the File data into Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path);
-
             //Send the File to Download.
-            return File(bytes, "application/octet-stream", fileName);
+        
+          return File(bytes, "application/octet-stream", fileName);
         }
 
 
-        //public async Task<IActionResult> AdminFilesView()
-        //{
+        public async Task<IActionResult> AdminFilesView()
+        {   
+            var allUsers = await uow.LMSUserRepository.GetAllWithCourseAndModule();
+            List<UserDocumentViewModel> adminDocumentList = new List<UserDocumentViewModel>();
+            var model =(UserDocumentViewModel) null; ;
+            foreach (LMSUser user in allUsers)
+            {              
+                Course course = user.Course;
+                int courseId = (int)user.CourseId;
+                if (courseId == 0) continue;
+                var modules = uow.CourseRepository.GetOne(courseId, true).Result.Modules;
+                var moduleVms = modules.Select(m => new ModuleDocumentViewModel
+                {
+                    Name = m.Name,
+                    Documents = m.Documents
+                }).ToList();
 
-        //efd031d8-4f8a-4fed-bc12-39794139adfc
-        //var userId = _userManager.GetUserId(User);
-        //var testId = "341f2735-a809-4923-9588-094e5c6c2a33";
-        //var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
-        //var currentUser = await uow.LMSUserRepository.GetOne(testId, true);
-        //Course han går på ----ingen activity is linked to the course activity
+                var activityVms = new List<ActivityDocumentViewModel>();
+                foreach (var item in modules)
+                {
+                    foreach (var act in item.Activities)
+                    {
+                        activityVms.Add(new ActivityDocumentViewModel
+                        {
+                            Name = act.Name,
+                            Documents = act.Documents
+                        });
+                    }
+                }
+                model = new UserDocumentViewModel
+                {
+                    CourseName = course.Name,
+                    CourseDocuments = uow.CourseRepository.GetOne(courseId, false).Result.Documents,
+                    ModuleViewModels = moduleVms,
+                    ActivityViewModels = activityVms,
+                    LMSUserDocuments = user.Documents.ToList()
 
-        //Course course = currentUser.Course;
-        //int courseId = (int)currentUser.CourseId;
-        //string name = course.Name;
-        //Course Modules linked to the couse
-        //List<Module> listmodules = currentUser.Course.Modules.ToList();
-        //var allUserDocuments = currentUser.Documents.ToList();
-        //var userDocsCourseId = currentUser.CourseId;
-        //var userDocsModuleId = currentUser.Course.Modules;
+                };
 
-        //var modules = uow.CourseRepository.GetOne(courseId, true).Result.Modules;
-        //var moduleVms = modules.Select(m => new ModuleDocumentViewModel
-        //{
-        //    Name = m.Name,
-        //    Documents = m.Documents
-        //}).ToList();
-
-        //var activityVms = new List<ActivityDocumentViewModel>();
-        //foreach (var item in modules)
-        //{
-        //    foreach (var act in item.Activities)
-        //    {
-        //        activityVms.Add(new ActivityDocumentViewModel
-        //        {
-        //            Name = act.Name,
-        //            Documents = act.Documents
-        //        });
-        //    }
-        //}
-
-        //var model = new UserDocumentViewModel
-        //{
-        //    CourseName = course.Name,
-        //    CourseDocuments = uow.CourseRepository.GetOne(courseId, false).Result.Documents,
-        //    ModuleViewModels = moduleVms,
-        //    ActivityViewModels = activityVms,
-        //    LMSUserDocuments = currentUser.Documents.ToList()
-
-        //};
-
-        //    return View(model);
-
-        //}
+                adminDocumentList.Add(model); 
+            }
+            return View("AdminFilesView", adminDocumentList);
+        }
 
         // GET: Documents/Create
         public IActionResult Create()
         {
             return View();
         }
-
         // POST: Documents/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -242,6 +229,90 @@ namespace DevSite.Controllers
         }
 
 
+
+        // GET: Documents/Create
+        public IActionResult CreateAssignmentDoc()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateAssignmentDoc(DocumentToAssigmentViewModel model)
+        {
+            string uniqueFileName = null;
+
+            if(model.AssignmentDoc != null)
+            {
+                string uploadsFolder = Path.Combine(environment.WebRootPath, "docs/firstName_lastName");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.AssignmentDoc.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                model.AssignmentDoc.CopyTo(new FileStream(filePath, FileMode.Create));
+  
+            }
+
+            if (DocumentExists(model.Id))
+            {
+                ModelState.AddModelError("DocumentId", "Document already exists");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var document = mapper.Map<Document>(model);
+                await uow.DocumentRepository.AddAsync(document);
+                await uow.DocumentRepository.SaveAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+
+
+
+
+        public IActionResult FileUpload()
+        {
+            
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FileUpload(IFormFile file)
+        {
+            await UploadFile(file);
+            TempData["msg"] = "File Upload succesffully.";
+            return View();
+        }
+        public async Task<bool> UploadFile(IFormFile file)
+        {
+            string path = "";
+            bool isCopied = false;
+            try
+            {
+                if (file.Length>0)
+                {
+                    string filename = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                    path = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/docs/firstName_lastName"));
+                    using (var filestream = new FileStream(Path.Combine(path, filename), FileMode.Create)) 
+                    {
+                        await file.CopyToAsync(filestream);
+                    }
+
+                    isCopied = true;
+
+                }
+                else
+                {
+                    isCopied = false;
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return isCopied;
+        }
 
         // GET: Documents/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -302,7 +373,6 @@ namespace DevSite.Controllers
             {
                 return NotFound();
             }
-
             var document = await uow.DocumentRepository.GetOne(id, includeAll: false);
             if (document == null)
             {
@@ -323,7 +393,6 @@ namespace DevSite.Controllers
             await uow.DocumentRepository.SaveAsync();
             return RedirectToAction(nameof(Index));
         }
-
         private bool DocumentExists(int id)
         {
             return uow.DocumentRepository.Any(id);

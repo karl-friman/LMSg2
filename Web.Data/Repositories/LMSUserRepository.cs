@@ -17,7 +17,7 @@ namespace Web.Data.Repositories
         {
             this.db = db;
         }
-        public async Task<List<LMSUser>> GetAll(bool includeAll)
+        public async Task<List<LMSUser>> GetAllWithCourseAndModule(bool includeAll)
         {
             if (includeAll)
             {
@@ -37,6 +37,11 @@ namespace Web.Data.Repositories
                 List<LMSUser> usersList = await db.Users.ToListAsync();
                 return usersList;
             }
+        }
+
+        public async Task<List<LMSUser>> GetAllWithCourseAndModule()
+        {
+            return await db.Users.Include(u => u.Course).ThenInclude(c => c.Modules).Include(d => d.Documents).ToListAsync();
         }
         public async Task<LMSUser> GetOne(int? id, bool includeAll)
         {

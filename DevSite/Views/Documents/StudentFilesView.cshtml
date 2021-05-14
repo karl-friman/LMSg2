@@ -18,61 +18,48 @@
     </div>
     <div class="card-body">
         <h3> <strong>Course Documents</strong></h3>
-        <ul>
-            @foreach (var item in @Model.CourseDocuments)
-            {
-                <li>
-                    
-                    <a href="@item.FilePath/@item.Name">@item.Name</a>
-                </li>
-                @*<div class="bg-light clearfix">
-                    <form asp-controller="Documents" asp-action="DownloadFile">
-                        <span>@item.FilePath</span>
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="fileName" />
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-primary">@item.FilePath</button>
-                            </div>
-                        </div>
-                    </form>*@
-                @*<button type="button" class="btn btn-primary float-right">@Html.ActionLink("Download", "DownloadFile", new { Name = item.Name })</button>*@
-        @*</div>*@
+        @foreach (var item in @Model.CourseDocuments)
+        {
 
-    }
-            </ul>
-            <br />
-            <br />
+    <div class="bg-light clearfix">
+        <span>@item.Name</span>
+        <button type="button" class="btn btn-primary float-right">@Html.ActionLink("Download", "DownloadFile", new { fileName = item.Name })</button>
+    </div>
 
-            <h3> <strong>Module Documents</strong></h3>
-            @foreach (var item in @Model.ModuleViewModels)
-            {
+        }
+        <br />
+        <br />
 
-                <div class="bg-light clearfix">
-                    <span>@item.Name</span>
-                    <button type="button" class="btn btn-primary float-right">Download</button>
-                </div>
-            }
-            <p></p>
-            <h3> <strong>Activity Documents</strong></h3>
-            @foreach (var item in @Model.ActivityViewModels)
-            {
+        <h3> <strong>Module Documents</strong></h3>
+        @foreach (var item in @Model.ModuleViewModels)
+        {
 
-                <div class="bg-light clearfix">
-                    <span>@item.Name</span>
-                    <button type="button" class="btn btn-primary float-right">Download</button>
-                </div>
-            }
+            <div class="bg-light clearfix">
+                <span>@item.Name</span>
+                <button type="button" class="btn btn-primary float-right">Download</button>
+            </div>
+        }
+        <p></p>
+        <h3> <strong>Activity Documents</strong></h3>
+        @foreach (var item in @Model.ActivityViewModels)
+        {
 
-            <p></p>
-            <h3> <strong>Students Documents</strong></h3>
-            @foreach (var item in @Model.LMSUserDocuments)
-            {
-                <div class="bg-light clearfix">
-                    <span>@item.Name</span>
-                    <button type="button" class="btn btn-primary float-right">Download</button>
-                </div>
-            }
-        </div>
+            <div class="bg-light clearfix">
+                <span>@item.Name</span>
+                <button type="button" class="btn btn-primary float-right">Download</button>
+            </div>
+        }
+
+        <p></p>
+        <h3> <strong>Students Documents</strong></h3>
+        @foreach (var item in @Model.LMSUserDocuments)
+        {
+            <div class="bg-light clearfix">
+                <span>@item.Name</span>
+                <button type="button" class="btn btn-primary float-right">Download</button>
+            </div>
+        }
+    </div>
 </div>
 
 

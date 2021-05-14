@@ -37,7 +37,7 @@ namespace DevSite.Controllers
             // return View(await uow.LMSUserRepository.GetAll(includeAll: true));
 
             //var userList = await uow.DocumentRepository.GetAll(includeAll: false);
-            var userList = await uow.LMSUserRepository.GetAll(includeAll: true);
+            var userList = await uow.LMSUserRepository.GetAllWithCourseAndModule(includeAll: true);
             var model = mapper.Map<IEnumerable<LMSUserViewModel>>(userList);
             return View(model);
 

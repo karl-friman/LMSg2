@@ -17,7 +17,7 @@ namespace Web.Data.Repositories
         {
             this.db = db;
         }
-        public async Task<List<Course>> GetAll(bool includeAll)
+        public async Task<List<Course>> GetAllWithCourseAndModule(bool includeAll)
         {
             if (includeAll)
             {
@@ -93,6 +93,11 @@ namespace Web.Data.Repositories
         }
 
         public bool Any(string Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<LMSUser>> GetAllWithCourseAndModule()
         {
             throw new NotImplementedException();
         }

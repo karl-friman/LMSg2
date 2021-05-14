@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 namespace Core.ViewModels
 {
     public class UserDocumentViewModel
-    {
-
-        public string DocumentName { get; set; }
+    {  
         public string CourseName { get; set; }
         public ICollection<Document> CourseDocuments { get; set; }
 

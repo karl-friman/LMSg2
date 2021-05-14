@@ -30,7 +30,7 @@ namespace DevSite.Controllers
         {
             Module selectedModule = null;
 
-            var moduleList = await uow.ModuleRepository.GetAll(includeAll: true);
+            var moduleList = await uow.ModuleRepository.GetAllWithCourseAndModule(includeAll: true);
 
             if (selected is not null)
             {

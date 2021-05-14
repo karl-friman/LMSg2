@@ -29,7 +29,7 @@ namespace Web.Controllers
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            var doucumentList = await uow.DocumentRepository.GetAll(includeAll: true);
+            var doucumentList = await uow.DocumentRepository.GetAllWithCourseAndModule(includeAll: true);
             var model = mapper.Map<IEnumerable<DocumentViewModel>>(doucumentList);
             return View(model);
         }
@@ -57,7 +57,7 @@ namespace Web.Controllers
         {
             var userId = _userManager.GetUserId(User);
             var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
-            var allDocuments = await uow.DocumentRepository.GetAll(false);
+            var allDocuments = await uow.DocumentRepository.GetAllWithCourseAndModule(false);
             var userDocuments = allDocuments.Where(u => u.LMSUser == currentUser);
 
             var model = mapper.Map<IEnumerable<DocumentViewModel>>(userDocuments);
