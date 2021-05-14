@@ -10,8 +10,8 @@ using Web.Data.Data;
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210509234934_init6")]
-    partial class init6
+    [Migration("20210514132619_initdocs")]
+    partial class initdocs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

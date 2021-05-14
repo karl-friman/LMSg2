@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web.Data.Migrations
 {
-    public partial class init6 : Migration
+    public partial class initdocs : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

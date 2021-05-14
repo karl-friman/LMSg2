@@ -115,25 +115,24 @@ namespace DevSite.Controllers
             return View(model);
                      
         }
-        public IActionResult LmsFilesUploadDownload()
-        {
-            //Fetch all uploaded files in the Folder (Directory) based on the type of the document
-            string[] filePaths = Directory.GetFiles(Path.Combine(this.environment.WebRootPath, Path2));
+        //public IActionResult LmsFilesUploadDownload()
+        //{
+        //    //Fetch all uploaded files in the Folder (Directory) based on the type of the document
+        //    string[] filePaths = Directory.GetFiles(Path.Combine(this.environment.WebRootPath, Path2));
 
-            //Copy File names to Model collection.
-            List<Document> files = new List<Document>();
-            foreach (string filePath in filePaths)
-            {
-                files.Add(new Document { Name = Path.GetFileName(filePath) });
-            }
+        //    //Copy File names to Model collection.
+        //    List<Document> files = new List<Document>();
+        //    foreach (string filePath in filePaths)
+        //    {
+        //        files.Add(new Document { Name = Path.GetFileName(filePath) });
+        //    }
 
-            return View(files);
-        }
-
+        //    return View(files);
+        //}
 
         public FileResult DownloadFile(string fileName)
         {
-            //Build the File Path.
+            
             string path = Path.Combine(this.environment.WebRootPath) + "/docs/firstName_lastName"+"/"+fileName +".pdf";
           // string path = Path.Combine(Directory.GetCurrentDirectory(), "/docs/firstName_lastName/", fileName + ".pdf");
             //Read the File data into Byte Array.
@@ -146,46 +145,27 @@ namespace DevSite.Controllers
 
         public async Task<IActionResult> AdminFilesView()
         {   
-            var allUsers = await uow.LMSUserRepository.GetAllWithCourseAndModule();
-            List<UserDocumentViewModel> adminDocumentList = new List<UserDocumentViewModel>();
-            var model =(UserDocumentViewModel) null; ;
-            foreach (LMSUser user in allUsers)
-            {              
-                Course course = user.Course;
-                int courseId = (int)user.CourseId;
-                if (courseId == 0) continue;
-                var modules = uow.CourseRepository.GetOne(courseId, true).Result.Modules;
-                var moduleVms = modules.Select(m => new ModuleDocumentViewModel
-                {
-                    Name = m.Name,
-                    Documents = m.Documents
-                }).ToList();
+          
+            
+            var allCourses = await uow.CourseRepository.GetAllWithCourseAndModule(true);
+            var names = allCourses.Select(name => name.Name).ToList();
+            var courseDocuments = allCourses.Select(a => a.Documents).ToList();
+            var allModules = await uow.ModuleRepository.GetAllWithCourseAndModule(true);
+            var modulesDocuments = allModules.Select(a => a.Documents).ToList();
+            var allActivities = await uow.ActivityRepository.GetAllWithCourseAndModule(true);
+            var allActivityDocuments = allActivities.Select(a => a.Documents).ToList();
 
-                var activityVms = new List<ActivityDocumentViewModel>();
-                foreach (var item in modules)
-                {
-                    foreach (var act in item.Activities)
-                    {
-                        activityVms.Add(new ActivityDocumentViewModel
-                        {
-                            Name = act.Name,
-                            Documents = act.Documents
-                        });
-                    }
-                }
-                model = new UserDocumentViewModel
-                {
-                    CourseName = course.Name,
-                    CourseDocuments = uow.CourseRepository.GetOne(courseId, false).Result.Documents,
-                    ModuleViewModels = moduleVms,
-                    ActivityViewModels = activityVms,
-                    LMSUserDocuments = user.Documents.ToList()
+            var model = new AdminDocumentViewModel
+            {
+                CourseNames = names,
+                CourseDocuments = courseDocuments,
+                ModuleViewModels = modulesDocuments,
+                ActivityViewModels = allActivityDocuments,
+            };
 
-                };
 
-                adminDocumentList.Add(model); 
-            }
-            return View("AdminFilesView", adminDocumentList);
+            return View(model);
+           
         }
 
         // GET: Documents/Create
@@ -244,11 +224,26 @@ namespace DevSite.Controllers
 
             if(model.AssignmentDoc != null)
             {
-                string uploadsFolder = Path.Combine(environment.WebRootPath, "docs/firstName_lastName");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.AssignmentDoc.FileName;
+
+                //var userId = _userManager.GetUserId(User);
+                var userId = "63537c72-f07f-41ab-ab65-e1ff916f9bf5";
+                var currentUser = await uow.LMSUserRepository.GetOne(userId,false);
+                string firstname = currentUser.FirstName;
+                string lastName = currentUser.LastName;
+
+                // string directoryPath = Microsoft.AspNetCore.Server.MapPath("~/") + txtDirName.Text;
+
+                //string uploadsFolder = Path.Combine(environment.WebRootPath, "docs\\"+firstname+"_"+ lastName);
+                string uploadsFolder = environment.WebRootPath + "\\docs\\" + firstname + "_" + lastName;
+
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+
+                }
+                uniqueFileName = model.AssignmentDoc.FileName;
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
                 model.AssignmentDoc.CopyTo(new FileStream(filePath, FileMode.Create));
-  
             }
 
             if (DocumentExists(model.Id))
@@ -265,9 +260,6 @@ namespace DevSite.Controllers
             }
             return View(model);
         }
-
-
-
 
         public IActionResult FileUpload()
         {

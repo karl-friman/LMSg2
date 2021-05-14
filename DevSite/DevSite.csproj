@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\docs\firstName_lastName\Övning 12_ Garage 2.pdf" />
-    <Content Remove="wwwroot\docs\firstName_lastName\Övning 14_ Garage 3.0.pdf" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Update="Views\Home\Index.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -40,11 +35,6 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Views\Shared\_LoginPartial.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\docs\firstName_lastName\Övning 12_ Garage 2.pdf" />
-    <None Include="wwwroot\docs\firstName_lastName\Övning 14_ Garage 3.0.pdf" />
   </ItemGroup>
 
   <ItemGroup>
