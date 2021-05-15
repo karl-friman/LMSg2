@@ -116,15 +116,12 @@ namespace Web.Controllers
             {
                 DocumentName = allUserDocuments.Select(a => a.Name).ToString(),
                 CourseName = course.Name,
-                CourseDocuments = uow.CourseRepository.GetOne(courseId, false).Result.Documents,
+                CourseDocuments = uow.CourseRepository.GetOne(courseId, true).Result.Documents,
                 ModuleViewModels = moduleVms,
                 ActivityViewModels = activityVms,
                 LMSUserDocuments = currentUser.Documents.ToList()
 
             };
-
-
-
 
             return View(model);
         }

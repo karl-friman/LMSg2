@@ -1,0 +1,5 @@
+﻿Build started...
+1>------ Build started: Project: Web, Configuration: Debug Any CPU ------
+1>Web -> C:\Users\susan\source\repos\LMSg2\Web\bin\Debug\net5.0\Web.dll
+1>Web -> C:\Users\susan\source\repos\LMSg2\Web\bin\Debug\net5.0\Web.Views.dll
+========== Build: 1 succeeded, 0 failed, 5 up-to-date, 0 skipped ==========
