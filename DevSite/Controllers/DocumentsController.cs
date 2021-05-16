@@ -252,6 +252,9 @@ namespace DevSite.Controllers
                 string filePath = Path.Combine(CreatePath(firstname, lastName), uniqueFileName);
                 model.AssignmentDoc.CopyTo(new FileStream(filePath, FileMode.Create));
                 model.LMSUserId = userId;
+                Random rnd = new Random();
+                //46 activities
+                model.ActivityId = rnd.Next(1,46);
 
 
             }
