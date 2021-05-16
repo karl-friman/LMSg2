@@ -12,80 +12,78 @@
     <div>
         <div class="card border-secondary">
             <div class="card-header">
-                
+
                 <h4>My Files</h4>
-                
+
                 <hr />
 
-                <div >
+                <div class="ml-3">
 
-                    @*<h3 class="p-3">Course Documents</h3>*@
-                    <h5>@Model.CourseName</h5>
+                    <h5>Course: <br />@Model.CourseName</h5>
                     <div id="courses">
 
 
-                            <h3>Course Documents</h3>
-                            <div class="card ">
-                                @foreach (var module in @Model.CourseDocuments)
-                                {
-                                    <div class="card-body">
+                        <h3>Course Documents</h3>
+                        <div class="card ">
+                            @foreach (var module in @Model.CourseDocuments)
+                            {
+                                <div class="card-body">
 
-                                        <p class="card-text">@module.Name</p>
-                                        <p class="card-text">@module.Description</p>
+                                    <p class="card-text font-weight-bold">@module.Name</p>
+                                    <p class="card-text">@module.Description</p>
 
-                                        <p type="button" class="">@Html.ActionLink("Download", "DownloadFile", new { fileName = module.Name }, htmlAttributes: new { @class = "btn btn-outline-info" })</p>
+                                    <p type="button" class="">@Html.ActionLink("Download", "DownloadFile", new { fileName = module.Name }, htmlAttributes: new { @class = "btn btn-outline-info" })</p>
 
-                                    </div>
-                                    <hr/>
-                                }
-                            </div>
+                                </div>
+                                <hr />
+                            }
+                        </div>
 
-                        
+
                     </div>
 
                     <div>
-                        @*<h3 class="p-3">Module Documents</h3>*@
-                        <hr />
+                
+
                         <div id="modules">
-                           
-                                <h3>Module Documents</h3>
-                                <div class="card ">
-                                        @foreach (var module in @Model.ModuleViewModels)
-                                        {
+
+                            <h3>Module Documents</h3>
+                            <div class="card ">
+                                @foreach (var module in @Model.ModuleViewModels)
+                                {
                                     <div class="card-body">
-                                           
-                                        <p class="card-text">@module.Name</p>
+
+                                        <p class="card-text font-weight-bold">@module.Name</p>
                                         <p type="button" class="">@Html.ActionLink("Download", "DownloadFile", new { fileName = module.Name }, htmlAttributes: new { @class = "btn btn-outline-info" })</p>
 
                                     </div>
-                                    <hr/>
-                                        }
+                                    <hr />
+                                }
 
-                                </div>
-                            
+                            </div>
+
 
                         </div>
                     </div>
 
                     <div>
-                        @*<h3 class="p-3">Activity Documents</h3>*@
-                        <hr />
+
                         <div id="activities">
-                          
-                                <h3>Activity Documents</h3>
-                                <div class="card ">
-                                    @foreach (var activity in @Model.ModuleViewModels)
-                                    {
-                                        <div class="card-body">
 
-                                            <p class="card-text">@activity.Name</p>
-                                            <p class="">@Html.ActionLink("Download", "DownloadFile", new { fileName = activity.Name }, htmlAttributes: new { @class = "btn btn-outline-info" })</p>
+                            <h3>Activity Documents</h3>
+                            <div class="card ">
+                                @foreach (var activity in @Model.ModuleViewModels)
+                                {
+                                    <div class="card-body">
 
-                                        </div>
-                                        <hr/>
-                                    }
-                                </div>
-                                                    </div>
+                                        <p class="card-text font-weight-bold">@activity.Name</p>
+                                        <p class="">@Html.ActionLink("Download", "DownloadFile", new { fileName = activity.Name }, htmlAttributes: new { @class = "btn btn-outline-info" })</p>
+
+                                    </div>
+                                    <hr />
+                                }
+                            </div>
+                        </div>
                     </div>
 
 
@@ -144,166 +142,4 @@
         });
     });
 </script>
-
-@*<div class="d-flex mt-3 ml-5">
-    <div>
-        <div class="card border-secondary">
-            <div class="card-header">
-                <h4>@Model.CourseName</h4>
-                <hr />
-                <div id="accordion">
-                    @foreach (var item in @Model.CourseDocuments)
-                    {
-                        <h3>@item.Name</h3>
-                        <div class="card ">
-                            <div class="card-body">
-                                <p class="card-text">@item.Description</p>
-                                <button type="button" class="btn btn-secondary float-right text-secondary text-decoration-none m-1">@Html.ActionLink("Download", "DownloadFile", new { fileName = item.Name })</button>
-
-                            </div>
-                        </div>
-
-
-
-                    }
-
-
-                    <div class="row">
-                        <h3>Modules</h3>
-
-                        <div class="ml-5">
-                            <div id="accordion">
-                                @foreach (var item in @Model.ModuleViewModels)
-                                {
-                                    <h3>@item.Name</h3>
-                                    <div class="card ">
-                                        <div class="card-body">
-                                            <p class="card-text">@item.Name</p>
-                                            <button type="button" class="btn btn-secondary float-right text-secondary text-decoration-none m-1">@Html.ActionLink("Download", "DownloadFile", new { fileName = item.Name })</button>
-
-                                        </div>
-                                    </div>
-
-
-
-                                }
-
-
-                                <div class="ml-5 pl-5 ">
-                                    <div id="accordion">
-                                        <h3>Activities</h3>
-                                        @foreach (var item in @Model.ActivityViewModels)
-                                        {
-                                            <h3>@item.Name</h3>
-                                            <div class="card ">
-                                                <div class="card-body">
-                                                    <h3>@item.Name</h3>
-                                                    <button type="button" class="btn btn-secondary float-right text-secondary text-decoration-none m-1">@Html.ActionLink("Download", "DownloadFile", new { fileName = item.Name })</button>
-
-                                                </div>
-                                            </div>
-
-
-
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        $(function () {
-            var icons = {
-                header: "ui-icon-circle-arrow-e",
-                activeHeader: "ui-icon-circle-arrow-s"
-            };
-            $("#accordion").accordion({
-                collapsible: true,
-                heightStyle: "content",
-                active: false,
-                icons: icons
-            });
-            $("#toggle").button().on("click", function () {
-                if ($("#courses").accordion("option", "icons")) {
-                    $("#courses").accordion("option", "icons", null);
-                } else {
-                    $("#courses").accordion("option", "icons", icons);
-                }
-            });
-        });
-    </script>*@
-
-
-@*@using Core.ViewModels;
-    @using Core.Utilities;
-    @using System.Text;
-    @using Microsoft.AspNetCore.Html;
-    @model UserDocumentViewModel
-
-
-    @{
-        ViewData["Title"] = "Index";
-        // var i = 0;
-        //  string activeCourse = "false";
-    }
-
-
-    <div class="card">
-        <div class="card-header">
-            <h2>Course: @Model.CourseName</h2>
-        </div>
-        <div class="card-body">
-            <h3> <strong>Course Documents</strong></h3>
-            @foreach (var item in @Model.CourseDocuments)
-            {
-
-                <div class="bg-light clearfix">
-                    <span>@item.Name</span>
-                    <button type="button" class="btn btn-primary float-right">@Html.ActionLink("Download", "DownloadFile", new { fileName = item.Name })</button>
-                </div>
-
-            }
-            <br />
-            <br />
-
-            <h3> <strong>Module Documents</strong></h3>
-            @foreach (var item in @Model.ModuleViewModels)
-            {
-
-                <div class="bg-light clearfix">
-                    <span>@item.Name</span>
-                    <button type="button" class="btn btn-primary float-right">Download</button>
-                </div>
-            }
-            <p></p>
-            <h3> <strong>Activity Documents</strong></h3>
-            @foreach (var item in @Model.ActivityViewModels)
-            {
-
-                <div class="bg-light clearfix">
-                    <span>@item.Name</span>
-                    <button type="button" class="btn btn-primary float-right">Download</button>
-                </div>
-            }
-
-            <p></p>
-            <h3> <strong>Students Documents</strong></h3>
-            @foreach (var item in @Model.LMSUserDocuments)
-            {
-                <div class="bg-light clearfix">
-                    <span>@item.Name</span>
-                    <button type="button" class="btn btn-primary float-right">Download</button>
-                </div>
-            }
-        </div>
-    </div>*@
-
-
-
-
 
