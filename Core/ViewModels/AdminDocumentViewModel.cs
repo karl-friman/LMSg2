@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 namespace Core.ViewModels
 {
     public class AdminDocumentViewModel
-    {  
+    {
         public List<string> CourseNames { get; set; }
-        public List<ICollection<Document>> CourseDocuments { get; set; }
 
-        public List<ICollection<Document>> ActivityViewModels { get; set; }
-   
-        public List<ICollection<Document>> ModuleViewModels { get; set; }
+        public ICollection<ActivityDocumentViewModel> ActivityViewModels { get; set; }
+
+        public ICollection<ModuleDocumentViewModel> ModuleViewModels { get; set; }
+
+       public ICollection<Document> LMSUserDocuments { get; set; }
 
     }
 }

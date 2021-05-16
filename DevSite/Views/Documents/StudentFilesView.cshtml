@@ -23,7 +23,8 @@
 
     <div class="bg-light clearfix">
         <span>@item.Name</span>
-        <button type="button" class="btn btn-primary float-right">@Html.ActionLink("Download", "DownloadFile", new { fileName = item.Name })</button>
+        <span>@item.Description</span>
+        <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Click here to download file", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
     </div>
 
         }
@@ -34,30 +35,33 @@
         @foreach (var item in @Model.ModuleViewModels)
         {
 
-            <div class="bg-light clearfix">
-                <span>@item.Name</span>
-                <button type="button" class="btn btn-primary float-right">Download</button>
-            </div>
+    <div class="bg-light clearfix">
+        <span>@item.Name</span>
+        <span>@item.Description</span>
+        <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Click here to download file", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
+    </div>
         }
         <p></p>
         <h3> <strong>Activity Documents</strong></h3>
         @foreach (var item in @Model.ActivityViewModels)
         {
 
-            <div class="bg-light clearfix">
-                <span>@item.Name</span>
-                <button type="button" class="btn btn-primary float-right">Download</button>
-            </div>
+    <div class="bg-light clearfix">
+        <span>@item.Description</span>
+        <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Click here to download file", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
+    </div>
         }
 
         <p></p>
         <h3> <strong>Students Documents</strong></h3>
         @foreach (var item in @Model.LMSUserDocuments)
         {
-            <div class="bg-light clearfix">
-                <span>@item.Name</span>
-                <button type="button" class="btn btn-primary float-right">Download</button>
-            </div>
+    <div class="bg-light clearfix">
+        <span>@item.Name</span>
+        <span>@item.Description</span>
+        <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Downlaod", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
+        <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Delete", "DeleteFileFromFolder", new { fileName = item.FilePath })</button>
+    </div>
         }
     </div>
 </div>
