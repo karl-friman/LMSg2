@@ -24,6 +24,7 @@ namespace Web.Controllers
         private readonly IMapper mapper;
         private IWebHostEnvironment environment;
         private readonly UserManager<LMSUser> _userManager;
+        private string Path2 = "C:Users/Elev/source/repos/LMSg2/Web/wwwroot/docs/document";
 
         public DocumentsController(IUnitOfWork uow, IMapper mapper, UserManager<LMSUser> _userManager, IWebHostEnvironment environment)
         {
@@ -129,12 +130,12 @@ namespace Web.Controllers
         public FileResult DownloadFile(string fileName)
         {
             //Build the File Path.
-            string path = Path.Combine(this.environment.WebRootPath) + "/docs/firstName_lastName" + "/" + fileName + ".pdf";
-            // string path = Path.Combine(Directory.GetCurrentDirectory(), "/docs/firstName_lastName/", fileName + ".pdf");
+            string path = Path.Combine(this.environment.WebRootPath, Path2) + "/" + fileName;
+
             //Read the File data into Byte Array.
             byte[] bytes = System.IO.File.ReadAllBytes(path);
-            //Send the File to Download.
 
+            //Send the File to Download.
             return File(bytes, "application/octet-stream", fileName);
         }
 
