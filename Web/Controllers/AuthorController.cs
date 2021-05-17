@@ -38,7 +38,7 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var course = apiClient.Fetch().GetAuthorAsync(id).Result;
+            var course = apiClient.Fetch().GetAuthorAsync(id, true).Result;
 
             if (course == null)
             {

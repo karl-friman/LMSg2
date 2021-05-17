@@ -1,4 +1,5 @@
-﻿@model Core.Entities.API.Author
+﻿@using Core.Entities.API.ViewModels
+@model Core.Entities.API.Author
 @inject SignInManager<LMSUser> SignInManager
 @inject UserManager<LMSUser> UserManager
 @{
@@ -34,11 +35,26 @@
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.DateOfBirth)
             </dt>
-            <dt class="col-sm-4">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.DateOfBirth)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Literatures)
             </dt>
+            <dd class="col-sm-8">
+                <ul>
+                    @{
+                        foreach (LiteratureViewModel literature in Model.Literatures)
+                        {
+                            string LiteratureDisplay = $"[{literature.Id}] {literature.Title}";
+                            <li>@LiteratureDisplay</li>
+                        }
+                    }
+                </ul>
+            </dd>
         </dl>
     </div>
+    
     <div>
         @if (User.IsInRole("Admin"))
         {

@@ -1,8 +1,11 @@
-﻿@model IEnumerable<Core.Entities.API.Literature>
+﻿@using Core.Entities.API
+@using Core.Entities.API.ViewModels
+@model IEnumerable<Core.Entities.API.Literature>
 @inject SignInManager<LMSUser> SignInManager
 @inject UserManager<LMSUser> UserManager
 @{
     ViewData["Title"] = "Literatures";
+
 }
 
 <div style="padding-left: 31px">
@@ -58,10 +61,26 @@
                         @Html.DisplayFor(model => item.PublishDate)
                     </td>
                     <td>
-                        @Html.DisplayFor(model => item.Authors)
+                        <ul>
+                            @{
+                                foreach (AuthorViewModel author in item.Authors)
+                                {
+                                    string authorDisplay = $"[{author.Id}] {author.FirstName} {author.LastName}";
+                                    <li>@authorDisplay</li>
+                                }
+                            }
+                        </ul>
                     </td>
                     <td>
-                        @Html.DisplayFor(model => item.Subjects)
+                        <ul>
+                            @{
+                                foreach (SubjectViewModel subject in item.Subjects)
+                                {
+                                    string subjectDisplay = $"[{subject.Id}] {subject.Name}";
+                                    <li>@subjectDisplay</li>
+                                }
+                            }
+                        </ul>
                     </td>
                     @if (User.IsInRole("Admin"))
                     {

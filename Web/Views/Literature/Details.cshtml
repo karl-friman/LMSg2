@@ -1,4 +1,5 @@
-﻿@model Core.Entities.API.Literature
+﻿@using Core.Entities.API.ViewModels
+@model Core.Entities.API.Literature
 @inject SignInManager<LMSUser> SignInManager
 @inject UserManager<LMSUser> UserManager
 @{
@@ -34,9 +35,37 @@
             <dt class="col-sm-4">
                 @Html.DisplayNameFor(model => model.LevelName)
             </dt>
-            <dt class="col-sm-4">
+            <dd class="col-sm-8">
                 @Html.DisplayFor(model => model.LevelName)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Authors)
             </dt>
+            <dd class="col-sm-8">
+                <ul>
+                    @{
+                        foreach (AuthorViewModel author in Model.Authors)
+                        {
+                            string authorDisplay = $"[{author.Id}] {author.FirstName} {author.LastName}";
+                            <li>@authorDisplay</li>
+                        }
+                    }
+                </ul>
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Subjects)
+            </dt>
+            <dd class="col-sm-8">
+                <ul>
+                    @{
+                        foreach (SubjectViewModel subject in Model.Subjects)
+                        {
+                            string subjectDisplay = $"[{subject.Id}] {subject.Name}";
+                            <li>@subjectDisplay</li>
+                        }
+                    }
+                </ul>
+            </dd>
         </dl>
     </div>
     <div>

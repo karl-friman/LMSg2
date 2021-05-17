@@ -34,7 +34,7 @@ namespace Web
 
                 try
                 {
-                   // SeedData.InitAsync(services, adminPW, studentPW).Wait();
+                   //SeedData.InitAsync(services, adminPW, studentPW).Wait();
                 }
                 catch (Exception ex)
                 {

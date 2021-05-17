@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Core.Entities.API.Subject>
+﻿@using Core.Entities.API.ViewModels
+@model IEnumerable<Core.Entities.API.Subject>
 @inject SignInManager<LMSUser> SignInManager
 @inject UserManager<LMSUser> UserManager
 @{
@@ -37,7 +38,15 @@
                     @Html.DisplayFor(model => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(model => item.Literatures)
+                    <ul>
+                        @{
+                            foreach (LiteratureViewModel literature in item.Literatures)
+                            {
+                                string LiteratureDisplay = $"[{literature.Id}] {literature.Title}";
+                                <li>@LiteratureDisplay</li>
+                            }
+                        }
+                    </ul>
                 </td>
                 @if (User.IsInRole("Admin"))
                 {
