@@ -1,5 +1,6 @@
 ﻿@model Core.Entities.API.Literature
-
+@inject SignInManager<LMSUser> SignInManager
+@inject UserManager<LMSUser> UserManager
 @{
     ViewData["Title"] = "Details";
 }
@@ -36,22 +37,19 @@
             <dt class="col-sm-4">
                 @Html.DisplayFor(model => model.LevelName)
             </dt>
-            <dt class="col-sm-8">
-                @Html.DisplayNameFor(model => model.Authors)
-            </dt>
-            <dt class="col-sm-4">
-                @Html.DisplayFor(model => model.Authors)
-            </dt>
-            <dt class="col-sm-8">
-                @Html.DisplayNameFor(model => model.Subjects)
-            </dt>
-            <dt class="col-sm-4">
-                @Html.DisplayFor(model => model.Subjects)
-            </dt>
         </dl>
     </div>
     <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-action="Index">Back to List</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <span>
+                <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+                <a asp-action="Index">Back to List</a>
+            </span>
+        }
+        else
+        {
+            <a asp-action="Index">Back to List</a>
+        }
     </div>
 </div>
