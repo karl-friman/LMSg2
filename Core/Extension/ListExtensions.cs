@@ -13,7 +13,7 @@ namespace Core.Extension
     {
         public static async Task<IEnumerable<SelectListItem>> GetSelectListItems<T>(this IAsyncRepository<T> repo)
         {
-            var repoList = repo.GetAll(includeAll: false).Result;
+            var repoList = repo.GetAllWithCourseAndModule(includeAll: false).Result;
             switch (repoList)
             {
                 case List<Module> modules:

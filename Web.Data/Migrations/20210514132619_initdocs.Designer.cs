@@ -10,8 +10,8 @@ using Web.Data.Data;
 namespace Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210429124248_docs")]
-    partial class docs
+    [Migration("20210514132619_initdocs")]
+    partial class initdocs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,10 +113,7 @@ namespace Web.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LMSUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LMSUserId1")
+                    b.Property<string>("LMSUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ModuleId")
@@ -134,7 +131,7 @@ namespace Web.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("LMSUserId1");
+                    b.HasIndex("LMSUserId");
 
                     b.HasIndex("ModuleId");
 
@@ -393,7 +390,7 @@ namespace Web.Data.Migrations
             modelBuilder.Entity("Core.Entities.Activity", b =>
                 {
                     b.HasOne("Core.Entities.ActivityType", "ActivityType")
-                        .WithMany("Activity")
+                        .WithMany("Activities")
                         .HasForeignKey("ActivityTypeId");
 
                     b.HasOne("Core.Entities.Module", "Module")
@@ -419,7 +416,7 @@ namespace Web.Data.Migrations
 
                     b.HasOne("Core.Entities.LMSUser", "LMSUser")
                         .WithMany("Documents")
-                        .HasForeignKey("LMSUserId1");
+                        .HasForeignKey("LMSUserId");
 
                     b.HasOne("Core.Entities.Module", null)
                         .WithMany("Documents")
@@ -506,7 +503,7 @@ namespace Web.Data.Migrations
 
             modelBuilder.Entity("Core.Entities.ActivityType", b =>
                 {
-                    b.Navigation("Activity");
+                    b.Navigation("Activities");
                 });
 
             modelBuilder.Entity("Core.Entities.Course", b =>

@@ -29,7 +29,7 @@ namespace DevSite.Controllers
         public async Task<IActionResult> Index()
         {
             // return View(await uow.ActivityTypeRepository.GetAll(includeAll: false));
-            var activitiesTypeList = await uow.ActivityTypeRepository.GetAll(includeAll: false);
+            var activitiesTypeList = await uow.ActivityTypeRepository.GetAllWithCourseAndModule(includeAll: false);
             var model = mapper.Map<IEnumerable<ActivityTypeViewModel>>(activitiesTypeList);
             return View(model);
         }

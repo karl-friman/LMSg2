@@ -23,6 +23,8 @@ namespace Web
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDbContext>();
+            context.Database.EnsureDeleted();
+           //  context.Database.Migrate();
                 //context.Database.EnsureDeleted();
                 //context.Database.Migrate();
 
@@ -34,6 +36,7 @@ namespace Web
 
                 try
                 {
+                   SeedData.InitAsync(services, adminPW, studentPW).Wait();
                    // SeedData.InitAsync(services, adminPW, studentPW).Wait();
                 }
                 catch (Exception ex)
@@ -43,7 +46,6 @@ namespace Web
                     throw;
                 }
             }
-
 
             host.Run();
         }

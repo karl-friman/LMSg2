@@ -1,0 +1,63 @@
+﻿@using Core.ViewModels;
+@using Core.Utilities;
+@using System.Text;
+@using Microsoft.AspNetCore.Html;
+@model AdminDocumentViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    // var i = 0;
+    //  string activeCourse = "false";
+}
+
+
+<div class="card">
+    <div class="card-header">
+        <h3> <strong>Course Documents</strong></h3>
+        @foreach (var item in @Model.CourseNames)
+        {
+            <div class="bg-light clearfix">
+                <span>@item</span>
+            </div>
+        }
+    </div>
+    <div class="card-body">
+
+        <h3> <strong>Module Documents</strong></h3>
+        @foreach (var item in @Model.ModuleViewModels)
+        {
+
+            <div class="bg-light clearfix">
+                <span>@item.Name</span>
+                <span>@item.Description</span>
+                <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Click here to download file", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
+            </div>
+        }
+        <p></p>
+        <h3> <strong>Activity Documents</strong></h3>
+        @foreach (var item in @Model.ActivityViewModels)
+        {
+
+    <div class="bg-light clearfix">
+        <span>@item.Name</span>
+        <span>@item.Description</span>
+        <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Click here to download file", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
+    </div>
+        }
+
+        <p></p>
+        <h3> <strong>Students Documents</strong></h3>
+        @foreach (var item in @Model.LMSUserDocuments)
+        {
+            <div class="bg-light clearfix">
+                <span>@item.Name</span>
+                <span>@item.Description</span>
+                <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Click here to download file", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+

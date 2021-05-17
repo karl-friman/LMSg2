@@ -111,10 +111,7 @@ namespace Web.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LMSUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LMSUserId1")
+                    b.Property<string>("LMSUserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ModuleId")
@@ -132,7 +129,7 @@ namespace Web.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.HasIndex("LMSUserId1");
+                    b.HasIndex("LMSUserId");
 
                     b.HasIndex("ModuleId");
 
@@ -417,7 +414,7 @@ namespace Web.Data.Migrations
 
                     b.HasOne("Core.Entities.LMSUser", "LMSUser")
                         .WithMany("Documents")
-                        .HasForeignKey("LMSUserId1");
+                        .HasForeignKey("LMSUserId");
 
                     b.HasOne("Core.Entities.Module", null)
                         .WithMany("Documents")

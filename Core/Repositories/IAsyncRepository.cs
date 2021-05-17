@@ -11,7 +11,9 @@ namespace Core.Repositories
     public interface IAsyncRepository<T>
     //public interface IAsyncRepository<T, TInput>
     {
-        Task<List<T>> GetAll(bool includeAll);
+
+        public Task<List<LMSUser>> GetAllWithCourseAndModule();
+        Task<List<T>> GetAllWithCourseAndModule(bool includeAll);
         Task<T> GetOne(int? Id, bool includeAll);
         Task<T> GetOne(string Id, bool includeAll);
         Task<bool> SaveAsync();

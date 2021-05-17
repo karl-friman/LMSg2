@@ -18,7 +18,11 @@ namespace Web.Data.Data
             CreateMap<Activity, ActivityViewModel>().ReverseMap();
             CreateMap<Module, ModuleViewModel>().ReverseMap();
             CreateMap<Document, DocumentViewModel>().ReverseMap();
+            CreateMap<DocumentToAssigmentViewModel, Document>()
+                .ForMember(dest => dest.FilePath,
+                  from => from.MapFrom(m => m.AssignmentDoc.FileName)).ReverseMap();
             CreateMap<ActivityType, ActivityTypeViewModel>().ReverseMap();
+           
         }
 
     }

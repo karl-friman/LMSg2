@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,5 +28,6 @@ namespace Core.Entities
         //Navigation props
         public Course Course { get; set; }
         public ICollection<Document> Documents { get; set; }
+        //
     }
 }
