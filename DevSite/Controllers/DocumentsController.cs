@@ -69,7 +69,7 @@ namespace DevSite.Controllers
         public async Task<IActionResult> StudentFilesView()
         {              
             var userId = _userManager.GetUserId(User);
-            var testId = "63537c72-f07f-41ab-ab65-e1ff916f9bf5";
+            var testId = "3764a8b6-769f-47ac-b288-ee86b98e8340";
             var currentUser = await uow.LMSUserRepository.GetOne(testId, true);
             string firstname = currentUser.FirstName;
             string lastName = currentUser.LastName;
@@ -120,7 +120,7 @@ namespace DevSite.Controllers
         public async Task<FileResult> DownloadFileWithFileName(string fileName)
         
         {
-            var userId = "63537c72-f07f-41ab-ab65-e1ff916f9bf5";
+            var userId = "3764a8b6-769f-47ac-b288-ee86b98e8340";
             var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
             string firstname = currentUser.FirstName;
             string lastName = currentUser.LastName;
@@ -210,7 +210,7 @@ namespace DevSite.Controllers
         public async Task<IActionResult> DeleteFileFromFolder(string fileName)
         {
 
-            var userId = "63537c72-f07f-41ab-ab65-e1ff916f9bf5";
+            var userId = "3764a8b6-769f-47ac-b288-ee86b98e8340";
             var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
             string firstname = currentUser.FirstName;
             string lastName = currentUser.LastName;
@@ -243,7 +243,7 @@ namespace DevSite.Controllers
             string userId = null;
             if (model.AssignmentDoc != null)
             {
-                userId = "63537c72-f07f-41ab-ab65-e1ff916f9bf5";
+                userId = "3764a8b6-769f-47ac-b288-ee86b98e8340";
                 var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
                 string firstname = currentUser.FirstName;
                 string lastName = currentUser.LastName;
@@ -252,9 +252,9 @@ namespace DevSite.Controllers
                 string filePath = Path.Combine(CreatePath(firstname, lastName), uniqueFileName);
                 model.AssignmentDoc.CopyTo(new FileStream(filePath, FileMode.Create));
                 model.LMSUserId = userId;
-                Random rnd = new Random();
+               // Random rnd = new Random();
                 //46 activities
-                model.ActivityId = rnd.Next(1,46);
+               // model.ActivityId = rnd.Next(1,46);
 
 
             }

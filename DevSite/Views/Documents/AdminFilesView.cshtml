@@ -30,7 +30,7 @@
             <div class="bg-light clearfix">
                 <span>@item.Name</span>
                 <span>@item.Description</span>
-                <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Click here to download file", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
+                <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Download", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
             </div>
         }
         <p></p>
@@ -41,7 +41,7 @@
     <div class="bg-light clearfix">
         <span>@item.Name</span>
         <span>@item.Description</span>
-        <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Click here to download file", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
+        <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Download", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
     </div>
         }
 
@@ -52,7 +52,7 @@
             <div class="bg-light clearfix">
                 <span>@item.Name</span>
                 <span>@item.Description</span>
-                <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Click here to download file", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
+                <button type="button" class="btn btn-danger float-right">@Html.ActionLink("Download", "DownloadFileWithFileName", new { fileName = item.FilePath })</button>
             </div>
         }
     </div>
