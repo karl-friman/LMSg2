@@ -1,0 +1,39 @@
+﻿@model Core.Entities.API.Subject
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div style="padding-left: 31px">
+
+    <h1>Details</h1>
+
+    <div>
+        <h4>Subject</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Literatures)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Literatures)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

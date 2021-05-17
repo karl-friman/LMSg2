@@ -1,0 +1,57 @@
+﻿@model Core.Entities.API.Literature
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div style="padding-left: 31px">
+
+    <h1>Details</h1>
+
+    <div>
+        <h4>Literature</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.LevelName)
+            </dt>
+            <dt class="col-sm-4">
+                @Html.DisplayFor(model => model.LevelName)
+            </dt>
+            <dt class="col-sm-8">
+                @Html.DisplayNameFor(model => model.Authors)
+            </dt>
+            <dt class="col-sm-4">
+                @Html.DisplayFor(model => model.Authors)
+            </dt>
+            <dt class="col-sm-8">
+                @Html.DisplayNameFor(model => model.Subjects)
+            </dt>
+            <dt class="col-sm-4">
+                @Html.DisplayFor(model => model.Subjects)
+            </dt>
+        </dl>
+    </div>
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

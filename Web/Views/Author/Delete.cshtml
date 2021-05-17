@@ -1,0 +1,58 @@
+﻿@model Core.Entities.API.Author
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="d-flex mt-3 ml-5">
+    <div>
+        <div class="card border-secondary courses-class-card">
+            <div class="card-header">
+                <h4>Delete</h4>
+                <hr />
+                <div class="row">
+                    Are you sure you want to delete this?
+                </div>
+
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Id)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Id)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.FirstName)
+                    </dd>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.LastName)
+                    </dd>
+                    <dt class="col-sm-8">
+                        @Html.DisplayNameFor(model => model.DateOfBirth)
+                    </dt>
+                    <dt class="col-sm-4">
+                        @Html.DisplayFor(model => model.DateOfBirth)
+                    </dt>
+                    <dt class="col-sm-8">
+                        @Html.DisplayNameFor(model => model.Literatures)
+                    </dt>
+                    <dt class="col-sm-4">
+                        @Html.DisplayFor(model => model.Literatures)
+                    </dt>
+                </dl>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                    <a asp-action="Index"><u>Back to List</u></a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

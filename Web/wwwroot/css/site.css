@@ -284,7 +284,36 @@ footer {
     /*border-radius: 16px;*/
 }
 
-#accordion .ui-accordion-header a {
+#courses .ui-accordion-header {
+    background: #b7b7a4;
+    padding: 2%;
+    margin-bottom: 1%;
+    padding-left: 2%;
+    width: 40em;
+    /*border-radius: 16px;*/
+}
+
+#activities .ui-accordion-header {
+    background: #b7b7a4;
+    padding: 2%;
+    margin-bottom: 1%;
+    padding-left: 2%;
+    width: 40em;
+    /*border-radius: 16px;*/
+}
+
+#modules .ui-accordion-header {
+    background: #b7b7a4;
+    padding: 2%;
+    margin-bottom: 1%;
+    padding-left: 2%;
+    width: 40em;
+    /*border-radius: 16px;*/
+}
+
+
+
+.accordion .ui-accordion-header a {
     text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
     text-shadow: 1px 1px 0px rgba(0,0,0,0.2);
     border-right: 1px solid rgba(0, 0, 0, .2);

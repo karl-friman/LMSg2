@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Data.Data;
+using Web.Data.Data.Wrapper;
 using Web.Data.Repositories;
 
 namespace Web
