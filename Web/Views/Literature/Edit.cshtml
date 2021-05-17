@@ -1,0 +1,51 @@
+﻿@model Core.Entities.API.Literature
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="d-flex mt-3 ml-5">
+    <div>
+        <div class="card border-secondary course-edit-card">
+            <div class="card-header">
+                <h4>Edit Literature</h4>
+                <hr />
+                <div class="col-md-12">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="Authors" />
+                        <input type="hidden" asp-for="Subjects" />
+                        <div class="form-group">
+                            <label asp-for="Title" class="control-label"></label>
+                            <input asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Description" class="control-label"></label>
+                            <textarea rows="4" asp-for="Description" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PublishDate" class="control-label"></label>
+                            <input asp-for="PublishDate" class="form-control" />
+                            <span asp-validation-for="PublishDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LevelName" class="control-label"></label>
+                            <input asp-for="LevelName" class="form-control" />
+                            <span asp-validation-for="LevelName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                            <u><a asp-action="Index">Back to List</a></u>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

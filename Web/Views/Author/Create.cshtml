@@ -1,0 +1,49 @@
+﻿@model Core.Entities.API.FormModels.AuthorCreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="d-flex mt-3 ml-5">
+    <div>
+        <div class="card border-secondary course-edit-card">
+            <div class="card-header">
+                <h4>Create Author</h4>
+                <hr />
+                <div class="col-md-12">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="control-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LastName" class="control-label"></label>
+                            <textarea rows="4" asp-for="LastName" class="form-control"></textarea>
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DateOfBirth" class="control-label"></label>
+                            <input asp-for="DateOfBirth" class="form-control" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="LiteratureIds" class="control-label"></label>
+                            <input asp-for="LiteratureIds" class="form-control" />
+                            <span asp-validation-for="LiteratureIds" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                            <u><a asp-action="Index">Back to List</a></u>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
