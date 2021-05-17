@@ -37,7 +37,7 @@
                                     activeCourse = i.ToString();
                                 }
                             }
-                            <h3>
+                            <h3  style="width:40em;">
                                 <a href="#" class="btn btn-outline-primary">@course.Name</a>
                                 @*@Html.ActionLink(linkText: course.Name, actionName: "Index", controllerName: "Courses",
                                     protocol: null, hostname: null, fragment: null,
@@ -74,13 +74,11 @@
                                         @foreach (var module in course.Modules)
                                         {
                                             <h3>
-                                                <u>
                                                     <a href="#" class="btn btn-outline-secondary">@module.Name</a>
                                                     @*@Html.ActionLink(linkText: module.Name, actionName: "Index", controllerName: "Modules",
                                                         protocol: null, hostname: null, fragment: null,
                                                         routeValues: new { selected = module.Id },
                                                         htmlAttributes: new { @class = "btn  btn-outline-primary" })*@
-                                                </u>
                                                 @{
                                                     
                                                     string moduleClassContents = "";
@@ -106,12 +104,12 @@
                                                     </li>
                                                     @if (module.Activities != null)
                                                     {
-                                                        <li class="list-group-item">
+                                                        <li class="list-unstyled">
                                                             <strong>Activities</strong> in this module:@module.Activities.Count()
                                                             <br />
                                                             <a asp-controller="Activities" asp-action="Create" asp-route-id="@module.Id"><u>Create activity</u></a>
                                                         </li>
-                                                        <li class="list-group-item">
+                                                        <li class="list-unstyled">
                                                             <div id="activity_@module.Id">
                                                                 @foreach (var activity in module.Activities)
                                                                 {

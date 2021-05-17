@@ -284,12 +284,17 @@ footer {
     /*border-radius: 16px;*/
 }
 
+#courses {
+    width: 40em;
+    /*border-radius: 16px;*/
+}
+
 #courses .ui-accordion-header {
     background: #b7b7a4;
     padding: 2%;
     margin-bottom: 1%;
     padding-left: 2%;
-    width: 40em;
+    width: 36em;
     /*border-radius: 16px;*/
 }
 
