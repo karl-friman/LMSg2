@@ -69,7 +69,7 @@ namespace DevSite.Controllers
         public async Task<IActionResult> StudentFilesView()
         {              
             var userId = _userManager.GetUserId(User);
-            var testId = "3764a8b6-769f-47ac-b288-ee86b98e8340";
+            var testId = "f6e7df9d-01b0-4fb2-b7b5-a9099d971527"; 
             var currentUser = await uow.LMSUserRepository.GetOne(testId, true);
             string firstname = currentUser.FirstName;
             string lastName = currentUser.LastName;
@@ -120,7 +120,7 @@ namespace DevSite.Controllers
         public async Task<FileResult> DownloadFileWithFileName(string fileName)
         
         {
-            var userId = "3764a8b6-769f-47ac-b288-ee86b98e8340";
+            var userId = "f6e7df9d-01b0-4fb2-b7b5-a9099d971527";
             var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
             string firstname = currentUser.FirstName;
             string lastName = currentUser.LastName;
@@ -210,7 +210,7 @@ namespace DevSite.Controllers
         public async Task<IActionResult> DeleteFileFromFolder(string fileName)
         {
 
-            var userId = "3764a8b6-769f-47ac-b288-ee86b98e8340";
+            var userId = "f6e7df9d-01b0-4fb2-b7b5-a9099d971527";
             var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
             string firstname = currentUser.FirstName;
             string lastName = currentUser.LastName;

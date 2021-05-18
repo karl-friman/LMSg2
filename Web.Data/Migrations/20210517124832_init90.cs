@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web.Data.Migrations
 {
-    public partial class initchanges : Migration
+    public partial class init90 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -256,10 +256,11 @@ namespace Web.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LMSUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LMSUserId = table.Column<int>(type: "int", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: true),
                     ModuleId = table.Column<int>(type: "int", nullable: true),
-                    ActivityId = table.Column<int>(type: "int", nullable: true)
+                    ActivityId = table.Column<int>(type: "int", nullable: true),
+                    LMSUserId1 = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -271,8 +272,8 @@ namespace Web.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Documents_AspNetUsers_LMSUserId",
-                        column: x => x.LMSUserId,
+                        name: "FK_Documents_AspNetUsers_LMSUserId1",
+                        column: x => x.LMSUserId1,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -355,9 +356,9 @@ namespace Web.Data.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Documents_LMSUserId",
+                name: "IX_Documents_LMSUserId1",
                 table: "Documents",
-                column: "LMSUserId");
+                column: "LMSUserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Documents_ModuleId",
