@@ -13,9 +13,7 @@ namespace Core.Entities
         public string Description { get; set; }
         public DateTime TimeStamp { get; set; }
         public string FilePath { get; set; }
-       // public FileUpload FileUpload { get; set; }
-
-        
+        // public FileUpload FileUpload { get; set; }
 
         //Foreign key
         public int? LMSUserId { get; set; }
@@ -25,8 +23,12 @@ namespace Core.Entities
 
         //Navigation props 
         public LMSUser LMSUser { get; set; }
-        //public Course? Course { get; set; }
-        //public Module? Module { get; set; }
+        
+        //has been added
+        //public Course Course { get; set; }
+        //public Module Module { get; set; }
         //public Activity Activity { get; set; }
+
+        
     }
 }

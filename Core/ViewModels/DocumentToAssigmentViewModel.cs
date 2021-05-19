@@ -1,24 +1,25 @@
 ﻿using Core.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Core.ViewModels
 {
-    public class DocumentViewModel
+    public class DocumentToAssigmentViewModel
     {
+
         public int Id { get; set; }
+
+        [Display(Name = "File Name")]
         public string Name { get; set; }
+        [Display(Name = "File Description")]
         public string Description { get; set; }
-        public DateTime TimeStamp { get; set; }
-        public string FilePath { get; set; }
+        public IFormFile AssignmentDoc { get; set; }
         // public FileUpload FileUpload { get; set; }
-
-
-
-        //Foreign key
         public string LMSUserId { get; set; }
         public int? CourseId { get; set; }
         public int? ModuleId { get; set; }
@@ -26,15 +27,7 @@ namespace Core.ViewModels
 
         //Navigation props 
         public LMSUser LMSUser { get; set; }
-        //public Course? Course { get; set; }
-        //public Module? Module { get; set; }
-        //public Activity Activity { get; set; }
 
-        //public Course Course { get; set; }
-        //public Module Module { get; set; }
-        //public Activity Activity { get; set; }
-
-        //ICollection<Module>Modules { get; set; }
 
     }
 }

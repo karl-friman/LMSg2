@@ -33,38 +33,9 @@ namespace DevSite.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            //var x = _context.Users.
-            // return View(await uow.LMSUserRepository.GetAll(includeAll: true));
-
-            //var userList = await uow.DocumentRepository.GetAll(includeAll: false);
-            var userList = await uow.LMSUserRepository.GetAll(includeAll: true);
+            var userList = await uow.LMSUserRepository.GetAllWithCourseAndModule(includeAll: true);
             var model = mapper.Map<IEnumerable<LMSUserViewModel>>(userList);
             return View(model);
-
-
-            //LMSUser selectedUser = null;
-
-            //List<LMSUser> userList = await _context.Users
-            //                                .Include(c => c.Course)
-            //                                .ToListAsync();
-
-            //if (selected is not null)
-            //{
-            //    selectedUser = await _context.Users.FindAsync(selected);
-            //}
-            //else
-            //{
-            //    selectedUser = null;
-            //}
-
-            //LMSUserViewModel moduleIndexModel = new LMSUserViewModel
-            //{
-            //    LMSUsers = userList,
-            //    SelectedUser = selectedUser
-            //};
-
-
-            //return View(moduleIndexModel);
         }
 
         // GET: Users/Details/5
@@ -153,7 +124,7 @@ namespace DevSite.Controllers
                     uow.LMSUserRepository.Update(user);
                     await uow.LMSUserRepository.SaveAsync();
                 }
-                catch (DbUpdateConcurrencyException ex)
+                catch (DbUpdateConcurrencyException)
                 { 
                     
                     if (user.Email == "")

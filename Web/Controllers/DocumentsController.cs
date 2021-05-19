@@ -11,8 +11,6 @@ using Core.ViewModels;
 using Core.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
 
 
 
@@ -22,22 +20,18 @@ namespace Web.Controllers
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
-        private IWebHostEnvironment environment;
         private readonly UserManager<LMSUser> _userManager;
-        private string Path2 = "C:Users/Elev/source/repos/LMSg2/Web/wwwroot/docs/document";
-
-        public DocumentsController(IUnitOfWork uow, IMapper mapper, UserManager<LMSUser> _userManager, IWebHostEnvironment environment)
+        public DocumentsController(IUnitOfWork uow, IMapper mapper, UserManager<LMSUser> _userManager)
         {
             this.uow = uow;
             this.mapper = mapper;
             this._userManager = _userManager;
-            this.environment = environment;
         }
 
         // GET: Documents
         public async Task<IActionResult> Index()
         {
-            var doucumentList = await uow.DocumentRepository.GetAll(includeAll: true);
+            var doucumentList = await uow.DocumentRepository.GetAllWithCourseAndModule(includeAll: true);
             var model = mapper.Map<IEnumerable<DocumentViewModel>>(doucumentList);
             return View(model);
         }
@@ -113,30 +107,21 @@ namespace Web.Controllers
                 }
             }
 
-            var model = new UserDocumentViewModel
-            {
-                DocumentName = allUserDocuments.Select(a => a.Name).ToString(),
-                CourseName = course.Name,
-                CourseDocuments = uow.CourseRepository.GetOne(courseId, true).Result.Documents,
-                ModuleViewModels = moduleVms,
-                ActivityViewModels = activityVms,
-                LMSUserDocuments = currentUser.Documents.ToList()
-
-            };
-
+            var model = mapper.Map<DocumentViewModel>(document);
             return View(model);
         }
 
-        public FileResult DownloadFile(string fileName)
+        //GET
+        public async Task<IActionResult> StudentFilesView()
         {
-            //Build the File Path.
-            string path = Path.Combine(this.environment.WebRootPath, Path2) + "/" + fileName;
+            var userId = _userManager.GetUserId(User);
+            var currentUser = await uow.LMSUserRepository.GetOne(userId, false);
+            var allDocuments = await uow.DocumentRepository.GetAllWithCourseAndModule(false);
+            var userDocuments = allDocuments.Where(u => u.LMSUser == currentUser);
 
-            //Read the File data into Byte Array.
-            byte[] bytes = System.IO.File.ReadAllBytes(path);
-
-            //Send the File to Download.
-            return File(bytes, "application/octet-stream", fileName);
+            var model = mapper.Map<IEnumerable<DocumentViewModel>>(userDocuments);
+            
+            return View(model);
         }
 
         // GET: Documents/Create
