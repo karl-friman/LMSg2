@@ -17,7 +17,7 @@ namespace Web.Data.Repositories
         {
             this.db = db;
         }
-        public async Task<List<Course>> GetAll(bool includeAll)
+        public async Task<List<Course>> GetAllWithCourseAndModule(bool includeAll)
         {
             if (includeAll)
             {
@@ -107,12 +107,30 @@ namespace Web.Data.Repositories
             return db.Courses.Any(m => m.Id == Id);
         }
 
-        public Task<Course> GetOne(string Id, bool includeAll)
+        public async Task<Course> GetOne(string id, bool includeAll)
+        {
+            if (includeAll)
+            {
+
+                return await db.Courses
+                             .Include(d => d.Documents)
+                             .Include(m => m.Modules)
+                             .ThenInclude(a => a.Activities)
+                             .FirstOrDefaultAsync(m => m.Id.Equals(id));
+            }
+            else
+            {
+                return await db.Courses
+                            .FirstOrDefaultAsync(m => m.Id.Equals(id));
+            }
+        }
+
+        public bool Any(string Id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Any(string Id)
+        public Task<List<LMSUser>> GetAllWithCourseAndModule()
         {
             throw new NotImplementedException();
         }

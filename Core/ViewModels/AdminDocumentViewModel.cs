@@ -7,19 +7,15 @@ using System.Threading.Tasks;
 
 namespace Core.ViewModels
 {
-    public class UserDocumentViewModel
-    {  
-        public string CourseName { get; set; }
-
-        public string CourseDescription { get; set; }
-
-        public string CoursePath { get; set; }
-        public ICollection<Document> CourseDocuments { get; set; }
+    public class AdminDocumentViewModel
+    {
+        public List<string> CourseNames { get; set; }
 
         public ICollection<ActivityDocumentViewModel> ActivityViewModels { get; set; }
-   
+
         public ICollection<ModuleDocumentViewModel> ModuleViewModels { get; set; }
 
+       public ICollection<Document> LMSUserDocuments { get; set; }
 
     }
 }

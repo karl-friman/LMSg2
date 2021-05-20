@@ -28,7 +28,7 @@ namespace DevSite.Controllers
         {
             Course selectedCourse = null;
 
-            var courseList = await uow.CourseRepository.GetAll(includeAll: true);
+            var courseList = await uow.CourseRepository.GetAllWithCourseAndModule(includeAll: true);
 
             if (selected is not null)
             {

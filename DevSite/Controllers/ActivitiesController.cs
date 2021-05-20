@@ -32,7 +32,7 @@ namespace DevSite.Controllers
         {
             Activity selectedActivity = null;
 
-            List<Activity> activityList = await uow.ActivityRepository.GetAll(includeAll: true);
+            List<Activity> activityList = await uow.ActivityRepository.GetAllWithCourseAndModule(includeAll: true);
 
             if (selected is not null)
             {
